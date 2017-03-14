@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">NewDeviceWall</string>
+    <string name="planes">planes</string>
+    <string name="accesorios">accesorios</string>
+    <string name="equipos">equipos</string>
+    <string name="tamaopantalla">Tamaño \npantalla</string>
+    <string name="marca">Marca</string>
+    <string name="cmaratrasera">Cámara \ntrasera</string>
+    <string name="cmaradelantera">Cámara \nfrontal</string>
+    <string name="cerrar">Cerrar_</string>
+    <string name="caract_generales">Características generales_</string>
+    <string name="selecciona_la_memoria"># Selecciona la <b><i>Memoria_</i></b></string>
+</resources>
+
