@@ -1,5 +1,6 @@
 package cl.rinno.newdevicewall;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,25 +8,46 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
+import android.widget.GridLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.rinno.newdevicewall.adapters.FiltrosAdapter;
+import cl.rinno.newdevicewall.gridlibrery.GridBuilder;
+import cl.rinno.newdevicewall.gridlibrery.GridItem;
+import cl.rinno.newdevicewall.gridlibrery.GridViewHolder;
+import cl.rinno.newdevicewall.gridlibrery.calculator.HorizontalPositionCalculator;
+import cl.rinno.newdevicewall.gridlibrery.listener.OnViewCreateCallBack;
+import cl.rinno.newdevicewall.models.Global;
+import cl.rinno.newdevicewall.models.Producto;
 import cl.rinno.newdevicewall.models.Session;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,8 +60,12 @@ public class MainActivity extends AppCompatActivity {
     String filtro = "";
     ArrayList<String> filterList;
     ArrayList<String> providers_ids;
+    @BindView(R.id.horizontal_scroll_grid)
+    HorizontalScrollView horizontalScrollGrid;
+    private GridLayout mGridLayout;
 
     Boolean deviceState, accessoryState, planState;
+    ArrayList<Producto> productList;
 
     @BindView(R.id.linear_que_buscas)
     LinearLayout linearQueBuscas;
@@ -105,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
     TextView tvFilterResultDevice;
     @BindView(R.id.linear_filter_results_devices)
     LinearLayout linearFilterResultsDevices;
-    @BindView(R.id.rv_catalog)
-    RecyclerView rvCatalog;
     @BindView(R.id.blur_content)
     RelativeLayout blurContent;
     @BindView(R.id.linear_close_filters)
@@ -121,12 +145,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fresco.initialize(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         imageCloseType = new ImageView(this);
         imageCloseFilter = new ImageView(this);
         rlParent = new RelativeLayout(this);
@@ -136,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
 
         filterList = new ArrayList<>();
         providers_ids = new ArrayList<>();
+        productList = new ArrayList<>();
+        mGridLayout = (GridLayout) findViewById(R.id.grid_container);
 
         imageCloseType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 setDefuaultColors();
                 rlParent.removeView(imageCloseFilter);
                 blurContent.setVisibility(View.GONE);
+                allProducts();
                 deviceState = false;
             }
         });
@@ -160,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
                 linearSeleccionaFiltro.setVisibility(View.VISIBLE);
             }
         });
+
+        allProducts();
     }
 
     private void setCloseTypeImage(LinearLayout linear) {
@@ -258,12 +285,15 @@ public class MainActivity extends AppCompatActivity {
                     rlContentDevices.setVisibility(View.VISIBLE);
                     linearSeleccionaFiltro.setVisibility(View.VISIBLE);
                     tvFilterProductType.setText("equipos_");
+                    allDevices();
                     deviceState = true;
                 } else {
+                    closeTextFilters();
+                    linearQueBuscas.setVisibility(View.VISIBLE);
                     rlButtonsParent.removeView(imageCloseType);
-                    linearSeleccionaFiltro.setVisibility(View.VISIBLE);
                     rlParent.removeView(imageCloseFilter);
                     blurContent.setVisibility(View.GONE);
+                    allProducts();
                     deviceState = false;
                 }
                 break;
@@ -289,8 +319,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.button_arrow_right:
                 Toast.makeText(this, "WORK RIGHT", Toast.LENGTH_SHORT).show();
+                horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() + 960, horizontalScrollGrid.getTop());
                 break;
             case R.id.button_arrow_left:
+                horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() - 960, horizontalScrollGrid.getTop());
                 Toast.makeText(this, "WORK LEFT", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.button_marca_filter:
@@ -395,9 +427,9 @@ public class MainActivity extends AppCompatActivity {
         rvFilters.setAdapter(filtrosAdapter);
     }
 
-    private void seleccionarMarca(){
+    private void seleccionarMarca() {
         filterList.clear();
-        for (int i = 0; i < Session.objData.getProviders().size(); i++){
+        for (int i = 0; i < Session.objData.getProviders().size(); i++) {
             filterList.add(Session.objData.getProviders().get(i).getProvider_image());
             providers_ids.add(Session.objData.getProviders().get(i).getId());
         }
@@ -406,8 +438,8 @@ public class MainActivity extends AppCompatActivity {
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
-
     }
+
 
     public void setFilter(String value, String valueTwo) {
         switch (filtro) {
@@ -465,4 +497,294 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    private void allProducts() {
+        mGridLayout.removeAllViews();
+        productList.clear();
+        AnimationSet set = new AnimationSet(true);
+
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(200);
+        set.addAnimation(animation);
+
+        animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f
+        );
+        animation.setDuration(200);
+        set.addAnimation(animation);
+        LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
+
+        mGridLayout.setLayoutAnimation(controller);
+
+        List<GridItem> gridItemList = new ArrayList<>();
+
+
+        for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+            productList.add(Session.objData.getDevices().get(i));
+        }
+        for (int i = 0; i < Session.objData.getAccessories().size(); i++){
+            productList.add(Session.objData.getAccessories().get(i));
+        }
+
+        Collections.sort(productList, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto o1, Producto o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
+        for (int i = 0; i < productList.size(); i++) {
+            GridItem gridItem = new GridItem() {
+            };
+
+            gridItem.setRowSpec(1);
+            gridItem.setColumnSpec(1);
+            gridItem.setProducto(productList.get(i));
+            gridItemList.add(gridItem);
+        }
+
+
+        GridViewHolder holder = new GridViewHolder(mGridLayout);
+
+        GridBuilder.newInstance(this, mGridLayout)
+                .setScaleAnimationDuration(500)
+                .setPositionCalculator(new HorizontalPositionCalculator(3))
+                .setBaseSize(300, 410)
+                .setMargin(20)
+                .setOutMargin(0, 0, 20, 20)
+                .setGridItemList(gridItemList)
+                .setViewHolder(holder)
+                .setOnCreateViewCallBack(new OnViewCreateCallBack() {
+                    @Override
+                    public View onViewCreate(LayoutInflater inflater, View convertView, final GridItem gridItem) {
+                        View view = inflater.inflate(R.layout.masonry_item, null);
+
+                        LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
+                        final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById(R.id.image_product);
+
+                        TextView providerName = (TextView) view.findViewById(R.id.provider_name);
+                        TextView accessoryName = (TextView) view.findViewById(R.id.product_name);
+
+                        Random rand = new Random();
+                        int numberColorRandom = rand.nextInt(7);
+
+
+                        String Colors[][] = Global.getBackgroundColorsCard();
+                        itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
+                        if(numberColorRandom != 6){
+                            providerName.setTextColor(getResources().getColor(R.color.white));
+                            accessoryName.setTextColor(getResources().getColor(R.color.white));
+                        }
+                        itemContainer.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, gridItem.getProducto().getName(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        Uri uri = Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue()));
+                        imageAccessory.setImageURI(uri);
+                        providerName.setText(gridItem.getProducto().getProvider_name());
+                        if (gridItem.getProducto().getName().length() > 30) {
+                            accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                        } else {
+                            accessoryName.setText(gridItem.getProducto().getName());
+                        }
+                        return view;
+                    }
+                })
+                .build();
+    }
+
+    private void allDevices() {
+        mGridLayout.removeAllViews();
+        productList.clear();
+        AnimationSet set = new AnimationSet(true);
+
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(200);
+        set.addAnimation(animation);
+
+        animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f
+        );
+        animation.setDuration(200);
+        set.addAnimation(animation);
+        LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
+
+        mGridLayout.setLayoutAnimation(controller);
+
+        List<GridItem> gridItemList = new ArrayList<>();
+
+
+        for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+            productList.add(Session.objData.getDevices().get(i));
+        }
+
+        Collections.sort(productList, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto o1, Producto o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
+        for (int i = 0; i < productList.size(); i++) {
+            GridItem gridItem = new GridItem() {
+            };
+            gridItem.setRowSpec(1);
+            gridItem.setColumnSpec(1);
+            gridItem.setProducto(productList.get(i));
+            gridItemList.add(gridItem);
+        }
+
+        GridViewHolder holder = new GridViewHolder(mGridLayout);
+        GridBuilder.newInstance(this, mGridLayout)
+                .setScaleAnimationDuration(500)
+                .setPositionCalculator(new HorizontalPositionCalculator(3))
+                .setBaseSize(300, 410)
+                .setMargin(20)
+                .setOutMargin(0, 0, 20, 20)
+                .setGridItemList(gridItemList)
+                .setViewHolder(holder)
+                .setOnCreateViewCallBack(new OnViewCreateCallBack() {
+                    @Override
+                    public View onViewCreate(LayoutInflater inflater, View convertView, final GridItem gridItem) {
+                        View view = inflater.inflate(R.layout.masonry_item, null);
+
+                        LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
+                        final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById(R.id.image_product);
+
+                        TextView providerName = (TextView) view.findViewById(R.id.provider_name);
+                        TextView accessoryName = (TextView) view.findViewById(R.id.product_name);
+
+                        Random rand = new Random();
+                        int numberColorRandom = rand.nextInt(7);
+
+                        String Colors[][] = Global.getBackgroundColorsCard();
+
+
+                        itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
+
+                        if(numberColorRandom != 6){
+                            providerName.setTextColor(getResources().getColor(R.color.white));
+                            accessoryName.setTextColor(getResources().getColor(R.color.white));
+                        }
+
+                        itemContainer.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, gridItem.getProducto().getName(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+
+                        Uri uri = Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue()));
+                        imageAccessory.setImageURI(uri);
+                        providerName.setText(gridItem.getProducto().getProvider_name());
+                        if (gridItem.getProducto().getName().length() > 30) {
+                            accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                        } else {
+                            accessoryName.setText(gridItem.getProducto().getName());
+                        }
+                        return view;
+                    }
+                })
+                .build();
+
+    }
+
+    private void allAccessories() {
+        mGridLayout.removeAllViews();
+        AnimationSet set = new AnimationSet(true);
+
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(200);
+        set.addAnimation(animation);
+
+        animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f
+        );
+        animation.setDuration(200);
+        set.addAnimation(animation);
+        LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
+
+        mGridLayout.setLayoutAnimation(controller);
+
+        List<GridItem> gridItemList = new ArrayList<>();
+
+        for (int i = 0; i < Session.objData.getAccessories().size(); i++){
+            productList.add(Session.objData.getAccessories().get(i));
+        }
+
+        Collections.sort(productList, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto o1, Producto o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
+        for (int i = 0; i < productList.size(); i++) {
+            GridItem gridItem = new GridItem() {
+            };
+
+            gridItem.setRowSpec(1);
+            gridItem.setColumnSpec(1);
+            gridItem.setProducto(productList.get(i));
+            gridItemList.add(gridItem);
+        }
+
+        GridViewHolder holder = new GridViewHolder(mGridLayout);
+
+        GridBuilder.newInstance(this, mGridLayout)
+                .setScaleAnimationDuration(500)
+                .setPositionCalculator(new HorizontalPositionCalculator(3))
+                .setBaseSize(300, 410)
+                .setMargin(20)
+                .setOutMargin(0, 0, 20, 20)
+                .setGridItemList(gridItemList)
+                .setViewHolder(holder)
+                .setOnCreateViewCallBack(new OnViewCreateCallBack() {
+                    @Override
+                    public View onViewCreate(LayoutInflater inflater, View convertView, final GridItem gridItem) {
+                        View view = inflater.inflate(R.layout.masonry_item, null);
+
+                        LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
+                        final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById(R.id.image_product);
+
+                        TextView providerName = (TextView) view.findViewById(R.id.provider_name);
+                        TextView accessoryName = (TextView) view.findViewById(R.id.product_name);
+
+                        Random rand = new Random();
+                        int numberColorRandom = rand.nextInt(6);
+
+
+                        String Colors[][] = Global.getBackgroundColorsCard();
+                        itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
+
+                        itemContainer.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, gridItem.getProducto().getName(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        Uri uri = Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue()));
+                        imageAccessory.setImageURI(uri);
+                        providerName.setText(gridItem.getProducto().getProvider_name());
+                        if (gridItem.getProducto().getName().length() > 30) {
+                            accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                        } else {
+                            accessoryName.setText(gridItem.getProducto().getName());
+                        }
+                        return view;
+                    }
+                })
+                .build();
+
+    }
+
 }

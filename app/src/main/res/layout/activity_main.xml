@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/backgroundGrey"
+    android:background="@color/backgroundGray"
     tools:context="cl.rinno.newdevicewall.MainActivity">
 
     <LinearLayout
@@ -15,13 +15,19 @@
         android:orientation="vertical"
         android:weightSum="10">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_catalog"
+        <HorizontalScrollView
+            android:id="@+id/horizontal_scroll_grid"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6.5"
-            android:background="@color/white"
-            android:orientation="horizontal" />
+            android:layout_weight="6.9"
+            android:scrollbars="none">
+
+            <GridLayout
+                android:id="@+id/grid_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true" />
+        </HorizontalScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -592,14 +598,14 @@
         android:id="@+id/blur_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="650dp"
+        android:layout_marginBottom="575dp"
         android:visibility="gone">
 
         <com.github.mmin18.widget.RealtimeBlurView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:realtimeBlurRadius="10dp"
-            app:realtimeOverlayColor="#8000" />
+            app:realtimeOverlayColor="#c8000000" />
 
 
         <LinearLayout
