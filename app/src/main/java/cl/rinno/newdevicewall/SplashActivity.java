@@ -44,7 +44,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         Global.makeDirectories();
         Fresco.initialize(this);
-
         File oldJson = new File(Global.dirJson);
         if(oldJson.exists() && isOnlineNet()){
             Log.d("JSON","EXISTE");
@@ -54,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
                 in.read(bytes);
                 Global.jsonData2 = new String(bytes);
                 JSONObject data = new JSONObject(Global.jsonData2);
-                serialize(data,1);
+                serialize(data,2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -140,6 +139,37 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }.execute();
                     crearJson(data);
+                } else if(status == 2){
+                    Handler mainHandler = new Handler(getApplicationContext().getMainLooper());
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            DWApi.get("status/catalog/1/", null, new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    String status = new String(responseBody);
+                                    Log.d("STATUS CATALOG",status);
+                                    if(!Session.objData.getCatalog().getStatus().equalsIgnoreCase(status)){
+                                        DWApi.get("api/showfruna/1", null, new JsonHttpResponseHandler() {
+                                            @Override
+                                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                                serialize(response, 1);
+                                            }
+                                        });
+                                    }else{
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                                }
+                            });
+                        }
+                    };
+                    mainHandler.post(runnable);
                 }
             }
 

@@ -15,19 +15,28 @@
         android:orientation="vertical"
         android:weightSum="10">
 
-        <HorizontalScrollView
-            android:id="@+id/horizontal_scroll_grid"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6.9"
-            android:scrollbars="none">
-
-            <GridLayout
-                android:id="@+id/grid_container"
+            >
+            <HorizontalScrollView
+                android:id="@+id/horizontal_scroll_grid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:animateLayoutChanges="true" />
-        </HorizontalScrollView>
+                android:scrollbars="none">
+
+                <GridLayout
+                    android:id="@+id/grid_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true" />
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -476,38 +485,110 @@
                     android:paddingTop="80dp">
 
                     <LinearLayout
+                        android:id="@+id/button_multimedia_filter"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
-                        android:background="@drawable/bg_filter_accessory">
+                        android:background="@drawable/bg_filter_accessory"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_multimedia"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_multimedia"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_multimedia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Multimedia"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/button_proteccion_filter"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
-                        android:background="@drawable/bg_filter_accessory">
+                        android:background="@drawable/bg_filter_accessory"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_proteccion"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_proteccion"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_proteccion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Protección"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/button_energia_filter"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
-                        android:background="@drawable/bg_filter_accessory">
+                        android:background="@drawable/bg_filter_accessory"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_energia"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_energia"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_energia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Energía"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/button_por_equipo_filter"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
-                        android:background="@drawable/bg_filter_accessory">
+                        android:background="@drawable/bg_filter_accessory"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_por_equipo"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_por_equipo"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_por_equipo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Equipo\nCompatible"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -581,8 +662,8 @@
         android:layout_width="134dp"
         android:layout_height="134dp"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="850dp"
         fresco:placeholderImage="@drawable/orange_right_arrow" />
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -590,8 +671,9 @@
         android:layout_width="134dp"
         android:layout_height="134dp"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="10dp"
+        android:layout_marginTop="850dp"
+        android:layout_marginStart="10dp"
+        android:visibility="gone"
         fresco:placeholderImage="@drawable/orange_left_arrow" />
 
     <RelativeLayout

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import cl.rinno.newdevicewall.MainActivity;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Global;
+import cl.rinno.newdevicewall.models.Session;
 
 /**
  * Created by chinodoge on 13-03-2017.
@@ -52,7 +53,7 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
         if(type == 0){
             holder.imgProvider.setImageURI(Uri.fromFile(new File(Global.dirImages + filterList.get(position))));
             holder.txtFilter.setVisibility(View.GONE);
-        }else if(type == 1){
+        }else if(type == 1 || type == 2 || type == 3){
             holder.imgProvider.setVisibility(View.GONE);
             holder.txtFilter.setText(filterList.get(position));
         }
@@ -60,14 +61,91 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String value = holder.txtFilter.getText().toString();
+                String valueTwo = "";
+                switch(type){
+                    case 0:
+                        for(int i = 0; i < Session.objData.getProviders().size(); i++){
+                            if(Session.objData.getProviders().get(i).getId().equals(provider_id.get(position))){
+                                value = Session.objData.getProviders().get(i).getName();
+                                valueTwo = Session.objData.getProviders().get(i).getId();
+                                break;
+                            }
+                        }
+                        break;
+                    case 1:
+                        switch (value) {
+                            case "3\"":
+                                valueTwo = "0\"";
+                                break;
+                            case "4\"":
+                                valueTwo = "3\"";
+                                break;
+                            case "4.5\"":
+                                valueTwo = "4\"";
+                                break;
+                            case "5\"":
+                                valueTwo = "4.5\"";
+                                break;
+                            case "5.5\"":
+                                valueTwo = "5\"";
+                                break;
+                            case "6\"+":
+                                valueTwo = "5.5\"";
+                                break;
+                        }
+                        break;
+                    case 2:
+                        switch (value) {
+                            case "1.3MP":
+                                valueTwo = "0M";
+                                break;
+                            case "3MP":
+                                valueTwo = "1.3MP";
+                                break;
+                            case "5MP":
+                                valueTwo = "3MP";
+                                break;
+                            case "8MP":
+                                valueTwo = "5MP";
+                                break;
+                            case "13MP":
+                                valueTwo = "8MP";
+                                break;
+                            case "20MP+":
+                                valueTwo = "13MP";
+                                break;
+                        }
+                        break;
+                    case 3:
+                        switch (value) {
+                            case "1.3MP":
+                                valueTwo = "0 ";
+                                break;
+                            case "3MP":
+                                valueTwo = "1.3MP";
+                                break;
+                            case "5MP":
+                                valueTwo = "3MP";
+                                break;
+                            case "8MP":
+                                valueTwo = "5MP";
+                                break;
+                            case "13MP":
+                                valueTwo = "8MP";
+                                break;
+                            case "20MP+":
+                                valueTwo = "13MP";
+                                break;
+                        }
+                        break;
+                }
+                final String finalValue = value;
+                final String finalValueTwo = valueTwo;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(type == 0){
-                            mainActivity.setFilter(provider_id.get(position),position+"");
-                        }else if(type == 1){
-                                mainActivity.setFilter(holder.txtFilter.getText().toString(),position+"");
-                        }
+                        mainActivity.setFilter(finalValue, finalValueTwo);
                     }
                 },0);
             }

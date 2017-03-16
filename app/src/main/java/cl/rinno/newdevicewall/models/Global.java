@@ -18,6 +18,8 @@ public class Global {
     public static String dirJson = dirHome+dirResource+newJson;
     public static String jsonData2 = "";
 
+    public static Producto producto;
+
     public static void makeDirectories() {
         File mainFolder = new File(dirHome);
         File resourceFolder = new File(dirHome + dirResource);

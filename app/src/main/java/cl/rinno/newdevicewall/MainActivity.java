@@ -1,5 +1,6 @@
 package cl.rinno.newdevicewall;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -31,7 +33,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -62,10 +63,35 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> providers_ids;
     @BindView(R.id.horizontal_scroll_grid)
     HorizontalScrollView horizontalScrollGrid;
+    @BindView(R.id.icn_filtro_multimedia)
+    ImageView icnFiltroMultimedia;
+    @BindView(R.id.text_filtro_multimedia)
+    TextView textFiltroMultimedia;
+    @BindView(R.id.button_multimedia_filter)
+    LinearLayout btnMultimediaFilter;
+    @BindView(R.id.icn_filtro_proteccion)
+    ImageView icnFiltroProteccion;
+    @BindView(R.id.text_filtro_proteccion)
+    TextView textFiltroProteccion;
+    @BindView(R.id.button_proteccion_filter)
+    LinearLayout btnProteccionFilter;
+    @BindView(R.id.icn_filtro_energia)
+    ImageView icnFiltroEnergia;
+    @BindView(R.id.text_filtro_energia)
+    TextView textFiltroEnergia;
+    @BindView(R.id.button_energia_filter)
+    LinearLayout btnEnergiaFilter;
+    @BindView(R.id.icn_filtro_por_equipo)
+    ImageView icnFiltroPorEquipo;
+    @BindView(R.id.text_filtro_por_equipo)
+    TextView textFiltroPorEquipo;
+    @BindView(R.id.button_por_equipo_filter)
+    LinearLayout btnPorEquipoFilter;
     private GridLayout mGridLayout;
 
     Boolean deviceState, accessoryState, planState;
     ArrayList<Producto> productList;
+    ArrayList<Producto> filterProductList;
 
     @BindView(R.id.linear_que_buscas)
     LinearLayout linearQueBuscas;
@@ -159,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         filterList = new ArrayList<>();
         providers_ids = new ArrayList<>();
         productList = new ArrayList<>();
+        filterProductList = new ArrayList<>();
         mGridLayout = (GridLayout) findViewById(R.id.grid_container);
 
         imageCloseType.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
                 blurContent.setVisibility(View.GONE);
                 allProducts();
                 deviceState = false;
+                accessoryState = false;
+                planState = false;
             }
         });
 
@@ -183,10 +212,30 @@ public class MainActivity extends AppCompatActivity {
                 setDefuaultColors();
                 closeTextFilters();
                 linearSeleccionaFiltro.setVisibility(View.VISIBLE);
+                if (deviceState) {
+                    allDevices();
+                } else if (accessoryState) {
+                    allAccessories();
+                }
             }
         });
 
         allProducts();
+
+        horizontalScrollGrid.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int scrollX = horizontalScrollGrid.getScrollX();
+                if(scrollX == 0){
+                    btnArrowLeft.setVisibility(View.GONE);
+                }else if(scrollX == horizontalScrollGrid.getChildAt(0).getMeasuredWidth()-getWindowManager().getDefaultDisplay().getWidth()){
+                    btnArrowRight.setVisibility(View.GONE);
+                }else{
+                    btnArrowLeft.setVisibility(View.VISIBLE);
+                    btnArrowRight.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void setCloseTypeImage(LinearLayout linear) {
@@ -228,10 +277,22 @@ public class MainActivity extends AppCompatActivity {
         btnFiltroPantalla.setBackground(getResources().getDrawable(R.drawable.bg_filter_devices));
         btnFiltroCamaraTrasera.setBackground(getResources().getDrawable(R.drawable.bg_filter_devices));
         btnFiltroCamaraFrontal.setBackground(getResources().getDrawable(R.drawable.bg_filter_devices));
+        btnProteccionFilter.setBackground(getResources().getDrawable(R.drawable.bg_filter_accessory));
+        btnMultimediaFilter.setBackground(getResources().getDrawable(R.drawable.bg_filter_accessory));
+        btnPorEquipoFilter.setBackground(getResources().getDrawable(R.drawable.bg_filter_accessory));
+        btnEnergiaFilter.setBackground(getResources().getDrawable(R.drawable.bg_filter_accessory));
         icnFiltroPantalla.setImageResource(R.drawable.filtro_pantalla);
         icnFiltroMarca.setImageResource(R.drawable.filtro_marca);
         icnFiltroCamaraFrontal.setImageResource(R.drawable.filtro_camara_frontal);
         icnFiltroCamaraTrasera.setImageResource(R.drawable.filtro_camara_trasera);
+        icnFiltroMultimedia.setImageResource(R.drawable.icn_multimedia);
+        icnFiltroProteccion.setImageResource(R.drawable.icn_proteccion);
+        icnFiltroEnergia.setImageResource(R.drawable.icn_energia);
+        icnFiltroPorEquipo.setImageResource(R.drawable.icn_por_equipo);
+        textFiltroPorEquipo.setTextColor(getResources().getColor(R.color.white));
+        textFiltroProteccion.setTextColor(getResources().getColor(R.color.white));
+        textFiltroMultimedia.setTextColor(getResources().getColor(R.color.white));
+        textFiltroEnergia.setTextColor(getResources().getColor(R.color.white));
         textFiltroCamaraFrontal.setTextColor(getResources().getColor(R.color.white));
         textFiltroMarca.setTextColor(getResources().getColor(R.color.white));
         textFiltroPantalla.setTextColor(getResources().getColor(R.color.white));
@@ -265,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.button_devices, R.id.linear_close_filters, R.id.button_accessories, R.id.button_plans, R.id.button_arrow_right, R.id.button_arrow_left, R.id.button_marca_filter, R.id.button_pantalla_filter, R.id.button_camara_trasera_filter, R.id.button_camara_frontal_filter})
+    @OnClick({R.id.button_devices, R.id.linear_close_filters, R.id.button_accessories, R.id.button_plans, R.id.button_arrow_right, R.id.button_arrow_left, R.id.button_marca_filter, R.id.button_pantalla_filter, R.id.button_camara_trasera_filter, R.id.button_camara_frontal_filter,R.id.button_multimedia_filter, R.id.button_proteccion_filter, R.id.button_energia_filter, R.id.button_por_equipo_filter})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.linear_close_filters:
@@ -279,6 +340,8 @@ public class MainActivity extends AppCompatActivity {
                 closeContents();
                 closeTextFilters();
                 setDefuaultColors();
+                accessoryState = false;
+                planState = false;
                 if (!deviceState) {
                     setCloseTypeImage(btnDevices);
                     rlParent.removeView(imageCloseFilter);
@@ -302,10 +365,25 @@ public class MainActivity extends AppCompatActivity {
                 closeContents();
                 closeTextFilters();
                 setDefuaultColors();
-                rlContentAccessory.setVisibility(View.VISIBLE);
-                linearSeleccionaFiltro.setVisibility(View.VISIBLE);
-                tvFilterProductType.setText("accesorios_");
                 deviceState = false;
+                planState = false;
+                if(!accessoryState){
+                    setCloseTypeImage(btnAccessories);
+                    rlParent.removeView(imageCloseFilter);
+                    rlContentAccessory.setVisibility(View.VISIBLE);
+                    linearSeleccionaFiltro.setVisibility(View.VISIBLE);
+                    tvFilterProductType.setText("accesorios_");
+                    accessoryState = true;
+                    allAccessories();
+                } else {
+                    closeTextFilters();
+                    linearQueBuscas.setVisibility(View.VISIBLE);
+                    rlButtonsParent.removeView(imageCloseType);
+                    rlParent.removeView(imageCloseFilter);
+                    blurContent.setVisibility(View.GONE);
+                    allProducts();
+                    accessoryState = false;
+                }
 
                 break;
             case R.id.button_plans:
@@ -318,12 +396,10 @@ public class MainActivity extends AppCompatActivity {
                 deviceState = false;
                 break;
             case R.id.button_arrow_right:
-                Toast.makeText(this, "WORK RIGHT", Toast.LENGTH_SHORT).show();
                 horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() + 960, horizontalScrollGrid.getTop());
                 break;
             case R.id.button_arrow_left:
                 horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() - 960, horizontalScrollGrid.getTop());
-                Toast.makeText(this, "WORK LEFT", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.button_marca_filter:
                 setDefuaultColors();
@@ -373,6 +449,98 @@ public class MainActivity extends AppCompatActivity {
                 linearNombreFiltro.setVisibility(View.VISIBLE);
                 openBlur(filtro);
                 break;
+            case R.id.button_multimedia_filter:
+                filterProductList.clear();
+                setDefuaultColors();
+                closeTextFilters();
+                rlParent = rlContentAccessory;
+                setCloseFilterImage(btnMultimediaFilter);
+                btnMultimediaFilter.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
+                textFiltroMultimedia.setTextColor(getResources().getColor(R.color.greenMint));
+                icnFiltroMultimedia.setImageResource(R.drawable.icn_multimedia_selected);
+                filtro = "Multimedia";
+                tvFilterName.setText(filtro);
+                linearNombreFiltro.setVisibility(View.VISIBLE);
+                for (int i = 0; i < Session.objData.getAccessories().size(); i++){
+                    for(int j = 0;j<Session.objData.getAccessories().get(i).getDetalles().size(); j++){
+                        if(Session.objData.getAccessories().get(i).getDetalles().get(j).getValue().equalsIgnoreCase("2")){
+                            filterProductList.add(Session.objData.getAccessories().get(i));
+                        }
+                    }
+                }
+                Collections.sort(filterProductList, new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return o1.getProvider_name().compareTo(o2.getProvider_name());
+                    }
+                });
+                filterDevices(filterProductList);
+                break;
+            case R.id.button_proteccion_filter:
+                filterProductList.clear();
+                setDefuaultColors();
+                closeTextFilters();
+                rlParent = rlContentAccessory;
+                setCloseFilterImage(btnProteccionFilter);
+                btnProteccionFilter.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
+                textFiltroProteccion.setTextColor(getResources().getColor(R.color.greenMint));
+                icnFiltroProteccion.setImageResource(R.drawable.icn_proteccion_selected);
+                filtro = "Protección";
+                tvFilterName.setText(filtro);
+                linearNombreFiltro.setVisibility(View.VISIBLE);
+                for (int i = 0; i < Session.objData.getAccessories().size(); i++){
+                    for(int j = 0;j<Session.objData.getAccessories().get(i).getDetalles().size(); j++){
+                        if(Session.objData.getAccessories().get(i).getDetalles().get(j).getValue().equalsIgnoreCase("3")){
+                            filterProductList.add(Session.objData.getAccessories().get(i));
+                        }
+                    }
+                }
+                Collections.sort(filterProductList, new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return o1.getProvider_name().compareTo(o2.getProvider_name());
+                    }
+                });
+                filterDevices(filterProductList);
+                break;
+            case R.id.button_energia_filter:
+                filterProductList.clear();
+                setDefuaultColors();
+                closeTextFilters();
+                rlParent = rlContentAccessory;
+                setCloseFilterImage(btnEnergiaFilter);
+                btnEnergiaFilter.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
+                textFiltroEnergia.setTextColor(getResources().getColor(R.color.greenMint));
+                icnFiltroEnergia.setImageResource(R.drawable.icn_energia_selected);
+                filtro = "Energía";
+                tvFilterName.setText(filtro);
+                linearNombreFiltro.setVisibility(View.VISIBLE);
+                for (int i = 0; i < Session.objData.getAccessories().size(); i++){
+                    for(int j = 0;j<Session.objData.getAccessories().get(i).getDetalles().size(); j++){
+                        if(Session.objData.getAccessories().get(i).getDetalles().get(j).getValue().equalsIgnoreCase("1")){
+                            filterProductList.add(Session.objData.getAccessories().get(i));
+                        }
+                    }
+                }
+                Collections.sort(filterProductList, new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return o1.getProvider_name().compareTo(o2.getProvider_name());
+                    }
+                });
+                filterDevices(filterProductList);
+                break;
+            case R.id.button_por_equipo_filter:
+                setDefuaultColors();
+                closeTextFilters();
+                rlParent = rlContentAccessory;
+                btnPorEquipoFilter.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
+                textFiltroPorEquipo.setTextColor(getResources().getColor(R.color.greenMint));
+                icnFiltroPorEquipo.setImageResource(R.drawable.icn_por_equipo_selected);
+                filtro = "?";
+                tvFilterName.setText(filtro);
+                linearNombreFiltro.setVisibility(View.VISIBLE);
+                break;
         }
 
     }
@@ -404,7 +572,7 @@ public class MainActivity extends AppCompatActivity {
         filterList.add("13MP");
         filterList.add("20MP+");
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
-        FiltrosAdapter filtrosAdapter = new FiltrosAdapter(filterList, 1, MainActivity.this);
+        FiltrosAdapter filtrosAdapter = new FiltrosAdapter(filterList, 3, MainActivity.this);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
@@ -421,7 +589,7 @@ public class MainActivity extends AppCompatActivity {
         filterList.add("13MP");
         filterList.add("20MP+");
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
-        FiltrosAdapter filtrosAdapter = new FiltrosAdapter(filterList, 1, MainActivity.this);
+        FiltrosAdapter filtrosAdapter = new FiltrosAdapter(filterList, 2, MainActivity.this);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
@@ -429,21 +597,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void seleccionarMarca() {
         filterList.clear();
+        providers_ids.clear();
         for (int i = 0; i < Session.objData.getProviders().size(); i++) {
             filterList.add(Session.objData.getProviders().get(i).getProvider_image());
             providers_ids.add(Session.objData.getProviders().get(i).getId());
         }
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
-        FiltrosAdapter filtrosAdapter = new FiltrosAdapter(filterList, 1, MainActivity.this, providers_ids);
+        FiltrosAdapter filtrosAdapter = new FiltrosAdapter(filterList, 0, MainActivity.this, providers_ids);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
     }
 
-
     public void setFilter(String value, String valueTwo) {
+        double valor1;
+        double valor2;
+        double va;
         switch (filtro) {
             case "Marca":
+                filterProductList.clear();
                 closeTextFilters();
                 linearFilterResultsDevices.setVisibility(View.VISIBLE);
                 tvFilterType.setText(filtro);
@@ -455,8 +627,15 @@ public class MainActivity extends AppCompatActivity {
                 btnFiltroMarca.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
                 icnFiltroMarca.setImageResource(R.drawable.icn_marca_selected);
                 textFiltroMarca.setTextColor(getResources().getColor(R.color.blue));
+                for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+                    if (Session.objData.getDevices().get(i).getProvider_id().equalsIgnoreCase(valueTwo)) {
+                        filterProductList.add(Session.objData.getDevices().get(i));
+                    }
+                }
+                filterDevices(filterProductList);
                 break;
             case "Pantalla":
+                filterProductList.clear();
                 closeTextFilters();
                 linearFilterResultsDevices.setVisibility(View.VISIBLE);
                 tvFilterType.setText(filtro);
@@ -468,8 +647,24 @@ public class MainActivity extends AppCompatActivity {
                 btnFiltroPantalla.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
                 textFiltroPantalla.setTextColor(getResources().getColor(R.color.blue));
                 icnFiltroPantalla.setImageResource(R.drawable.icn_pantalla_selected);
+                valor1 = Double.parseDouble(value.split("\"")[0]);
+                valor2 = Double.parseDouble(valueTwo.split("\"")[0]);
+                for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+                    va = Double.parseDouble(Session.objData.getDevices().get(i).getDetalles().get(1).getValue().split("\"")[0]);
+                    if (va <= valor1 && va > valor2) {
+                        filterProductList.add(Session.objData.getDevices().get(i));
+                    }
+                }
+                Collections.sort(filterProductList, new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return o1.getProvider_name().compareTo(o2.getProvider_name());
+                    }
+                });
+                filterDevices(filterProductList);
                 break;
             case "Cámara Trasera":
+                filterProductList.clear();
                 closeTextFilters();
                 linearFilterResultsDevices.setVisibility(View.VISIBLE);
                 tvFilterType.setText(filtro);
@@ -481,8 +676,40 @@ public class MainActivity extends AppCompatActivity {
                 btnFiltroCamaraTrasera.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
                 textFiltroCamaraTrasera.setTextColor(getResources().getColor(R.color.blue));
                 icnFiltroCamaraTrasera.setImageResource(R.drawable.icn_camara_trasera_selected);
+                filterProductList.clear();
+                valor1 = Double.parseDouble(value.split("M")[0]);
+                valor2 = Double.parseDouble(valueTwo.split("M")[0]);
+                for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+                    try {
+                        String valor = Session.objData.getDevices().get(i).getDetalles().get(3).getValue().split(" ")[0];
+                        Log.d("VALOR " + i, valor);
+                        if (valor.equals("Dual")) {
+                            va = Double.parseDouble(Session.objData.getDevices().get(i).getDetalles().get(3).getValue().split(" ")[1]);
+                            Log.d("VALOR " + i, "si " + va);
+                        } else {
+                            va = Double.parseDouble(Session.objData.getDevices().get(i).getDetalles().get(3).getValue().split(" ")[0]);
+                            Log.d("VALOR " + i, "no");
+                        }
+                        if (va <= valor1 && va > valor2) {
+                            filterProductList.add(Session.objData.getDevices().get(i));
+                        }
+                        if (value.equals("20 MP+") && va >= valor1) {
+                            filterProductList.add(Session.objData.getDevices().get(i));
+                        }
+                    } catch (NumberFormatException ex) {
+                        Log.d("NUMBER (ERROR)" + i, Session.objData.getDevices().get(i).getDetalles().get(3).getValue().split(" ")[0]);
+                    }
+                }
+                Collections.sort(filterProductList, new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return o1.getProvider_name().compareTo(o2.getProvider_name());
+                    }
+                });
+                filterDevices(filterProductList);
                 break;
             case "Cámara Frontal":
+                filterProductList.clear();
                 closeTextFilters();
                 linearFilterResultsDevices.setVisibility(View.VISIBLE);
                 tvFilterType.setText(filtro);
@@ -494,13 +721,29 @@ public class MainActivity extends AppCompatActivity {
                 btnFiltroCamaraFrontal.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
                 textFiltroCamaraFrontal.setTextColor(getResources().getColor(R.color.blue));
                 icnFiltroCamaraFrontal.setImageResource(R.drawable.icn_camara_frontal_selected);
+                valor1 = Double.parseDouble(value.split("M")[0]);
+                valor2 = Double.parseDouble(valueTwo.split("M")[0]);
+                for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+                    va = Double.parseDouble(Session.objData.getDevices().get(i).getDetalles().get(4).getValue().split(" ")[0]);
+                    if (va <= valor1 && va > valor2) {
+                        filterProductList.add(Session.objData.getDevices().get(i));
+                    }
+                }
+
+                Collections.sort(filterProductList, new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return o1.getProvider_name().compareTo(o2.getProvider_name());
+                    }
+                });
+                filterDevices(filterProductList);
                 break;
         }
     }
 
     private void allProducts() {
+        horizontalScrollGrid.smoothScrollBy(0, 0);
         mGridLayout.removeAllViews();
-        productList.clear();
         AnimationSet set = new AnimationSet(true);
 
         Animation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -514,16 +757,15 @@ public class MainActivity extends AppCompatActivity {
         animation.setDuration(200);
         set.addAnimation(animation);
         LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
-
         mGridLayout.setLayoutAnimation(controller);
-
+        productList.clear();
         List<GridItem> gridItemList = new ArrayList<>();
 
 
         for (int i = 0; i < Session.objData.getDevices().size(); i++) {
             productList.add(Session.objData.getDevices().get(i));
         }
-        for (int i = 0; i < Session.objData.getAccessories().size(); i++){
+        for (int i = 0; i < Session.objData.getAccessories().size(); i++) {
             productList.add(Session.objData.getAccessories().get(i));
         }
 
@@ -537,7 +779,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < productList.size(); i++) {
             GridItem gridItem = new GridItem() {
             };
-
             gridItem.setRowSpec(1);
             gridItem.setColumnSpec(1);
             gridItem.setProducto(productList.get(i));
@@ -572,14 +813,24 @@ public class MainActivity extends AppCompatActivity {
 
                         String Colors[][] = Global.getBackgroundColorsCard();
                         itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
-                        if(numberColorRandom != 6){
+                        if (numberColorRandom != 6) {
                             providerName.setTextColor(getResources().getColor(R.color.white));
                             accessoryName.setTextColor(getResources().getColor(R.color.white));
                         }
                         itemContainer.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(MainActivity.this, gridItem.getProducto().getName(), Toast.LENGTH_SHORT).show();
+                                Global.producto = gridItem.getProducto();
+                                switch (gridItem.getProducto().getProduct_type_id()){
+                                    case "1":
+                                        startActivity(new Intent(MainActivity.this, FichaEquipo.class));
+                                        break;
+                                    case "2":
+
+                                        break;
+                                    case "3":
+                                        break;
+                                }
                             }
                         });
 
@@ -598,6 +849,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void allDevices() {
+        horizontalScrollGrid.smoothScrollTo(0, 0);
         mGridLayout.removeAllViews();
         productList.clear();
         AnimationSet set = new AnimationSet(true);
@@ -653,7 +905,7 @@ public class MainActivity extends AppCompatActivity {
                     public View onViewCreate(LayoutInflater inflater, View convertView, final GridItem gridItem) {
                         View view = inflater.inflate(R.layout.masonry_item, null);
 
-                        LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
+                        final LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
                         final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById(R.id.image_product);
 
                         TextView providerName = (TextView) view.findViewById(R.id.provider_name);
@@ -667,7 +919,7 @@ public class MainActivity extends AppCompatActivity {
 
                         itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
 
-                        if(numberColorRandom != 6){
+                        if (numberColorRandom != 6) {
                             providerName.setTextColor(getResources().getColor(R.color.white));
                             accessoryName.setTextColor(getResources().getColor(R.color.white));
                         }
@@ -675,10 +927,10 @@ public class MainActivity extends AppCompatActivity {
                         itemContainer.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(MainActivity.this, gridItem.getProducto().getName(), Toast.LENGTH_SHORT).show();
+                                Global.producto = gridItem.getProducto();
+                                startActivity(new Intent(MainActivity.this, FichaEquipo.class));
                             }
                         });
-
 
 
                         Uri uri = Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue()));
@@ -698,6 +950,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void allAccessories() {
         mGridLayout.removeAllViews();
+        productList.clear();
         AnimationSet set = new AnimationSet(true);
 
         Animation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -716,7 +969,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<GridItem> gridItemList = new ArrayList<>();
 
-        for (int i = 0; i < Session.objData.getAccessories().size(); i++){
+        for (int i = 0; i < Session.objData.getAccessories().size(); i++) {
             productList.add(Session.objData.getAccessories().get(i));
         }
 
@@ -730,7 +983,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < productList.size(); i++) {
             GridItem gridItem = new GridItem() {
             };
-
             gridItem.setRowSpec(1);
             gridItem.setColumnSpec(1);
             gridItem.setProducto(productList.get(i));
@@ -759,12 +1011,14 @@ public class MainActivity extends AppCompatActivity {
                         TextView accessoryName = (TextView) view.findViewById(R.id.product_name);
 
                         Random rand = new Random();
-                        int numberColorRandom = rand.nextInt(6);
-
+                        int numberColorRandom = rand.nextInt(7);
 
                         String Colors[][] = Global.getBackgroundColorsCard();
                         itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
-
+                        if (numberColorRandom != 6) {
+                            providerName.setTextColor(getResources().getColor(R.color.white));
+                            accessoryName.setTextColor(getResources().getColor(R.color.white));
+                        }
                         itemContainer.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -787,4 +1041,99 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void filterDevices(ArrayList<Producto> filterProductList) {
+        horizontalScrollGrid.smoothScrollTo(0, 0);
+        mGridLayout.removeAllViews();
+
+        AnimationSet set = new AnimationSet(true);
+
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(200);
+        set.addAnimation(animation);
+
+        animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f
+        );
+        animation.setDuration(200);
+        set.addAnimation(animation);
+        LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
+
+        mGridLayout.setLayoutAnimation(controller);
+
+        List<GridItem> gridItemList = new ArrayList<>();
+
+        for (int i = 0; i < filterProductList.size(); i++) {
+            GridItem gridItem = new GridItem() {
+            };
+            gridItem.setRowSpec(1);
+            gridItem.setColumnSpec(1);
+            gridItem.setProducto(filterProductList.get(i));
+            gridItemList.add(gridItem);
+        }
+
+        GridViewHolder holder = new GridViewHolder(mGridLayout);
+        GridBuilder.newInstance(this, mGridLayout)
+                .setScaleAnimationDuration(500)
+                .setPositionCalculator(new HorizontalPositionCalculator(3))
+                .setBaseSize(300, 410)
+                .setMargin(20)
+                .setOutMargin(0, 0, 20, 20)
+                .setGridItemList(gridItemList)
+                .setViewHolder(holder)
+                .setOnCreateViewCallBack(new OnViewCreateCallBack() {
+                    @Override
+                    public View onViewCreate(LayoutInflater inflater, View convertView, final GridItem gridItem) {
+                        View view = inflater.inflate(R.layout.masonry_item, null);
+
+                        LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
+                        final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById(R.id.image_product);
+
+                        TextView providerName = (TextView) view.findViewById(R.id.provider_name);
+                        TextView accessoryName = (TextView) view.findViewById(R.id.product_name);
+
+                        Random rand = new Random();
+                        int numberColorRandom = rand.nextInt(7);
+
+                        String Colors[][] = Global.getBackgroundColorsCard();
+
+
+                        itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
+
+                        if (numberColorRandom != 6) {
+                            providerName.setTextColor(getResources().getColor(R.color.white));
+                            accessoryName.setTextColor(getResources().getColor(R.color.white));
+                        }
+
+                        itemContainer.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Global.producto = gridItem.getProducto();
+                                switch (gridItem.getProducto().getProduct_type_id()){
+                                    case "1":
+                                        startActivity(new Intent(MainActivity.this, FichaEquipo.class));
+                                        break;
+                                    case "2":
+                                        Toast.makeText(MainActivity.this, "ACCESORIO", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case "3":
+                                        break;
+                                }
+                            }
+                        });
+
+
+                        Uri uri = Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue()));
+                        imageAccessory.setImageURI(uri);
+                        providerName.setText(gridItem.getProducto().getProvider_name());
+                        if (gridItem.getProducto().getName().length() > 30) {
+                            accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                        } else {
+                            accessoryName.setText(gridItem.getProducto().getName());
+                        }
+                        return view;
+                    }
+                })
+                .build();
+    }
 }
