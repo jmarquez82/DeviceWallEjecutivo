@@ -26,12 +26,13 @@ public class Producto {
     private ArrayList<Highlight> highlight;
     private ArrayList<Producto> devices;
     private String provider_name;
+    private String provider_image;
 
     public Producto(String id) {
         this.id = id;
     }
 
-    public Producto(String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name) {
+    public Producto(String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name, String provider_image) {
         this.id = id;
         this.provider_id = provider_id;
         this.product_type_id = product_type_id;
@@ -51,6 +52,7 @@ public class Producto {
         this.highlight = highlight;
         this.devices = devices;
         this.provider_name = provider_name;
+        this.provider_image = provider_image;
     }
 
     public String getId() {
@@ -203,5 +205,13 @@ public class Producto {
 
     public void setProvider_name(String provider_name) {
         this.provider_name = provider_name;
+    }
+
+    public String getProvider_image() {
+        return provider_image;
+    }
+
+    public void setProvider_image(String provider_image) {
+        this.provider_image = provider_image;
     }
 }

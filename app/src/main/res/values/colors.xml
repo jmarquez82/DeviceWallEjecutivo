@@ -16,5 +16,6 @@
     <color name="transparent">#00ffffff</color>
     <color name="darkGreen">#257961</color>
     <color name="darkYellow">#CA8904</color>
+    <color name="dimGray">#636467</color>
 
 </resources>

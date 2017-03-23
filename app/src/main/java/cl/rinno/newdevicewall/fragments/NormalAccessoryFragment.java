@@ -1,0 +1,186 @@
+package cl.rinno.newdevicewall.fragments;
+
+
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.github.mmin18.widget.RealtimeBlurView;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cl.rinno.newdevicewall.MainActivity;
+import cl.rinno.newdevicewall.R;
+import cl.rinno.newdevicewall.adapters.CaracteristicasAdapter;
+import cl.rinno.newdevicewall.cls.NonSwipeableViewPager;
+import cl.rinno.newdevicewall.cls.ViewPagerCarruselAdapter;
+import cl.rinno.newdevicewall.models.Global;
+import cl.rinno.newdevicewall.models.Producto;
+import cl.rinno.newdevicewall.models.Session;
+import me.crosswall.lib.coverflow.CoverFlow;
+import me.crosswall.lib.coverflow.core.PageItemClickListener;
+import me.crosswall.lib.coverflow.core.PagerContainer;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class NormalAccessoryFragment extends Fragment {
+
+    LinearLayoutManager linearLayoutManagerCaract;
+    ArrayList<String> caracteristicasList;
+
+    MainActivity mainActivity;
+    Producto producto;
+
+    @BindView(R.id.image_accented_accessory)
+    SimpleDraweeView imageNormalAccessory;
+    @BindView(R.id.tv_provider_normal_accessory)
+    TextView tvProviderNormalAccessory;
+    @BindView(R.id.tv_name_normal_accessory)
+    TextView tvNameNormalAccessory;
+    @BindView(R.id.rv_caracteristicas)
+    RecyclerView rvCaracteristicas;
+    @BindView(R.id.tv_precio_venta_accessory)
+    TextView tvPrecioVentaAccessory;
+    @BindView(R.id.button_close_fragment)
+    LinearLayout btnCloseFragment;
+    @BindView(R.id.blur_content)
+    RealtimeBlurView blurContent;
+    @BindView(R.id.vp_carrusel)
+    NonSwipeableViewPager vpCarrusel;
+    @BindView(R.id.pager_container)
+    PagerContainer pagerContainer;
+
+    ViewPagerCarruselAdapter viewPagerCarruselAdapter;
+    ArrayList<Producto> equiposCompatibles;
+    @BindView(R.id.lineat_back_accesory)
+    LinearLayout btnBackAccesory;
+    @BindView(R.id.lineat_next_accesory)
+    LinearLayout lineatNextAccesory;
+
+    public NormalAccessoryFragment() {
+        // Required empty public constructor
+    }
+
+    public NormalAccessoryFragment(MainActivity mainActivity, Producto producto) {
+        this.mainActivity = mainActivity;
+        this.producto = producto;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_normal_accessory, container, false);
+        ButterKnife.bind(this, view);
+        caracteristicasList = new ArrayList<>();
+        equiposCompatibles = new ArrayList<>();
+        linearLayoutManagerCaract = new LinearLayoutManager(getContext());
+        linearLayoutManagerCaract.setOrientation(LinearLayoutManager.VERTICAL);
+        tvNameNormalAccessory.setText(Global.producto.getName());
+        tvProviderNormalAccessory.setText(Global.producto.getProvider_name());
+        imageNormalAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.producto.getDetalles().get(0).getValue())));
+        tvPrecioVentaAccessory.setText(getString(R.string.precio_venta, producto.getPrecios().get(0).getValue()));
+        rvCaracteristicas.setHasFixedSize(true);
+        rvCaracteristicas.setLayoutManager(linearLayoutManagerCaract);
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                for (int i = 0; i < producto.getDetalles().size(); i++) {
+                    switch (producto.getDetalles().get(i).getKey()) {
+                        case "ATONE":
+                        case "ATTWO":
+                        case "ATTHREE":
+                        case "ATFOUR":
+                        case "ATFIVE":
+                            caracteristicasList.add(producto.getDetalles().get(i).getValue());
+                            break;
+                    }
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                CaracteristicasAdapter caracteristicasAdapter = new CaracteristicasAdapter(caracteristicasList);
+                rvCaracteristicas.setAdapter(caracteristicasAdapter);
+
+            }
+        }.execute();
+
+        for (int r = 0; r < producto.getDevices().size(); r++) {
+            for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+                if (producto.getDevices().get(r).getId().equals(Session.objData.getDevices().get(i).getId())) {
+                    producto.getDevices().get(r).setDetalles(Session.objData.getDevices().get(i).getDetalles());
+                    equiposCompatibles.add(producto.getDevices().get(r));
+                    break;
+                }
+
+            }
+        }
+
+        if(equiposCompatibles.size() > 2){
+            btnBackAccesory.setVisibility(View.VISIBLE);
+            lineatNextAccesory.setVisibility(View.VISIBLE);
+        }else{
+            btnBackAccesory.setVisibility(View.GONE);
+            lineatNextAccesory.setVisibility(View.GONE);
+        }
+
+        viewPagerCarruselAdapter = new ViewPagerCarruselAdapter(getChildFragmentManager(), equiposCompatibles, 1);
+        vpCarrusel.setAdapter(viewPagerCarruselAdapter);
+        new CoverFlow.Builder()
+                .with(vpCarrusel)
+                .pagerMargin(0f)
+                .scale(0.4f)
+                .spaceSize(0f)
+                .rotationY(0f)
+                .build();
+
+        pagerContainer.setOverlapEnabled(true);
+        pagerContainer.setPageItemClickListener(new PageItemClickListener() {
+            @Override
+            public void onItemClick(View view, int i) {
+            }
+        });
+
+        return view;
+    }
+
+    @OnClick({R.id.blur_content, R.id.button_close_fragment, R.id.content_modal, R.id.lineat_back_accesory, R.id.lineat_next_accesory})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.blur_content:
+                mainActivity.closeBlurAccessories();
+                break;
+            case R.id.button_close_fragment:
+                mainActivity.closeBlurAccessories();
+                break;
+            case R.id.content_modal:
+                break;
+            case R.id.lineat_back_accesory:
+                if(vpCarrusel.getCurrentItem()>0){
+                    vpCarrusel.setCurrentItem(vpCarrusel.getCurrentItem()-1);
+                }
+                break;
+            case R.id.lineat_next_accesory:
+                vpCarrusel.setCurrentItem(vpCarrusel.getCurrentItem()+1);
+                break;
+        }
+    }
+}

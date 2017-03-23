@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Random;
 
 import cl.rinno.newdevicewall.models.DWApi;
 import cl.rinno.newdevicewall.models.Global;
@@ -43,6 +46,9 @@ public class SplashActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         Global.makeDirectories();
+        Global.allProducts.clear();
+        Global.allAccessories.clear();
+        Global.allDevices.clear();
         Fresco.initialize(this);
         File oldJson = new File(Global.dirJson);
         if(oldJson.exists() && isOnlineNet()){
@@ -86,6 +92,16 @@ public class SplashActivity extends AppCompatActivity {
 
                 if (gig2 != null) {
                     Session.objData = gig2;
+                    for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+                        Global.allProducts.add(Session.objData.getDevices().get(i));
+                        Global.allDevices.add(Session.objData.getDevices().get(i));
+                    }
+                    for (int i = 0; i < Session.objData.getAccessories().size(); i++) {
+                        Global.allProducts.add(Session.objData.getAccessories().get(i));
+                        Global.allAccessories.add(Session.objData.getAccessories().get(i));
+                    }
+                    Random rndm = new Random();
+                    Collections.shuffle(Global.allProducts, rndm);
                 } else {
                     Log.d("GIG", "null");
                 }
@@ -134,6 +150,9 @@ public class SplashActivity extends AppCompatActivity {
                                         bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getDetalles().get(0).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/");
                                     }
                                 }
+                            }
+                            for (int i = 0; i < Session.objData.getProviders().size(); i++){
+                                bajar(Session.objData.getProviders().get(i).getProvider_image(),Global.dirImages,"http://entel.rinno.cl/images/details/providers/");
                             }
                             return null;
                         }

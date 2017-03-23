@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by chinodoge on 13-03-2017.
@@ -19,6 +20,11 @@ public class Global {
     public static String jsonData2 = "";
 
     public static Producto producto;
+    public static ArrayList<Producto> allDevices = new ArrayList<>();
+    public static ArrayList<Producto> allProducts = new ArrayList<>();
+    public static ArrayList<Producto> allAccessories = new ArrayList<>();
+    public static ArrayList<Provider> providersDevices = new ArrayList<>();
+    public static ArrayList<Provider> providersAccessories = new ArrayList<>();
 
     public static void makeDirectories() {
         File mainFolder = new File(dirHome);

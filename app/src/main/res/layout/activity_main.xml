@@ -18,13 +18,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6.9"
-            >
+            android:layout_weight="6.9">
             <HorizontalScrollView
                 android:id="@+id/horizontal_scroll_grid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                android:visibility="gone">
 
                 <GridLayout
                     android:id="@+id/grid_container"
@@ -33,6 +33,160 @@
                     android:animateLayoutChanges="true" />
 
             </HorizontalScrollView>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_plans"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:visibility="visible">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/image_banner_plan"
+                    android:layout_width="0dp"
+                    android:layout_height="186dp"
+                    android:layout_marginTop="111dp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraint_plan_voz"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    fresco:layout_constraintBottom_toBottomOf="parent"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/image_banner_plan">
+
+
+                    <TextView
+                        android:id="@+id/textView29"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="72dp"
+                        android:text="Planes"
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:textColor="@color/blue"
+                        android:textSize="53sp"
+                        fresco:layout_constraintLeft_toLeftOf="parent"
+                        fresco:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView35"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:text="Cuenta Controlada_"
+                        android:textColor="@color/orange"
+                        android:textSize="53sp"
+                        fresco:layout_constraintLeft_toRightOf="@+id/textView29"
+                        fresco:layout_constraintTop_toTopOf="@+id/textView29"
+                        android:layout_marginStart="12dp" />
+
+                    <TextView
+                        android:id="@+id/textView38"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Si se consumen tus minutos, SMS y/o GB puedes recargar para seguir usándolos."
+                        android:textColor="@color/dimGray"
+                        android:textSize="27sp"
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        fresco:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        fresco:layout_constraintTop_toBottomOf="@+id/textView35" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        fresco:layout_constraintLeft_toLeftOf="parent"
+                        fresco:layout_constraintRight_toRightOf="parent"
+                        fresco:layout_constraintTop_toBottomOf="@+id/textView38"
+                        android:id="@+id/rv_planes_cuenta_controlada" />
+
+                    <TextView
+                        android:id="@+id/textView44"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Planes"
+                        android:textColor="@color/blue"
+                        android:textSize="53sp"
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        fresco:layout_constraintLeft_toLeftOf="parent"
+                        fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_cuenta_controlada" />
+
+                    <TextView
+                        android:id="@+id/textView45"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Suscripción_"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:textColor="@color/orange"
+                        android:textSize="53sp"
+                        fresco:layout_constraintTop_toTopOf="@+id/textView44"
+                        fresco:layout_constraintLeft_toRightOf="@+id/textView44"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="12dp" />
+
+                    <TextView
+                        android:id="@+id/textView46"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Si se consumen tus minutos y/o SMS se te cobrará por el consumo adicional."
+                        android:textColor="@color/dimGray"
+                        android:textSize="27sp"
+                        fresco:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="5dp"
+                        fresco:layout_constraintTop_toBottomOf="@+id/textView45" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="0dp"
+                        android:layout_height="139dp"
+                        fresco:layout_constraintLeft_toLeftOf="parent"
+                        fresco:layout_constraintRight_toRightOf="parent"
+                        fresco:layout_constraintHorizontal_bias="0.0"
+                        android:layout_marginTop="37dp"
+                        fresco:layout_constraintTop_toBottomOf="@+id/textView46"
+                        android:id="@+id/recyclerView2" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_condiciones_comerciales"
+                        android:layout_width="306dp"
+                        android:layout_height="45dp"
+                        android:layout_marginRight="0dp"
+                        android:background="@drawable/bg_condiciones_comerciales"
+                        android:orientation="horizontal"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:gravity="center"
+                        android:layout_marginTop="48dp"
+                        fresco:layout_constraintTop_toBottomOf="@+id/recyclerView2">
+                        <TextView
+                            fontPath="fonts/DINNextLTPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ver "
+                            android:paddingBottom="2dp"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"/>
+                        <TextView
+                            fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Condiciones Comerciales_"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+
+
+                </android.support.constraint.ConstraintLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
+
 
         </RelativeLayout>
 
@@ -58,7 +212,8 @@
                     android:text="¿Qué "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -67,12 +222,13 @@
                     android:textAlignment="center"
                     android:textColor="@color/orange"
                     android:textSize="35sp"
-                    android:textStyle="italic|bold" />
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="\?"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:textAlignment="center"
                     android:textColor="@color/blue"
                     android:textSize="35sp" />
@@ -91,6 +247,7 @@
                     android:text="Selecciona un "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:textSize="35sp" />
 
                 <TextView
@@ -100,7 +257,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/orange"
                     android:textSize="35sp"
-                    android:textStyle="italic|bold" />
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf" />
 
                 <TextView
                     android:id="@+id/tv_filter_product_type"
@@ -110,7 +267,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/orange"
                     android:textSize="35sp"
-                    android:textStyle="italic|bold" />
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf" />
             </LinearLayout>
 
             <LinearLayout
@@ -124,6 +281,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Selecciona un "
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:textAlignment="center"
                     android:textColor="@color/blue"
                     android:textSize="35sp" />
@@ -132,10 +290,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="plan"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp"
-                    android:textStyle="italic|bold" />
+                    android:textSize="35sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -146,6 +304,7 @@
                 android:visibility="gone">
 
                 <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Filtro: "
@@ -154,14 +313,14 @@
                     android:textSize="35sp" />
 
                 <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:id="@+id/tv_filter_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Marca"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp"
-                    android:textStyle="italic|bold" />
+                    android:textSize="35sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -172,6 +331,7 @@
                 android:visibility="gone">
 
                 <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:id="@+id/tv_filter_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -181,6 +341,7 @@
                     android:textSize="35sp" />
 
                 <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=":"
@@ -198,11 +359,12 @@
                     android:textAlignment="center"
                     android:textColor="@color/orange"
                     android:textSize="35sp"
-                    android:textStyle="italic|bold" />
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Resultado:"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:textAlignment="center"
                     android:textColor="@color/blue"
                     android:textSize="35sp" />
@@ -216,7 +378,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/orange"
                     android:textSize="35sp"
-                    android:textStyle="italic|bold" />
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf" />
             </LinearLayout>
 
         </LinearLayout>
@@ -249,13 +411,13 @@
 
 
                     <TextView
+                        fontPath="fonts/DINNextLTPro-Medium.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/equipos"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:textSize="26sp" />
 
                 </LinearLayout>
 
@@ -275,13 +437,13 @@
                         android:src="@drawable/img_accesorios" />
 
                     <TextView
+                        fontPath="fonts/DINNextLTPro-Medium.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/accesorios"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:textSize="26sp"/>
 
                 </LinearLayout>
 
@@ -301,13 +463,13 @@
                         android:src="@drawable/img_planes" />
 
                     <TextView
+                        fontPath="fonts/DINNextLTPro-Medium.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/planes"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:textSize="26sp" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -334,8 +496,7 @@
                     android:layout_height="300dp"
                     android:layout_marginStart="72dp"
                     android:background="@drawable/triangule_blue"
-                    android:orientation="horizontal"
-                    android:visibility="visible" />
+                    android:orientation="horizontal"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -362,14 +523,14 @@
                             android:src="@drawable/filtro_marca" />
 
                         <TextView
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
                             android:id="@+id/text_filtro_marca"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:text="@string/marca"
                             android:textColor="@color/white"
-                            android:textSize="26sp"
-                            android:textStyle="bold" />
+                            android:textSize="26sp" />
 
                     </LinearLayout>
 
@@ -390,14 +551,14 @@
                             android:src="@drawable/filtro_pantalla" />
 
                         <TextView
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
                             android:id="@+id/text_filtro_pantalla"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:text="@string/tamaopantalla"
                             android:textColor="@color/white"
-                            android:textSize="26sp"
-                            android:textStyle="bold" />
+                            android:textSize="26sp" />
 
                     </LinearLayout>
 
@@ -424,7 +585,7 @@
                             android:text="@string/cmaratrasera"
                             android:textColor="@color/white"
                             android:textSize="26sp"
-                            android:textStyle="bold" />
+                            fontPath="fonts/DINNextLTPro-Bold.otf"/>
 
                     </LinearLayout>
 
@@ -451,7 +612,7 @@
                             android:text="@string/cmaradelantera"
                             android:textColor="@color/white"
                             android:textSize="26sp"
-                            android:textStyle="bold" />
+                            fontPath="fonts/DINNextLTPro-Bold.otf" />
 
                     </LinearLayout>
 
@@ -506,8 +667,8 @@
                             android:layout_marginStart="15dp"
                             android:text="Multimedia"
                             android:textColor="@color/white"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
+                            android:textSize="26sp"
+                            fontPath="fonts/DINNextLTPro-Bold.otf" />
 
                     </LinearLayout>
 
@@ -530,11 +691,11 @@
                             android:id="@+id/text_filtro_proteccion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
+                            android:layout_marginStart="5dp"
                             android:text="Protección"
                             android:textColor="@color/white"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
+                            android:textSize="26sp"
+                            fontPath="fonts/DINNextLTPro-Bold.otf" />
 
                     </LinearLayout>
 
@@ -544,8 +705,10 @@
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
                         android:background="@drawable/bg_filter_accessory"
-                        android:gravity="center">
+                        android:gravity="center_vertical">
 
                         <ImageView
                             android:id="@+id/icn_filtro_energia"
@@ -557,11 +720,11 @@
                             android:id="@+id/text_filtro_energia"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
+                            android:layout_marginStart="10dp"
                             android:text="Energía"
                             android:textColor="@color/white"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
+                            android:textSize="26sp"
+                            fontPath="fonts/DINNextLTPro-Bold.otf" />
 
                     </LinearLayout>
 
@@ -584,11 +747,11 @@
                             android:id="@+id/text_filtro_por_equipo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
+                            android:layout_marginStart="10dp"
                             android:text="Equipo\nCompatible"
                             android:textColor="@color/white"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
+                            android:textSize="26sp"
+                            fontPath="fonts/DINNextLTPro-Bold.otf" />
 
                     </LinearLayout>
 
@@ -625,7 +788,24 @@
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="30dp"
                         android:layout_marginStart="30dp"
-                        android:background="@drawable/bg_filter_plans">
+                        android:background="@drawable/bg_filter_plans"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/icn_plan_smartfun"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_smartfun"/>
+
+                        <TextView
+                            android:id="@+id/text_plan_smartfun"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Smart Fun"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"
+                            fontPath="fonts/DINNextLTPro-Bold.otf" />
 
                     </LinearLayout>
 
@@ -634,7 +814,24 @@
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="30dp"
                         android:layout_marginStart="30dp"
-                        android:background="@drawable/bg_filter_plans">
+                        android:background="@drawable/bg_filter_plans"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/icn_plan_controlfun"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_controlfun"/>
+
+                        <TextView
+                            android:id="@+id/text_plan_controlfun"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:text="Control Fun"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"
+                            fontPath="fonts/DINNextLTPro-Bold.otf" />
 
                     </LinearLayout>
 
@@ -643,7 +840,26 @@
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="30dp"
                         android:layout_marginStart="30dp"
-                        android:background="@drawable/bg_filter_plans">
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:background="@drawable/bg_filter_plans"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/icn_plan_voz"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_planvoz"/>
+
+                        <TextView
+                            android:id="@+id/text_plan_voz"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Sólo Voz"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"
+                            fontPath="fonts/DINNextLTPro-Bold.otf" />
 
                     </LinearLayout>
 
@@ -702,11 +918,11 @@
             android:orientation="horizontal">
 
             <TextView
+                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cerrar"
                 android:textSize="41sp"
-                android:textStyle="bold|italic"
                 android:textColor="@color/white"/>
 
             <ImageView
@@ -740,6 +956,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Selecciona la"
+                fontPath="fonts/DINNextLTPro-Regular.otf"
                 android:textColor="@color/white"
                 android:textSize="50sp" />
 
@@ -750,9 +967,15 @@
                 android:text="Marca_"
                 android:layout_marginStart="15dp"
                 android:textSize="50sp"
-                android:textColor="@color/orange"
-                android:textStyle="bold|italic"/>
+                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                android:textColor="@color/orange"/>
 
         </LinearLayout>
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_accesorio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 </RelativeLayout>

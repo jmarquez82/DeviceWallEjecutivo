@@ -11,5 +11,18 @@
     <string name="cerrar">Cerrar_</string>
     <string name="caract_generales">Características generales_</string>
     <string name="selecciona_la_memoria"># Selecciona la <b><i>Memoria_</i></b></string>
+    <string name="valor_venta_del_equipo">Valor <b><i>venta del equipo_</i></b></string>
+    <string name="precio_venta">$%1$s</string>
+    <string name="volver_al_cat_logo">Volver al <b><i>Catálogo_</i></b></string>
+    <string name="ll_vatelo_con_un_plan">Llévatelo con un <b><i>Plan_</i></b></string>
+    <string name="valor_cuota_mensual">Valor <i><b>cuota mensual</b></i></string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="valor_venta">Valor <i><b>venta_</b></i></string>
+    <string name="cuota_mensual">Cuota <b><i>MENSUAL_</i></b></string>
+    <string name="precio_venta_tv">Precio <i><b>VENTA_</b></i></string>
+    <string name="total_a_pagar">Total a <b><i>pagar_</i></b></string>
+    <string name="cliente_entel">Cliente <b><i>ENTEL_</i></b></string>
+    <string name="cuota_datos">%1$s GB</string>
+    <string name="minutos_plan">%1$s Min.</string>
 </resources>
 
