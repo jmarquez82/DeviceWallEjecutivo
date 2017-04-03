@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -136,6 +137,7 @@ public class NormalAccessoryFragment extends Fragment {
 
         if(equiposCompatibles.size() > 2){
             btnBackAccesory.setVisibility(View.VISIBLE);
+            btnBackAccesory.setBackground(getResources().getDrawable(R.drawable.bg_disabled));
             lineatNextAccesory.setVisibility(View.VISIBLE);
         }else{
             btnBackAccesory.setVisibility(View.GONE);
@@ -144,6 +146,32 @@ public class NormalAccessoryFragment extends Fragment {
 
         viewPagerCarruselAdapter = new ViewPagerCarruselAdapter(getChildFragmentManager(), equiposCompatibles, 1);
         vpCarrusel.setAdapter(viewPagerCarruselAdapter);
+
+        vpCarrusel.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0){
+                    btnBackAccesory.setBackground(getResources().getDrawable(R.drawable.bg_disabled));
+                } else {
+                    btnBackAccesory.setBackground(getResources().getDrawable(R.drawable.bg_type_filters_device));
+                }
+                if(position == (equiposCompatibles.size()-1)){
+                    lineatNextAccesory.setBackground(getResources().getDrawable(R.drawable.bg_disabled));
+                }else{
+                    lineatNextAccesory.setBackground(getResources().getDrawable(R.drawable.bg_type_filters_device));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         new CoverFlow.Builder()
                 .with(vpCarrusel)
                 .pagerMargin(0f)
@@ -153,11 +181,6 @@ public class NormalAccessoryFragment extends Fragment {
                 .build();
 
         pagerContainer.setOverlapEnabled(true);
-        pagerContainer.setPageItemClickListener(new PageItemClickListener() {
-            @Override
-            public void onItemClick(View view, int i) {
-            }
-        });
 
         return view;
     }

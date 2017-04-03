@@ -13,6 +13,7 @@
     <string name="selecciona_la_memoria"># Selecciona la <b><i>Memoria_</i></b></string>
     <string name="valor_venta_del_equipo">Valor <b><i>venta del equipo_</i></b></string>
     <string name="precio_venta">$%1$s</string>
+    <string name="precio_cae">%1$s%%</string>
     <string name="volver_al_cat_logo">Volver al <b><i>Catálogo_</i></b></string>
     <string name="ll_vatelo_con_un_plan">Llévatelo con un <b><i>Plan_</i></b></string>
     <string name="valor_cuota_mensual">Valor <i><b>cuota mensual</b></i></string>
@@ -24,5 +25,14 @@
     <string name="cliente_entel">Cliente <b><i>ENTEL_</i></b></string>
     <string name="cuota_datos">%1$s GB</string>
     <string name="minutos_plan">%1$s Min.</string>
+    <string name="lo_sentimos">Lo sentimos, no hemos encontrado ningún equipo relacionado a tu búsqueda.</string>
+    <string name="deseas_intentarlo_de_nuevo">¿Deseas intentarlo de nuevo?</string>
+
+    <string-array name="pantallas">
+        <item>Primera</item>
+        <item>Segunda</item>
+        <item>Tercera</item>
+        <item>Cuarta</item>
+    </string-array>
 </resources>
 

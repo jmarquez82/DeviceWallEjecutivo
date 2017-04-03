@@ -73,7 +73,7 @@ public class PlanesSmartFunAdapter extends RecyclerView.Adapter<PlanesSmartFunAd
             txtCargoFijo = (TextView) itemView.findViewById(R.id.tv_cargo_fijo);
             txtCuotaDatos = (TextView) itemView.findViewById(R.id.tv_cuota_datos);
             txtCuotaPromo = (TextView) itemView.findViewById(R.id.tv_cuota_promo);
-            txtCuotaInicial = (TextView) itemView.findViewById(R.id.tv_cuota_inicial);
+            txtCuotaInicial = (TextView) itemView.findViewById(R.id.tv_valor_plan);
             btnVerPromo = (LinearLayout) itemView.findViewById(R.id.linear_ver_promo);
             txtMinutos = (TextView) itemView.findViewById(R.id.tv_minutos);
         }

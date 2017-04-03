@@ -27,12 +27,14 @@ public class Producto {
     private ArrayList<Producto> devices;
     private String provider_name;
     private String provider_image;
+    private String sizes;
+    private String imageHigh;
+    private ArrayList<Detalle> cae;
+    private String primaryImage;
+    private String bannerImage;
+    private String condicionImage;
 
-    public Producto(String id) {
-        this.id = id;
-    }
-
-    public Producto(String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name, String provider_image) {
+    public Producto(String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name, String provider_image, String sizes, String imageHigh, ArrayList<Detalle> cae, String primaryImage, String bannerImage, String condicionImage) {
         this.id = id;
         this.provider_id = provider_id;
         this.product_type_id = product_type_id;
@@ -53,6 +55,12 @@ public class Producto {
         this.devices = devices;
         this.provider_name = provider_name;
         this.provider_image = provider_image;
+        this.sizes = sizes;
+        this.imageHigh = imageHigh;
+        this.cae = cae;
+        this.primaryImage = primaryImage;
+        this.bannerImage = bannerImage;
+        this.condicionImage = condicionImage;
     }
 
     public String getId() {
@@ -213,5 +221,85 @@ public class Producto {
 
     public void setProvider_image(String provider_image) {
         this.provider_image = provider_image;
+    }
+
+    public String getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(String sizes) {
+        this.sizes = sizes;
+    }
+
+    public String getImageHigh() {
+        return imageHigh;
+    }
+
+    public void setImageHigh(String imageHigh) {
+        this.imageHigh = imageHigh;
+    }
+
+    public ArrayList<Detalle> getCae() {
+        return cae;
+    }
+
+    public void setCae(ArrayList<Detalle> cae) {
+        this.cae = cae;
+    }
+
+    public String getPrimaryImage() {
+        return primaryImage;
+    }
+
+    public void setPrimaryImage(String primaryImage) {
+        this.primaryImage = primaryImage;
+    }
+
+    public String getBannerImage() {
+        return bannerImage;
+    }
+
+    public void setBannerImage(String bannerImage) {
+        this.bannerImage = bannerImage;
+    }
+
+    public String getCondicionImage() {
+        return condicionImage;
+    }
+
+    public void setCondicionImage(String condicionImage) {
+        this.condicionImage = condicionImage;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "id='" + id + '\'' +
+                ", provider_id='" + provider_id + '\'' +
+                ", product_type_id='" + product_type_id + '\'' +
+                ", product_type='" + product_type + '\'' +
+                ", name='" + name + '\'' +
+                ", parent='" + parent + '\'' +
+                ", status='" + status + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", uploaded_at='" + uploaded_at + '\'' +
+                ", detalles=" + detalles +
+                ", precios=" + precios +
+                ", accesorios=" + accesorios +
+                ", relation=" + relation +
+                ", planes=" + planes +
+                ", hijos=" + hijos +
+                ", plans=" + plans +
+                ", highlight=" + highlight +
+                ", devices=" + devices +
+                ", provider_name='" + provider_name + '\'' +
+                ", provider_image='" + provider_image + '\'' +
+                ", sizes='" + sizes + '\'' +
+                ", imageHigh='" + imageHigh + '\'' +
+                ", cae=" + cae +
+                ", primaryImage='" + primaryImage + '\'' +
+                ", bannerImage='" + bannerImage + '\'' +
+                ", condicionImage='" + condicionImage + '\'' +
+                '}';
     }
 }

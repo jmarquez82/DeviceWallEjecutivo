@@ -24,7 +24,11 @@ public class Global {
     public static ArrayList<Producto> allProducts = new ArrayList<>();
     public static ArrayList<Producto> allAccessories = new ArrayList<>();
     public static ArrayList<Provider> providersDevices = new ArrayList<>();
-    public static ArrayList<Provider> providersAccessories = new ArrayList<>();
+    public static ArrayList<Producto> planesDeVozCCList = new ArrayList<>();
+    public static ArrayList<Producto> planesDeVozIlimitado = new ArrayList<>();
+    public static ArrayList<Producto> planesSmartFunSimple = new ArrayList<>();
+    public static ArrayList<Producto> planesControlFunSimple = new ArrayList<>();
+    public static ArrayList<Producto> allPlans = new ArrayList<>();
 
     public static void makeDirectories() {
         File mainFolder = new File(dirHome);
@@ -49,7 +53,7 @@ public class Global {
     }
 
     public static String[][] getBackgroundColorsCard() {
-        String[][] colorSet = new String[7][3];
+        String[][] colorSet = new String[6][3];
 
         colorSet[0][0] = "#0154a0";
         colorSet[0][1] = "#FFFFFF";
@@ -75,10 +79,20 @@ public class Global {
         colorSet[5][1] = "#ffffff";
         colorSet[5][2] = "#f5a623";
 
-        colorSet[6][0] = "#ffffff";
-        colorSet[6][1] = "#ffffff";
-        colorSet[6][2] = "#f5a623";
-
         return colorSet;
+    }
+
+    public static Boolean isOnlineNet() {
+
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.cl");
+            int val           = p.waitFor();
+            return (val == 0);
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 }

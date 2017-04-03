@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="171dp"
+    android:layout_height="272dp"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/bg_equipo_compatible"
+    android:layout_centerHorizontal="true"
+    android:layout_margin="10dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/image_equipo_compatible"
+        android:layout_width="86.0dp"
+        android:layout_height="172.0dp"
+        android:layout_marginTop="33dp"
+        android:layout_gravity="center_horizontal"
+        fresco:actualImageScaleType="fitCenter"/>
+
+    <TextView
+        android:id="@+id/tv_nombre_equipo_compatible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="21.0sp"
+        android:textColor="@color/white"
+        android:text="Galaxy S6"
+        fontPath="fonts/DINNextLTPro-Regular.otf"
+        android:textAlignment="center"
+        android:layout_marginTop="19dp"/>
+
+</LinearLayout>

@@ -254,5 +254,56 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.github.mmin18.widget.RealtimeBlurView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:realtimeBlurRadius="10dp"
+            app:realtimeOverlayColor="#c8000000" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/image_popup"
+            android:layout_width="match_parent"
+            android:layout_height="1400dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginTop="200dp"
+            fresco:actualImageScaleType="fitCenter"/>
+
+        <LinearLayout
+            android:id="@+id/linear_close_popup"
+            android:layout_width="291dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="74dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/bg_button_close_filter"
+            android:gravity="center"
+            android:layout_below="@id/image_popup"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <TextView
+                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cerrar"
+                android:textColor="@color/white"
+                android:textSize="41sp" />
+
+            <ImageView
+                android:layout_width="29.29dp"
+                android:layout_height="29.32dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/close_blur" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

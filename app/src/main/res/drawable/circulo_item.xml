@@ -3,5 +3,5 @@
     <solid android:angle="270"
            android:color="@color/blue"/>
     <stroke android:width="2dp"
-            android:color="#c6c6c6"/>
+            android:color="@color/dimGray"/>
 </shape>

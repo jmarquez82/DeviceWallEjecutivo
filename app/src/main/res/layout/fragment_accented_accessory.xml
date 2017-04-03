@@ -3,7 +3,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="cl.rinno.newdevicewall.fragments.AccentedAccessoryFragment">
 
     <com.github.mmin18.widget.RealtimeBlurView
@@ -23,13 +23,13 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/content_main"
             android:layout_width="940dp"
-            android:layout_height="1020dp"
+            android:layout_height="1170dp"
             android:background="@color/blue">
 
 
             <TextView
-                fontPath="fonts/DINNextLTPro-Bold.otf"
                 android:id="@+id/tv_provider_name"
+                fontPath="fonts/DINNextLTPro-Bold.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -40,17 +40,17 @@
                 android:text="JBL"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="56sp"
+                android:textSize="45sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.050000012" />
+                app:layout_constraintVertical_bias="0.04" />
 
             <TextView
-                fontPath="fonts/DINNextLTPro-LightItalic.otf"
                 android:id="@+id/tv_name_accessory"
+                fontPath="fonts/DINNextLTPro-LightItalic.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -58,31 +58,28 @@
                 android:layout_marginTop="8dp"
                 android:text="Clip +"
                 android:textColor="@color/white"
-                android:textSize="78sp"
+                android:textSize="60sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_provider_name"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.100000024" />
+                app:layout_constraintVertical_bias="0.080" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/content_precios"
                 android:layout_width="500dp"
                 android:layout_height="524dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="210dp"
                 android:background="@drawable/cuadro_blanco"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/image_accented_accessory"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-Bold.otf"
                     android:id="@+id/tv_total_a_pagar"
+                    fontPath="fonts/DINNextLTPro-Bold.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -96,48 +93,49 @@
                     android:textSize="23sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintLeft_toRightOf="@+id/linearLayout4"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_cae"
-                    app:layout_constraintVertical_bias="0.63"
-                    app:layout_constraintHorizontal_bias="0.5" />
+                    app:layout_constraintVertical_bias="0.63" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:id="@+id/textView23"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="19dp"
                     android:text="Total a"
                     android:textColor="@color/blue"
                     android:textSize="23sp"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintLeft_toRightOf="@+id/linearLayout4"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_cae"
                     app:layout_constraintRight_toLeftOf="@+id/textView25"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintHorizontal_bias="1.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_cae" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:id="@+id/textView25"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginTop="0dp"
                     android:text="pagar_"
                     android:textColor="@color/blue"
                     android:textSize="23sp"
-                    android:layout_marginRight="0dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/linearLayout4"
-                    android:layout_marginLeft="0dp"
                     app:layout_constraintHorizontal_bias="0.767"
-                    app:layout_constraintTop_toTopOf="@+id/textView23"
-                    android:layout_marginTop="0dp" />
+                    app:layout_constraintLeft_toRightOf="@+id/linearLayout4"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView23" />
 
                 <TextView
                     android:id="@+id/tv_cae"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -145,7 +143,6 @@
                     android:text="-%"
                     android:textColor="@color/orange"
                     android:textSize="40sp"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/linearLayout4"
                     app:layout_constraintRight_toRightOf="parent"
@@ -154,66 +151,66 @@
 
                 <TextView
                     android:id="@+id/textView21"
+                    fontPath="fonts/DINNextLTPro-Bold.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CAE"
                     android:textColor="@color/blue"
                     android:textSize="25sp"
-                    fontPath="fonts/DINNextLTPro-Bold.otf"
                     app:layout_constraintLeft_toRightOf="@+id/linearLayout4"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/linearLayout4" />
 
                 <TextView
                     android:id="@+id/tv_cuota_mensual"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="0dp"
                     android:text="$-"
                     android:textColor="@color/orange"
                     android:textSize="40sp"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="@+id/textView11"
+                    app:layout_constraintRight_toRightOf="@+id/textView24"
                     app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                    app:layout_constraintVertical_bias="0.331"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintRight_toRightOf="@+id/textView24" />
+                    app:layout_constraintVertical_bias="0.331" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:id="@+id/textView11"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="-1dp"
                     android:text="Cuota"
                     android:textColor="@color/blue"
                     android:textSize="22sp"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/linearLayout4"
-                    android:layout_marginTop="-1dp"
                     app:layout_constraintRight_toLeftOf="@+id/textView24"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintHorizontal_bias="1.0" />
+                    app:layout_constraintTop_toTopOf="@+id/linearLayout4" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:id="@+id/textView24"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
                     android:layout_marginRight="0dp"
                     android:layout_marginTop="0dp"
                     android:text="MENSUAL_"
                     android:textColor="@color/blue"
                     android:textSize="22sp"
-                    app:layout_constraintRight_toLeftOf="@+id/linearLayout4"
-                    app:layout_constraintTop_toTopOf="@+id/textView11"
-                    android:layout_marginLeft="0dp"
+                    app:layout_constraintHorizontal_bias="0.75"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintHorizontal_bias="0.75" />
+                    app:layout_constraintRight_toLeftOf="@+id/linearLayout4"
+                    app:layout_constraintTop_toTopOf="@+id/textView11" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout4"
@@ -226,11 +223,11 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                    app:layout_constraintVertical_bias="0.49"/>
+                    app:layout_constraintVertical_bias="0.49" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-Bold.otf"
                     android:id="@+id/tv_precio_venta"
+                    fontPath="fonts/DINNextLTPro-Bold.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -245,8 +242,8 @@
                     app:layout_constraintVertical_bias="0.13" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:id="@+id/textView"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="37dp"
@@ -300,7 +297,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/image_accented_accessory"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_accented_accessory"
-                app:layout_constraintVertical_bias="0.43" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/content_descuento"
@@ -315,8 +312,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/content_precios">
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:id="@+id/textView27"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -331,8 +328,8 @@
                     app:layout_constraintTop_toTopOf="@+id/textView18" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:id="@+id/textView19"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -352,8 +349,8 @@
                     app:layout_constraintVertical_bias="0.45" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:id="@+id/textView20"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -370,8 +367,8 @@
                     app:layout_constraintVertical_bias="0.85" />
 
                 <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:id="@+id/textView18"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -385,6 +382,87 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
             </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView13"
+                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="8dp"
+                android:text="Compatible con_"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/content_descuento"
+                app:layout_constraintVertical_bias="0.13" />
+
+            <me.crosswall.lib.coverflow.core.PagerContainer
+                android:id="@+id/pager_container"
+                android:layout_width="400dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13"
+                app:layout_constraintVertical_bias="0.0">
+
+                <cl.rinno.newdevicewall.cls.NonSwipeableViewPager
+                    android:id="@+id/vp_carrusel"
+                    android:layout_width="148dp"
+                    android:layout_height="194dp"
+                    android:layout_gravity="center" />
+
+            </me.crosswall.lib.coverflow.core.PagerContainer>
+
+            <LinearLayout
+                android:id="@+id/lineat_back_accesory"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/bg_circle_orange"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="@+id/pager_container"
+                app:layout_constraintRight_toLeftOf="@+id/pager_container"
+                app:layout_constraintTop_toTopOf="@+id/pager_container">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="3dp"
+                    android:src="@drawable/accessory_arrow" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lineat_next_accesory"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/bg_circle_orange"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="@+id/pager_container"
+                app:layout_constraintLeft_toRightOf="@+id/pager_container"
+                app:layout_constraintTop_toTopOf="@+id/pager_container"
+                app:layout_constraintVertical_bias="0.5">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="3dp"
+                    android:rotation="180"
+                    android:src="@drawable/accessory_arrow" />
+
+            </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
 

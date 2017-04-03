@@ -2,11 +2,13 @@ package cl.rinno.newdevicewall;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -29,11 +31,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 import cl.rinno.newdevicewall.models.DWApi;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.OutData;
+import cl.rinno.newdevicewall.models.Producto;
+import cl.rinno.newdevicewall.models.Provider;
 import cl.rinno.newdevicewall.models.Session;
 import cz.msebera.android.httpclient.Header;
 
@@ -42,13 +47,32 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        int currentApiVersion = Build.VERSION.SDK_INT;
+        final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+        if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
+
+            getWindow().getDecorView().setSystemUiVisibility(flags);
+            final View decorView = getWindow().getDecorView();
+            decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+                @Override
+                public void onSystemUiVisibilityChange(int visibility) {
+                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        decorView.setSystemUiVisibility(flags);
+                    }
+                }
+            });
+        }
         setContentView(R.layout.activity_splash);
         Global.makeDirectories();
-        Global.allProducts.clear();
-        Global.allAccessories.clear();
-        Global.allDevices.clear();
         Fresco.initialize(this);
         File oldJson = new File(Global.dirJson);
         if(oldJson.exists() && isOnlineNet()){
@@ -92,16 +116,6 @@ public class SplashActivity extends AppCompatActivity {
 
                 if (gig2 != null) {
                     Session.objData = gig2;
-                    for (int i = 0; i < Session.objData.getDevices().size(); i++) {
-                        Global.allProducts.add(Session.objData.getDevices().get(i));
-                        Global.allDevices.add(Session.objData.getDevices().get(i));
-                    }
-                    for (int i = 0; i < Session.objData.getAccessories().size(); i++) {
-                        Global.allProducts.add(Session.objData.getAccessories().get(i));
-                        Global.allAccessories.add(Session.objData.getAccessories().get(i));
-                    }
-                    Random rndm = new Random();
-                    Collections.shuffle(Global.allProducts, rndm);
                 } else {
                     Log.d("GIG", "null");
                 }
@@ -118,6 +132,8 @@ public class SplashActivity extends AppCompatActivity {
                     new AsyncTask<Void,Void,Void>(){
                         @Override
                         protected Void doInBackground(Void... params) {
+                            cargaLista();
+                            Log.d("aa","asd");
                             for (int i = 0; i < Session.objData.getDevices().size(); i++) {
                                 for (int j = 0; j < Session.objData.getDevices().get(i).getDetalles().size(); j++) {
                                     if (Session.objData.getDevices().get(i).getDetalles().get(j).getKey().equalsIgnoreCase("ST")) {
@@ -138,8 +154,19 @@ public class SplashActivity extends AppCompatActivity {
                                 }
 
                             }
+                            bajar(Session.objData.getCatalog().getScreenTwoImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            bajar(Session.objData.getCatalog().getScreenOneImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            bajar(Session.objData.getCatalog().getScreenThreeImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            bajar(Session.objData.getCatalog().getScreenFourImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            for(int i = 0; i < Session.objData.getCatalog().getOfertas().size(); i++){
+                                bajar(Session.objData.getCatalog().getOfertas().get(i).getBannerImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                                bajar(Session.objData.getCatalog().getOfertas().get(i).getPrimaryImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            }
                             for (int i = 0; i < Session.objData.getAccessories().size(); i++) {
                                 bajar(Session.objData.getAccessories().get(i).getDetalles().get(0).getValue(), Global.dirImages, "http://entel.rinno.cl/images/accessories/");
+                                if(!Session.objData.getAccessories().get(i).getImageHigh().equalsIgnoreCase("1")){
+                                    bajar(Session.objData.getAccessories().get(i).getImageHigh(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                                }
                             }
                             for (int i = 0; i < Session.objData.getPlanes().size(); i++) {
                                 for (int j = 0; j < Session.objData.getPlanes().get(i).getPlans().size(); j++) {
@@ -149,7 +176,11 @@ public class SplashActivity extends AppCompatActivity {
                                     } else if (i == 2) {
                                         bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getDetalles().get(0).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/");
                                     }
+
                                 }
+                                bajar(Session.objData.getPlanes().get(i).getCondicionImage(), Global.dirImages,"http://entel.rinno.cl/images/groups/");
+                                bajar(Session.objData.getPlanes().get(i).getPrimaryImage(), Global.dirImages,"http://entel.rinno.cl/images/groups/");
+                                bajar(Session.objData.getPlanes().get(i).getBannerImage(), Global.dirImages,"http://entel.rinno.cl/images/groups/");
                             }
                             for (int i = 0; i < Session.objData.getProviders().size(); i++){
                                 bajar(Session.objData.getProviders().get(i).getProvider_image(),Global.dirImages,"http://entel.rinno.cl/images/details/providers/");
@@ -163,11 +194,12 @@ public class SplashActivity extends AppCompatActivity {
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            DWApi.get("status/catalog/1/", null, new AsyncHttpResponseHandler() {
+                            DWApi.get("api/status/1/edeviceswall", null, new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                     String status = new String(responseBody);
                                     Log.d("STATUS CATALOG",status);
+                                    Log.d("OWN STATUS", Session.objData.getCatalog().getStatus());
                                     if(!Session.objData.getCatalog().getStatus().equalsIgnoreCase(status)){
                                         DWApi.get("api/showfruna/1", null, new JsonHttpResponseHandler() {
                                             @Override
@@ -176,6 +208,7 @@ public class SplashActivity extends AppCompatActivity {
                                             }
                                         });
                                     }else{
+                                        cargaLista();
                                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                         finish();
                                     }
@@ -193,6 +226,111 @@ public class SplashActivity extends AppCompatActivity {
             }
 
         }.execute();
+    }
+
+    private void cargaLista(){
+        Global.allProducts.clear();
+        Global.allAccessories.clear();
+        Global.allDevices.clear();
+        Global.planesControlFunSimple.clear();
+        Global.planesSmartFunSimple.clear();
+        Global.planesDeVozCCList.clear();
+        Global.planesDeVozIlimitado.clear();
+        Global.providersDevices.clear();
+        Global.allPlans.clear();
+
+        for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+            Global.allProducts.add(Session.objData.getDevices().get(i));
+            Global.allDevices.add(Session.objData.getDevices().get(i));
+        }
+        for (int i = 0; i < Session.objData.getAccessories().size(); i++) {
+            Global.allProducts.add(Session.objData.getAccessories().get(i));
+            Global.allAccessories.add(Session.objData.getAccessories().get(i));
+        }
+        for (int i = 0; i < Session.objData.getCatalog().getOfertas().size(); i++){
+            Global.allProducts.add(Session.objData.getCatalog().getOfertas().get(i));
+            Global.allPlans.add(Session.objData.getCatalog().getOfertas().get(i));
+        }
+
+        for(int i =0;i < Session.objData.getPlanes().size();i++){
+            Global.allPlans.add(i,Session.objData.getPlanes().get(i));
+        }
+
+        Collections.shuffle(Global.allProducts);
+        Collections.shuffle(Global.allAccessories);
+
+        int j = 1;
+        while(j < 11){
+            for(int i =0;i < Session.objData.getPlanes().size();i++){
+                switch (j){
+                    case 1:
+                        Global.allProducts.add(1,Session.objData.getPlanes().get(i));
+                        break;
+                    case 2:
+                        Global.allProducts.add(11,Session.objData.getPlanes().get(i));
+                        break;
+                    case 3:
+                        Global.allProducts.add(21,Session.objData.getPlanes().get(i));
+                        break;
+                    case 4:
+                        Global.allProducts.add(28,Session.objData.getPlanes().get(i));
+                        break;
+                    case 5:
+                        Global.allProducts.add(35,Session.objData.getPlanes().get(i));
+                        break;
+                    case 6:
+                        Global.allProducts.add(42,Session.objData.getPlanes().get(i));
+                        break;
+                    case 7:
+                        Global.allProducts.add(50,Session.objData.getPlanes().get(i));
+                        break;
+                    case 8:
+                        Global.allProducts.add(56,Session.objData.getPlanes().get(i));
+                        break;
+                    case 9:
+                        Global.allProducts.add(64,Session.objData.getPlanes().get(i));
+                        break;
+                    case 10:
+                        Global.allProducts.add(71,Session.objData.getPlanes().get(i));
+                        break;
+                }
+                j++;
+            }
+        }
+        for (int i=0; i < Session.objData.getPlanes().get(2).getPlans().size(); i++){
+            if(i < 2){
+                Global.planesDeVozCCList.add(Session.objData.getPlanes().get(2).getPlans().get(i));
+            }else{
+                Global.planesDeVozIlimitado.add(Session.objData.getPlanes().get(2).getPlans().get(i));
+            }
+        }
+        for (int i=0; i < Session.objData.getPlanes().get(0).getPlans().size(); i++){
+            if(Session.objData.getPlanes().get(0).getPlans().get(i).getName().contains("SIMple")){
+                Global.planesSmartFunSimple.add(Session.objData.getPlanes().get(0).getPlans().get(i));
+            }
+        }
+        for (int i=0; i < Session.objData.getPlanes().get(1).getPlans().size(); i++){
+            if(Session.objData.getPlanes().get(1).getPlans().get(i).getName().contains("SIMple")){
+                Global.planesControlFunSimple.add(Session.objData.getPlanes().get(1).getPlans().get(i));
+            }
+        }
+        for(int i = 0; i < Session.objData.getProviders().size(); i++){
+            if((Session.objData.getProviders().get(i).getProduct_type().equalsIgnoreCase("2") || Session.objData.getProviders().get(i).getProduct_type().equalsIgnoreCase("3")) && (Session.objData.getProviders().get(i).getStatus().equalsIgnoreCase("1"))){
+                Global.providersDevices.add(Session.objData.getProviders().get(i));
+            }
+        }
+        Collections.sort(Global.providersDevices, new Comparator<Provider>() {
+            @Override
+            public int compare(Provider o1, Provider o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        Collections.sort(Global.allDevices, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto o1, Producto o2) {
+                return o1.getProvider_name().compareTo(o2.getProvider_name());
+            }
+        });
     }
 
     private void crearJson(final JSONObject jsonObject) {

@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +29,7 @@ import cl.rinno.newdevicewall.adapters.PlanesControlFunAdapter;
 import cl.rinno.newdevicewall.adapters.PlanesSmartFunAdapter;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
+import cl.rinno.newdevicewall.models.Session;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class EquipoConPlanActivity extends AppCompatActivity {
@@ -69,10 +73,20 @@ public class EquipoConPlanActivity extends AppCompatActivity {
     LinearLayout btnClosePromo;
     @BindView(R.id.linear_content_promo)
     RelativeLayout contentPromo;
+    @BindView(R.id.imageView2)
+    ImageView imageView2;
+    @BindView(R.id.image_popup)
+    SimpleDraweeView imagePopup;
+    @BindView(R.id.linear_close_popup)
+    LinearLayout linearClosePopup;
+    @BindView(R.id.rl_popup)
+    RelativeLayout rlPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_equipo_con_plan);
         ButterKnife.bind(this);
         imgDevice.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.producto.getDetalles().get(0).getValue())));
@@ -130,7 +144,7 @@ public class EquipoConPlanActivity extends AppCompatActivity {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
     }
 
-    @OnClick({R.id.linear_tab_smartfun, R.id.linear_tab_controlfun, R.id.linear_volver_al_equipo, R.id.linear_volver_catalogo, R.id.linear_condiciones_comerciales,R.id.image_promo, R.id.linear_close_promo, R.id.linear_content_promo})
+    @OnClick({R.id.linear_tab_smartfun, R.id.linear_tab_controlfun, R.id.linear_volver_al_equipo, R.id.linear_volver_catalogo, R.id.linear_condiciones_comerciales, R.id.image_promo, R.id.linear_close_promo, R.id.linear_content_promo})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.linear_tab_smartfun:
@@ -158,10 +172,17 @@ public class EquipoConPlanActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.linear_volver_catalogo:
-                startActivity(new Intent(EquipoConPlanActivity.this, MainActivity.class));
+                Intent i = new Intent(EquipoConPlanActivity.this, MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
                 break;
             case R.id.linear_condiciones_comerciales:
-                Toast.makeText(this, "WORK WORK", Toast.LENGTH_SHORT).show();
+                rlPopup.setVisibility(View.VISIBLE);
+                if(smartFunState){
+                    imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages+ Session.objData.getPlanes().get(0).getCondicionImage())));
+                }else if (controlFunState){
+                    imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages+ Session.objData.getPlanes().get(1).getCondicionImage())));
+                }
                 break;
             case R.id.image_promo:
                 break;
@@ -184,9 +205,23 @@ public class EquipoConPlanActivity extends AppCompatActivity {
     public void verPromo(int typePlan) {
         contentPromo.setVisibility(View.VISIBLE);
         if (typePlan == 1) {
-            imgPromo.setImageURI(Uri.parse("res:/"+R.drawable.promo_smartfun));
+            imgPromo.setImageURI(Uri.parse("res:/" + R.drawable.promo_smartfun));
         } else {
-            imgPromo.setImageURI(Uri.parse("res:/"+R.drawable.promo_controlfun));
+            imgPromo.setImageURI(Uri.parse("res:/" + R.drawable.promo_controlfun));
+        }
+    }
+
+    @OnClick({R.id.image_popup, R.id.linear_close_popup, R.id.rl_popup})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.image_popup:
+                break;
+            case R.id.linear_close_popup:
+                rlPopup.setVisibility(View.GONE);
+                break;
+            case R.id.rl_popup:
+                rlPopup.setVisibility(View.GONE);
+                break;
         }
     }
 }

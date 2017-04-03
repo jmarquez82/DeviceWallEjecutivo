@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import cl.rinno.newdevicewall.MainActivity;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Global;
+import cl.rinno.newdevicewall.models.Producto;
+import cl.rinno.newdevicewall.models.Provider;
 import cl.rinno.newdevicewall.models.Session;
 
 /**
@@ -27,13 +30,12 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
     private ArrayList<String> filterList;
     private int type;
     private MainActivity mainActivity;
-    private ArrayList<String> provider_id;
+    private ArrayList<Provider> providersArrayList;
 
-    public FiltrosAdapter(ArrayList<String> filterList, int type, MainActivity mainActivity, ArrayList<String> provider_id) {
-        this.filterList = filterList;
+    public FiltrosAdapter(ArrayList<Provider> providersArrayList, int type, MainActivity mainActivity, String xd) {
+        this.providersArrayList = providersArrayList;
         this.type = type;
         this.mainActivity = mainActivity;
-        this.provider_id = provider_id;
     }
 
     public FiltrosAdapter(ArrayList<String> filterList, int type, MainActivity mainActivity) {
@@ -44,18 +46,40 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
 
     @Override
     public FiltrosViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filter_device,parent,false);
-        return new FiltrosViewHolder(view);
+        if(type == 4){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filter_accessory,parent,false);
+            return new FiltrosViewHolder(view);
+        }else{
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filter_device,parent,false);
+            return new FiltrosViewHolder(view);
+        }
+
     }
 
     @Override
     public void onBindViewHolder(final FiltrosViewHolder holder, final int position) {
         if(type == 0){
-            holder.imgProvider.setImageURI(Uri.fromFile(new File(Global.dirImages + filterList.get(position))));
+            holder.imgProvider.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.providersDevices.get(position).getProvider_image())));
             holder.txtFilter.setVisibility(View.GONE);
+            holder.imgProvider.setVisibility(View.VISIBLE);
+            if(Global.providersDevices.get(position).getId().equalsIgnoreCase("7") || Global.providersDevices.get(position).getId().equalsIgnoreCase("15") || Global.providersDevices.get(position).getId().equalsIgnoreCase("9")){
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(105,105);
+                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                holder.rlParentImage.setLayoutParams(layoutParams);
+            }
         }else if(type == 1 || type == 2 || type == 3){
             holder.imgProvider.setVisibility(View.GONE);
+            holder.txtFilter.setVisibility(View.VISIBLE);
             holder.txtFilter.setText(filterList.get(position));
+        } else if(type == 4){
+            holder.imgProvider.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.providersDevices.get(position).getProvider_image())));
+            holder.txtFilter.setVisibility(View.GONE);
+            holder.imgProvider.setVisibility(View.VISIBLE);
+            if(Global.providersDevices.get(position).getId().equalsIgnoreCase("7") || Global.providersDevices.get(position).getId().equalsIgnoreCase("15") || Global.providersDevices.get(position).getId().equalsIgnoreCase("9")){
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(105,105);
+                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                holder.rlParentImage.setLayoutParams(layoutParams);
+            }
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -65,13 +89,9 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
                 String valueTwo = "";
                 switch(type){
                     case 0:
-                        for(int i = 0; i < Session.objData.getProviders().size(); i++){
-                            if(Session.objData.getProviders().get(i).getId().equals(provider_id.get(position))){
-                                value = Session.objData.getProviders().get(i).getName();
-                                valueTwo = Session.objData.getProviders().get(i).getId();
-                                break;
-                            }
-                        }
+                    case 4:
+                        value = Global.providersDevices.get(position).getName();
+                        valueTwo = Global.providersDevices.get(position).getId();
                         break;
                     case 1:
                         switch (value) {
@@ -154,19 +174,24 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
 
     @Override
     public int getItemCount() {
-        return filterList.size();
+        if(filterList == null){
+            return providersArrayList.size();
+        }else{
+            return filterList.size();
+        }
     }
 
     public class FiltrosViewHolder extends RecyclerView.ViewHolder {
 
         SimpleDraweeView imgProvider;
         TextView txtFilter;
+        RelativeLayout rlParentImage;
 
         public FiltrosViewHolder(View itemView) {
             super(itemView);
+            rlParentImage = (RelativeLayout) itemView.findViewById(R.id.rl_parent_image);
             imgProvider = (SimpleDraweeView) itemView.findViewById(R.id.image_provider_filter);
             txtFilter = (TextView) itemView.findViewById(R.id.text_nombre_filtro);
-
         }
     }
 }

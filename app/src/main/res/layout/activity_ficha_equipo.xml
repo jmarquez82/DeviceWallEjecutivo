@@ -31,7 +31,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            fresco:actualImageScaleType="centerCrop"/>
+            fresco:actualImageScaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/tv_provider_name"
@@ -340,7 +340,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="8dp"
                 android:text="disponibles"
                 android:textColor="#4a4a4a"
                 android:textSize="18sp"
@@ -368,23 +368,22 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv_provider_name"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/llColores">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Valor "
-                android:textColor="@color/dimGray"
-                android:textSize="30sp"
-                fontPath="fonts/DINNextLTPro-Regular.otf"
-                />
 
             <TextView
+                fontPath="fonts/DINNextLTPro-Regular.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="venta del equipo_"
+                android:text=""
                 android:textColor="@color/dimGray"
-                android:textSize="30sp"
-                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                />
+                android:textSize="30sp" />
+
+            <TextView
+                fontPath="fonts/DINNextLTPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/precio_venta_tv"
+                android:textColor="@color/dimGray"
+                android:textSize="30sp" />
         </LinearLayout>
 
         <TextView
@@ -510,7 +509,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mensual_"
+                android:text="MENSUAL_"
                 android:textColor="@color/blue"
                 android:textSize="25sp"
                 fontPath="fonts/DINNextLTPro-BoldItalic.otf"/>
@@ -596,7 +595,7 @@
             android:layout_marginTop="23dp"
             app:layout_constraintTop_toBottomOf="@+id/textView16">
 
-            <cl.rinno.newdevicewall.cls.NonSwipeableViewPager
+            <android.support.v4.view.ViewPager
                 android:id="@+id/vp_carrusel"
                 android:layout_width="148dp"
                 android:layout_height="194dp"
@@ -622,6 +621,7 @@
                 android:layout_width="20dp"
                 android:layout_height="32dp"
                 android:src="@drawable/accessory_arrow"
+                android:layout_marginStart="3dp"
                 android:rotation="180"/>
 
         </LinearLayout>
@@ -642,6 +642,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="32dp"
+                android:layout_marginEnd="3dp"
                 android:src="@drawable/accessory_arrow"/>
 
         </LinearLayout>
@@ -746,6 +747,10 @@
 
 
 
-
+    <FrameLayout
+        android:id="@+id/fragment_accesorio_relacionado"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
 </RelativeLayout>

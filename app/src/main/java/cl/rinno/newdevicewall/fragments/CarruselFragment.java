@@ -58,7 +58,7 @@ public class CarruselFragment extends Fragment {
             fragmentCarrusel.setBackgroundResource(R.drawable.bg_carrusel_fragment);
             txtProductName.setTextColor(getResources().getColor(R.color.dimGray));
         }else if(type == 1){
-            fragmentCarrusel.setBackgroundColor(getResources().getColor(R.color.white));
+            fragmentCarrusel.setBackgroundResource(R.drawable.bg_carrusel_fragment_white);
             txtProductName.setTextColor(getResources().getColor(R.color.orange));
         }
         imgProduct.setImageURI(Uri.fromFile(new File(Global.dirImages + producto.getDetalles().get(0).getValue())));
