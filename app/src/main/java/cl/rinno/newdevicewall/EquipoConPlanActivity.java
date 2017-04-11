@@ -5,17 +5,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.rinno.newdevicewall.adapters.PlanesControlFunAdapter;
 import cl.rinno.newdevicewall.adapters.PlanesSmartFunAdapter;
+import cl.rinno.newdevicewall.cls.TimerInactivity;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
 import cl.rinno.newdevicewall.models.Session;
@@ -66,6 +68,8 @@ public class EquipoConPlanActivity extends AppCompatActivity {
     PlanesSmartFunAdapter smartFunAdapter;
     PlanesControlFunAdapter controlFunAdapter;
 
+    TimerInactivity timerInactivity;
+
     Boolean smartFunState, controlFunState;
     @BindView(R.id.image_promo)
     SimpleDraweeView imgPromo;
@@ -102,6 +106,8 @@ public class EquipoConPlanActivity extends AppCompatActivity {
         rvPlanes.setHasFixedSize(true);
         smartFunState = true;
         controlFunState = false;
+        timerInactivity = new TimerInactivity(180000, 1000, this);
+        timerInactivity.start();
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -109,7 +115,6 @@ public class EquipoConPlanActivity extends AppCompatActivity {
                 super.onPreExecute();
                 controlFunList.clear();
                 smartFunList.clear();
-                rvPlanes.setVisibility(View.GONE);
                 btnCondicionesComerciales.setVisibility(View.GONE);
             }
 
@@ -130,13 +135,75 @@ public class EquipoConPlanActivity extends AppCompatActivity {
                 super.onPostExecute(aVoid);
                 smartFunAdapter = new PlanesSmartFunAdapter(smartFunList, EquipoConPlanActivity.this);
                 controlFunAdapter = new PlanesControlFunAdapter(controlFunList, EquipoConPlanActivity.this);
-                rvPlanes.setAdapter(smartFunAdapter);
-                rvPlanes.setVisibility(View.VISIBLE);
-                btnCondicionesComerciales.setVisibility(View.VISIBLE);
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        rvPlanes.setAdapter(smartFunAdapter);
+                        setAnimationRecycler(rvPlanes);
+                        btnCondicionesComerciales.setVisibility(View.VISIBLE);
+                    }
+                }, 200);
             }
         }.execute();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timerInactivity.cancel();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timerInactivity.cancel();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        timerInactivity.start();
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        timerInactivity.cancel();
+        timerInactivity.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerInactivity.cancel();
+    }
 
 
+    private void setAnimationRecycler(final RecyclerView recyclerView) {
+        recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                    View v = recyclerView.getChildAt(i);
+
+                    v.setScaleY(0);
+                    v.setAlpha(0);
+                    v.setScaleX(0);
+
+                    v.animate().alpha(1.0f)
+                            .setDuration(350)
+                            .setStartDelay(i * 50)
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .start();
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -153,6 +220,7 @@ public class EquipoConPlanActivity extends AppCompatActivity {
                     btnTabSmartfun.setBackground(getResources().getDrawable(R.drawable.bg_tab_smartfun));
                     tvTabSmartfun.setTextColor(getResources().getColor(R.color.white));
                     rvPlanes.setAdapter(smartFunAdapter);
+                    setAnimationRecycler(rvPlanes);
                     controlFunState = false;
                     smartFunState = true;
                 }
@@ -164,6 +232,7 @@ public class EquipoConPlanActivity extends AppCompatActivity {
                     btnTabControlfun.setBackground(getResources().getDrawable(R.drawable.bg_tab_controlfun));
                     tvTabControlfun.setTextColor(getResources().getColor(R.color.white));
                     rvPlanes.setAdapter(controlFunAdapter);
+                    setAnimationRecycler(rvPlanes);
                     smartFunState = false;
                     controlFunState = true;
                 }
@@ -178,10 +247,10 @@ public class EquipoConPlanActivity extends AppCompatActivity {
                 break;
             case R.id.linear_condiciones_comerciales:
                 rlPopup.setVisibility(View.VISIBLE);
-                if(smartFunState){
-                    imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages+ Session.objData.getPlanes().get(0).getCondicionImage())));
-                }else if (controlFunState){
-                    imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages+ Session.objData.getPlanes().get(1).getCondicionImage())));
+                if (smartFunState) {
+                    imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(0).getCondicionImage())));
+                } else if (controlFunState) {
+                    imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(1).getCondicionImage())));
                 }
                 break;
             case R.id.image_promo:
@@ -202,13 +271,9 @@ public class EquipoConPlanActivity extends AppCompatActivity {
         tvTabSmartfun.setTextColor(getResources().getColor(R.color.dimGray));
     }
 
-    public void verPromo(int typePlan) {
+    public void verPromo(String img) {
+        imgPromo.setImageURI(Uri.fromFile(new File(Global.dirImages + img)));
         contentPromo.setVisibility(View.VISIBLE);
-        if (typePlan == 1) {
-            imgPromo.setImageURI(Uri.parse("res:/" + R.drawable.promo_smartfun));
-        } else {
-            imgPromo.setImageURI(Uri.parse("res:/" + R.drawable.promo_controlfun));
-        }
     }
 
     @OnClick({R.id.image_popup, R.id.linear_close_popup, R.id.rl_popup})

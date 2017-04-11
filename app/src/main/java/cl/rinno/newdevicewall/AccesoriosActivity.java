@@ -1,21 +1,21 @@
-package cl.rinno.newdevicewall.fragments;
+package cl.rinno.newdevicewall;
 
-
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.view.DraweeTransition;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.mmin18.widget.RealtimeBlurView;
 
@@ -25,28 +25,22 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cl.rinno.newdevicewall.FichaEquipo;
-import cl.rinno.newdevicewall.MainActivity;
-import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.adapters.CaracteristicasDestacadoAdapter;
 import cl.rinno.newdevicewall.cls.NonSwipeableViewPager;
+import cl.rinno.newdevicewall.cls.TimerInactivity;
 import cl.rinno.newdevicewall.cls.ViewPagerCarruselAdapter;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
 import cl.rinno.newdevicewall.models.Session;
 import me.crosswall.lib.coverflow.CoverFlow;
 import me.crosswall.lib.coverflow.core.PagerContainer;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AccentedAccessoryFragment extends Fragment {
+public class AccesoriosActivity extends AppCompatActivity {
 
-    FichaEquipo fichaEquipo = null;
     ArrayList<String> caracteristicasList;
     LinearLayoutManager linearLayoutManagerCaract;
 
-    MainActivity mainActivity = null;
 
     @BindView(R.id.blur_content)
     RealtimeBlurView blurContent;
@@ -112,64 +106,51 @@ public class AccentedAccessoryFragment extends Fragment {
     ViewPagerCarruselAdapter viewPagerCarruselAdapter;
     ArrayList<Producto> equiposCompatibles;
 
-    public AccentedAccessoryFragment() {
-        // Required empty public constructor
-    }
+    TimerInactivity timerInactivity;
 
-    Producto producto;
-
-    public AccentedAccessoryFragment(FichaEquipo fichaEquipo, Producto producto) {
-        this.fichaEquipo = fichaEquipo;
-        this.producto = producto;
-    }
-    public AccentedAccessoryFragment(MainActivity mainActivity, Producto producto) {
-        this.mainActivity = mainActivity;
-        this.producto = producto;
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_accented_accessory, container, false);
-        ButterKnife.bind(this, view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_accesorios);
+        ButterKnife.bind(this);
+        timerInactivity = new TimerInactivity(120000,1000,this);
+        timerInactivity.start();
         caracteristicasList = new ArrayList<>();
         equiposCompatibles = new ArrayList<>();
-        linearLayoutManagerCaract = new LinearLayoutManager(getContext());
+        linearLayoutManagerCaract = new LinearLayoutManager(this);
         linearLayoutManagerCaract.setOrientation(LinearLayoutManager.VERTICAL);
-        tvNameAccessory.setText(producto.getName());
-        tvProviderName.setText(producto.getProvider_name());
-        imageAccentedAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + producto.getDetalles().get(0).getValue())));
-        tvPrecioVenta.setText(getString(R.string.precio_venta, producto.getPrecios().get(0).getValue()));
+        tvNameAccessory.setText(Global.accesorio.getName());
+        tvProviderName.setText(Global.accesorio.getProvider_name());
+        imageAccentedAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.accesorio.getDetalles().get(0).getValue())));
+        tvPrecioVenta.setText(getString(R.string.precio_venta, Global.accesorio.getPrecios().get(0).getValue()));
         rvCaracteristicas.setHasFixedSize(true);
         rvCaracteristicas.setLayoutManager(linearLayoutManagerCaract);
-        tvCuotaMensual.setText(getString(R.string.precio_venta, producto.getCae().get(1).getValue()));
-        tvCae.setText(getString(R.string.precio_cae, producto.getCae().get(0).getValue()));
-        tvTotalAPagar.setText(getString(R.string.precio_venta, producto.getCae().get(2).getValue()));
+        tvCuotaMensual.setText(getString(R.string.precio_venta, Global.accesorio.getCae().get(1).getValue()));
+        tvCae.setText(getString(R.string.precio_cae, Global.accesorio.getCae().get(0).getValue()));
+        tvTotalAPagar.setText(getString(R.string.precio_venta, Global.accesorio.getCae().get(2).getValue()));
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                for (int i = 0; i < producto.getDetalles().size(); i++) {
-                    switch (producto.getDetalles().get(i).getKey()) {
+                for (int i = 0; i < Global.accesorio.getDetalles().size(); i++) {
+                    switch (Global.accesorio.getDetalles().get(i).getKey()) {
                         case "ATONE":
                         case "ATTWO":
                         case "ATTHREE":
                         case "ATFOUR":
                         case "ATFIVE":
-                            caracteristicasList.add(producto.getDetalles().get(i).getValue());
+                            caracteristicasList.add(Global.accesorio.getDetalles().get(i).getValue());
                             break;
                     }
                 }
-                if(mainActivity != null){
-                    for (int r = 0; r < producto.getDevices().size(); r++) {
-                        for (int i = 0; i < Session.objData.getDevices().size(); i++) {
-                            if (producto.getDevices().get(r).getId().equals(Session.objData.getDevices().get(i).getId())) {
-                                producto.getDevices().get(r).setDetalles(Session.objData.getDevices().get(i).getDetalles());
-                                equiposCompatibles.add(producto.getDevices().get(r));
-                                break;
-                            }
-
+                for (int r = 0; r < Global.accesorio.getDevices().size(); r++) {
+                    for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+                        if (Global.accesorio.getDevices().get(r).getId().equals(Session.objData.getDevices().get(i).getId())) {
+                            Global.accesorio.getDevices().get(r).setDetalles(Session.objData.getDevices().get(i).getDetalles());
+                            equiposCompatibles.add(Global.accesorio.getDevices().get(r));
+                            break;
                         }
+
                     }
                 }
                 return null;
@@ -179,42 +160,28 @@ public class AccentedAccessoryFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 CaracteristicasDestacadoAdapter caracteristicasAdapter = new CaracteristicasDestacadoAdapter(caracteristicasList);
                 rvCaracteristicas.setAdapter(caracteristicasAdapter);
-                if(mainActivity != null){
-                    if(equiposCompatibles.size() > 2){
-                        btnBackAccesory.setVisibility(View.VISIBLE);
-                        btnBackAccesory.setBackground(getResources().getDrawable(R.drawable.bg_disabled));
-                        lineatNextAccesory.setVisibility(View.VISIBLE);
-                    }else{
-                        btnBackAccesory.setVisibility(View.GONE);
-                        lineatNextAccesory.setVisibility(View.GONE);
-                    }
-                    viewPagerCarruselAdapter = new ViewPagerCarruselAdapter(getChildFragmentManager(), equiposCompatibles, 1);
-                    vpCarrusel.setAdapter(viewPagerCarruselAdapter);
+                if(equiposCompatibles.size() > 2){
+                    btnBackAccesory.setVisibility(View.VISIBLE);
+                    btnBackAccesory.setBackground(getResources().getDrawable(R.drawable.bg_disabled));
+                    lineatNextAccesory.setVisibility(View.VISIBLE);
                 }else{
-                    vpCarrusel.setVisibility(View.GONE);
-                    textView13.setVisibility(View.GONE);
                     btnBackAccesory.setVisibility(View.GONE);
                     lineatNextAccesory.setVisibility(View.GONE);
                 }
+                viewPagerCarruselAdapter = new ViewPagerCarruselAdapter(getSupportFragmentManager(), equiposCompatibles, 1);
+                vpCarrusel.setAdapter(viewPagerCarruselAdapter);
 
             }
         }.execute();
 
-        if(mainActivity != null){
-            new CoverFlow.Builder()
-                    .with(vpCarrusel)
-                    .pagerMargin(0f)
-                    .scale(0.4f)
-                    .spaceSize(0f)
-                    .rotationY(0f)
-                    .build();
-            pagerContainer.setOverlapEnabled(true);
-        }else{
-            vpCarrusel.setVisibility(View.GONE);
-            textView13.setVisibility(View.GONE);
-            btnBackAccesory.setVisibility(View.GONE);
-            lineatNextAccesory.setVisibility(View.GONE);
-        }
+        new CoverFlow.Builder()
+                .with(vpCarrusel)
+                .pagerMargin(0f)
+                .scale(0.4f)
+                .spaceSize(0f)
+                .rotationY(0f)
+                .build();
+        pagerContainer.setOverlapEnabled(true);
 
 
 
@@ -243,15 +210,16 @@ public class AccentedAccessoryFragment extends Fragment {
 
             }
         });
-        return view;
     }
 
     @OnClick({R.id.blur_content, R.id.button_close_fragment, R.id.content_precios, R.id.content_descuento, R.id.content_main, R.id.lineat_next_accesory, R.id.lineat_back_accesory})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.blur_content:
+                finish();
                 break;
             case R.id.button_close_fragment:
+                finish();
                 break;
             case R.id.content_precios:
                 break;
@@ -271,7 +239,38 @@ public class AccentedAccessoryFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    protected void onPause() {
+        super.onPause();
+        timerInactivity.cancel();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timerInactivity.cancel();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        timerInactivity.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerInactivity.cancel();
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        timerInactivity.cancel();
+        timerInactivity.start();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
     }
 }

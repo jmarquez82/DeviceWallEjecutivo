@@ -189,10 +189,8 @@ public class NormalAccessoryFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.blur_content:
-                mainActivity.closeBlurAccessories();
                 break;
             case R.id.button_close_fragment:
-                mainActivity.closeBlurAccessories();
                 break;
             case R.id.content_modal:
                 break;

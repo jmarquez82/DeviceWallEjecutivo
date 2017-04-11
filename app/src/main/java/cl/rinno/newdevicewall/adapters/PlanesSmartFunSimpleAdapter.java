@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import cl.rinno.newdevicewall.EquipoConPlanActivity;
 import cl.rinno.newdevicewall.MainActivity;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Producto;
@@ -48,7 +47,7 @@ public class PlanesSmartFunSimpleAdapter extends RecyclerView.Adapter<PlanesSmar
         holder.btnEquiposDestacados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.openEDSmartFun(plan.getDetalles().get(4).getValue(), plan.getDetalles().get(9).getValue(),0);
+                activity.openEDSmartFun(plan.getDetalles().get(4).getValue(), plan.getDetalles().get(9).getValue(),0, plan);
             }
         });
     }
@@ -73,7 +72,7 @@ public class PlanesSmartFunSimpleAdapter extends RecyclerView.Adapter<PlanesSmar
             txtCuotaPromo = (TextView) itemView.findViewById(R.id.tv_cuota_promo);
             txtCuotaInicial = (TextView) itemView.findViewById(R.id.tv_valor_plan);
             btnEquiposDestacados = (LinearLayout) itemView.findViewById(R.id.linear_equipos_destacados);
-            txtMinutos = (TextView) itemView.findViewById(R.id.tv_minutos);
+            txtMinutos = (TextView) itemView.findViewById(R.id.tv_minutos_mpm);
         }
     }
 }

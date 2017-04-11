@@ -184,6 +184,7 @@ public class SettingsActivity extends AppCompatActivity {
                     editorConfiguracionFile.putBoolean("hasSettings",true);
                     editorConfiguracionFile.apply();
                     Intent i = new Intent(this, SplashActivity.class);
+                    i.putExtra("settings","si");
                     startActivity(i);
                     finish();
 

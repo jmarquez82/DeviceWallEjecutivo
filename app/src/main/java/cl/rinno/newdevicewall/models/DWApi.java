@@ -14,6 +14,7 @@ public class DWApi {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.setTimeout(20000);
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 

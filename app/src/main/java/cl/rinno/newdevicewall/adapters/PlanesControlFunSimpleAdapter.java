@@ -8,8 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-import cl.rinno.newdevicewall.EquipoConPlanActivity;
 import cl.rinno.newdevicewall.MainActivity;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Producto;
@@ -26,6 +27,19 @@ public class PlanesControlFunSimpleAdapter extends RecyclerView.Adapter<PlanesCo
     public PlanesControlFunSimpleAdapter(ArrayList<Producto> planesList, MainActivity activity) {
         this.planesList = planesList;
         this.activity = activity;
+        Collections.sort(this.planesList, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto o1, Producto o2) {
+                int valueOne;
+                int valueTwo;
+                double doubleOne, doubleTwo;
+                doubleOne = Double.parseDouble(o1.getDetalles().get(4).getValue());
+                doubleTwo = Double.parseDouble(o2.getDetalles().get(4).getValue());
+                valueOne = (int) doubleOne;
+                valueTwo = (int) doubleTwo;
+                return valueOne - valueTwo;
+            }
+        });
     }
 
     @Override
@@ -35,7 +49,7 @@ public class PlanesControlFunSimpleAdapter extends RecyclerView.Adapter<PlanesCo
     }
 
     @Override
-    public void onBindViewHolder(PlanesControlFunViewHolder holder, int position) {
+    public void onBindViewHolder(PlanesControlFunViewHolder holder, final int position) {
         final Producto plan = planesList.get(position);
         holder.txtMinutos.setText(activity.getString(R.string.minutos_plan, plan.getDetalles().get(2).getValue()));
         holder.txtGBNombre.setText(activity.getString(R.string.cuota_datos,plan.getDetalles().get(4).getValue()));
@@ -51,7 +65,7 @@ public class PlanesControlFunSimpleAdapter extends RecyclerView.Adapter<PlanesCo
         holder.btnVerPromo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.openEDSmartFun(plan.getDetalles().get(4).getValue(), plan.getDetalles().get(9).getValue(),1);
+                activity.openEDSmartFun(plan.getDetalles().get(4).getValue(), plan.getDetalles().get(9).getValue(),1, planesList.get(position));
             }
         });
     }
@@ -75,8 +89,8 @@ public class PlanesControlFunSimpleAdapter extends RecyclerView.Adapter<PlanesCo
             txtCuotaDatos = (TextView) itemView.findViewById(R.id.tv_cuota_datos);
             txtCuotaPromo = (TextView) itemView.findViewById(R.id.tv_cuota_promo);
             txtCuotaInicial = (TextView) itemView.findViewById(R.id.tv_valor_plan);
-            btnVerPromo = (LinearLayout) itemView.findViewById(R.id.linear_ver_promo);
-            txtMinutos = (TextView) itemView.findViewById(R.id.tv_minutos);
+            btnVerPromo = (LinearLayout) itemView.findViewById(R.id.linear_equipos_destacados);
+            txtMinutos = (TextView) itemView.findViewById(R.id.tv_minutos_mpm);
             txtPromo = (TextView) itemView.findViewById(R.id.tv_promo);
         }
     }

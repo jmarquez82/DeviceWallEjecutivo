@@ -33,8 +33,14 @@ public class Producto {
     private String primaryImage;
     private String bannerImage;
     private String condicionImage;
+    private String equno;
+    private String eqdos;
+    private String imagen_oferta;
 
-    public Producto(String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name, String provider_image, String sizes, String imageHigh, ArrayList<Detalle> cae, String primaryImage, String bannerImage, String condicionImage) {
+    public Producto() {
+    }
+
+    public Producto(String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name, String provider_image, String sizes, String imageHigh, ArrayList<Detalle> cae, String primaryImage, String bannerImage, String condicionImage, String equno, String eqdos, String imagen_oferta) {
         this.id = id;
         this.provider_id = provider_id;
         this.product_type_id = product_type_id;
@@ -61,6 +67,9 @@ public class Producto {
         this.primaryImage = primaryImage;
         this.bannerImage = bannerImage;
         this.condicionImage = condicionImage;
+        this.equno = equno;
+        this.eqdos = eqdos;
+        this.imagen_oferta = imagen_oferta;
     }
 
     public String getId() {
@@ -269,6 +278,30 @@ public class Producto {
 
     public void setCondicionImage(String condicionImage) {
         this.condicionImage = condicionImage;
+    }
+
+    public String getEquno() {
+        return equno;
+    }
+
+    public void setEquno(String equno) {
+        this.equno = equno;
+    }
+
+    public String getEqdos() {
+        return eqdos;
+    }
+
+    public void setEqdos(String eqdos) {
+        this.eqdos = eqdos;
+    }
+
+    public String getImagen_oferta() {
+        return imagen_oferta;
+    }
+
+    public void setImagen_oferta(String imagen_oferta) {
+        this.imagen_oferta = imagen_oferta;
     }
 
     @Override

@@ -18,8 +18,10 @@ public class Global {
     public static String dirImages = dirHome+dirResource+"i/";
     public static String dirJson = dirHome+dirResource+newJson;
     public static String jsonData2 = "";
+    public static int mBandera = 0;
 
     public static Producto producto;
+    public static Producto accesorio;
     public static ArrayList<Producto> allDevices = new ArrayList<>();
     public static ArrayList<Producto> allProducts = new ArrayList<>();
     public static ArrayList<Producto> allAccessories = new ArrayList<>();
@@ -28,6 +30,8 @@ public class Global {
     public static ArrayList<Producto> planesDeVozIlimitado = new ArrayList<>();
     public static ArrayList<Producto> planesSmartFunSimple = new ArrayList<>();
     public static ArrayList<Producto> planesControlFunSimple = new ArrayList<>();
+    public static ArrayList<Producto> miPrimerPlanMultimedia = new ArrayList<>();
+    public static ArrayList<Producto> miPrimerPlanVoz = new ArrayList<>();
     public static ArrayList<Producto> allPlans = new ArrayList<>();
 
     public static void makeDirectories() {

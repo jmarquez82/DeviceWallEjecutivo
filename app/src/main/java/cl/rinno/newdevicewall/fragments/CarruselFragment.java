@@ -3,6 +3,7 @@ package cl.rinno.newdevicewall.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,7 +46,6 @@ public class CarruselFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,5 +66,4 @@ public class CarruselFragment extends Fragment {
         txtProviderName.setText(producto.getProvider_name());
         return view;
     }
-
 }

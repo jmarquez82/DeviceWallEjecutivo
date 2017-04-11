@@ -54,6 +54,7 @@ public class AlmacenamientoEquipoAdapter extends RecyclerView.Adapter<Almacenami
                     Global.producto.setDetalles(listaHIjos.get(position).getDetalles());
                     Global.producto.setPlanes(listaHIjos.get(position).getPlanes());
                     Global.producto.setPrecios(listaHIjos.get(position).getPrecios());
+                    Global.producto.setCae(listaHIjos.get(position).getCae());
                     activity.startActivity(new Intent(activity.getApplicationContext(), FichaEquipo.class));
                     activity.overridePendingTransition(0,0);
                     activity.finish();

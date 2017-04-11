@@ -15,8 +15,8 @@ import cl.rinno.newdevicewall.models.Producto;
 
 public class ViewPagerCarruselAdapter extends FragmentPagerAdapter {
 
-    ArrayList<Producto> productoArrayList;
-    int type;
+    private ArrayList<Producto> productoArrayList;
+    private int type;
 
     public ViewPagerCarruselAdapter(FragmentManager fm, ArrayList<Producto> productoArrayList, int type) {
         super(fm);
@@ -26,6 +26,7 @@ public class ViewPagerCarruselAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int pos) {
+
         return new CarruselFragment(productoArrayList.get(pos), type);
     }
 

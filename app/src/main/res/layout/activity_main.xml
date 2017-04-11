@@ -387,6 +387,7 @@
                 android:id="@+id/relative_content_devices"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:alpha="0"
                 android:background="@color/blue"
                 android:orientation="horizontal"
                 android:visibility="gone">
@@ -413,8 +414,12 @@
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:alpha="0"
                         android:background="@drawable/bg_filter_devices"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
 
                         <ImageView
                             android:id="@+id/icn_filtro_marca"
@@ -440,9 +445,13 @@
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:alpha="0"
                         android:background="@drawable/bg_filter_devices"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
 
                         <ImageView
                             android:id="@+id/icn_filtro_pantalla"
@@ -468,8 +477,12 @@
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:alpha="0"
                         android:background="@drawable/bg_filter_devices"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
 
                         <ImageView
                             android:id="@+id/icn_filtro_camara_trasera"
@@ -495,8 +508,12 @@
                         android:layout_height="84.0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
+                        android:alpha="0"
                         android:background="@drawable/bg_filter_devices"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
 
                         <ImageView
                             android:id="@+id/icn_filtro_camara_frontal"
@@ -525,6 +542,7 @@
                 android:id="@+id/relative_content_accessory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:alpha="0"
                 android:background="@color/greenMint"
                 android:orientation="horizontal"
                 android:visibility="gone">
@@ -555,8 +573,12 @@
                             android:layout_height="84.0dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
+                            android:alpha="0"
                             android:background="@drawable/bg_filter_accessory"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:scaleX="0"
+                            android:scaleY="0"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:id="@+id/icn_filtro_multimedia"
@@ -582,8 +604,12 @@
                             android:layout_height="84.0dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
+                            android:alpha="0"
                             android:background="@drawable/bg_filter_accessory"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:scaleX="0"
+                            android:scaleY="0"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:id="@+id/icn_filtro_proteccion"
@@ -609,10 +635,14 @@
                             android:layout_height="84.0dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
+                            android:alpha="0"
                             android:background="@drawable/bg_filter_accessory"
                             android:gravity="center_vertical"
                             android:paddingEnd="20dp"
-                            android:paddingStart="20dp">
+                            android:paddingStart="20dp"
+                            android:scaleX="0"
+                            android:scaleY="0"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:id="@+id/icn_filtro_energia"
@@ -638,8 +668,12 @@
                             android:layout_height="84.0dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
+                            android:alpha="0"
                             android:background="@drawable/bg_filter_accessory"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:scaleX="0"
+                            android:scaleY="0"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:id="@+id/icn_filtro_por_equipo"
@@ -669,6 +703,7 @@
                 android:id="@+id/relative_content_plans"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:alpha="0"
                 android:background="@color/yellow"
                 android:orientation="horizontal"
                 android:visibility="gone">
@@ -691,15 +726,18 @@
                         android:id="@+id/button_smartfun"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="30dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:alpha="0"
                         android:background="@drawable/bg_filter_plans"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0">
 
                         <ImageView
                             android:id="@+id/icn_plan_smartfun"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/icn_smartfun" />
 
                         <TextView
@@ -718,15 +756,18 @@
                         android:id="@+id/button_controlfun"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="30dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:alpha="0"
                         android:background="@drawable/bg_filter_plans"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0">
 
                         <ImageView
                             android:id="@+id/icn_plan_controlfun"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/icn_controlfun" />
 
                         <TextView
@@ -745,17 +786,20 @@
                         android:id="@+id/button_planvoz"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="30dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:alpha="0"
                         android:background="@drawable/bg_filter_plans"
                         android:gravity="center_vertical"
                         android:paddingEnd="20dp"
-                        android:paddingStart="20dp">
+                        android:paddingStart="20dp"
+                        android:scaleX="0"
+                        android:scaleY="0">
 
                         <ImageView
                             android:id="@+id/icn_plan_voz"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/icn_planvoz" />
 
                         <TextView
@@ -765,6 +809,38 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:text="Sólo Voz"
+                            android:textColor="@color/white"
+                            android:textSize="26sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_miprimerplan"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_plans"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:scaleX="0"
+                        android:scaleY="0">
+
+                        <ImageView
+                            android:id="@+id/icn_primer_plan"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/icn_mi_primer_plan" />
+
+                        <TextView
+                            android:id="@+id/text_primer_plan"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Mi primer\nplan"
                             android:textColor="@color/white"
                             android:textSize="26sp" />
 
@@ -786,11 +862,11 @@
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="830dp"
         app:pulse_color="@color/orange"
         app:pulse_count="6"
         app:pulse_duration="4500"
-        android:layout_marginEnd="10dp"
         app:pulse_interpolator="Linear"
         app:pulse_repeat="0"
         app:pulse_startFromScratch="false">
@@ -801,9 +877,9 @@
             android:layout_height="134dp"
             android:layout_centerInParent="true"
             android:layout_marginTop="850dp"
+            android:animateLayoutChanges="true"
             fresco:placeholderImage="@drawable/orange_right_arrow" />
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>
-
 
 
     <pl.bclogic.pulsator4droid.library.PulsatorLayout
@@ -811,11 +887,11 @@
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="830dp"
         app:pulse_color="@color/orange"
         app:pulse_count="6"
         app:pulse_duration="4500"
-        android:layout_marginStart="10dp"
         app:pulse_interpolator="Linear"
         app:pulse_repeat="0"
         app:pulse_startFromScratch="false">
@@ -824,8 +900,9 @@
             android:id="@+id/button_arrow_left"
             android:layout_width="134dp"
             android:layout_height="134dp"
-            android:visibility="visible"
             android:layout_centerInParent="true"
+            android:animateLayoutChanges="true"
+            android:visibility="gone"
             fresco:placeholderImage="@drawable/orange_left_arrow" />
 
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>
@@ -886,22 +963,24 @@
                 android:background="#5d000000"
                 android:gravity="center"
                 android:orientation="horizontal">
+
                 <RelativeLayout
 
                     android:layout_width="132dp"
                     android:layout_height="132dp"
-                    android:background="@drawable/bg_type_filters_accessory"
-                    >
+                    android:background="@drawable/bg_type_filters_accessory">
+
                     <RelativeLayout
                         android:id="@+id/rl_parent_image"
                         android:layout_width="70dp"
-                        android:layout_centerInParent="true"
-                        android:layout_height="70dp">
+                        android:layout_height="70dp"
+                        android:layout_centerInParent="true">
+
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/image_provider_selected"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            fresco:actualImageScaleType="fitCenter"/>
+                            fresco:actualImageScaleType="fitCenter" />
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -910,9 +989,9 @@
                     fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
                     android:text="Marca Seleccionada_ "
                     android:textColor="@color/white"
-                    android:layout_marginStart="30dp"
                     android:textSize="50sp" />
 
                 <TextView
@@ -933,25 +1012,23 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_marginTop="61dp"
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="61dp"
                     android:text="Elige el equipo"
                     android:textColor="@color/white"
-                    android:textSize="40sp"
-                    />
+                    android:textSize="40sp" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="59dp"
                     android:id="@+id/rv_equipos_compatibles"
                     android:layout_width="match_parent"
                     android:layout_height="584dp"
+                    android:layout_marginEnd="72dp"
                     android:layout_marginStart="72dp"
-                    android:layout_marginEnd="72dp"/>
+                    android:layout_marginTop="59dp" />
 
             </LinearLayout>
-
 
 
         </LinearLayout>
@@ -973,41 +1050,44 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_marginStart="141dp"
                     android:layout_width="82.0dp"
                     android:layout_height="87.0dp"
-                    android:src="@drawable/asterisco_azul"
-                    android:layout_marginEnd="20dp"/>
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="141dp"
+                    android:src="@drawable/asterisco_azul" />
+
                 <TextView
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Has elegido\nel equipo"
-                    android:textSize="41.0sp"
+                    android:layout_marginEnd="99dp"
                     android:includeFontPadding="false"
+                    android:text="Has elegido\nel equipo"
                     android:textColor="@color/white"
-                    android:layout_marginEnd="99dp"/>
-                
+                    android:textSize="41.0sp" />
+
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/img_device_selected"
                     android:layout_width="80dp"
                     android:layout_height="159dp"
-                    fresco:actualImageScaleType="fitCenter"/>
+                    fresco:actualImageScaleType="fitCenter" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/tv_proveedor_equipo_compatible_seleccionado"
+                        fontPath="fonts/DINNextLTPro-Bold.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Samsung"
+                        android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="21sp"
-                        fontPath="fonts/DINNextLTPro-Bold.otf"
-                        />
+                        android:textSize="21sp" />
+
                     <TextView
                         android:id="@+id/tv_nombre_equipo_compatible_seleccionado"
                         fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -1015,7 +1095,7 @@
                         android:layout_height="wrap_content"
                         android:text="Galaxy S6"
                         android:textColor="@color/orange"
-                        android:textSize="32sp"/>
+                        android:textSize="32sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -1025,18 +1105,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="158dp">
+
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Éstos son los "
                         android:textColor="@color/white"
-                        android:textSize="40sp"
-                        />
+                        android:textSize="40sp" />
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1044,39 +1125,38 @@
                         android:layout_height="wrap_content"
                         android:text="Accesorios compatibles_"
                         android:textColor="@color/yellow"
-                        android:textSize="40sp"
-                        />
+                        android:textSize="40sp" />
 
                 </LinearLayout>
-
 
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="63dp">
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_accesorios"
                         android:layout_width="match_parent"
-                        android:layout_height="410dp"/>
+                        android:layout_height="410dp" />
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/button_arrow_left_filter"
                         android:layout_width="134dp"
                         android:layout_height="134dp"
-                        android:visibility="visible"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="27dp"
+                        android:visibility="visible"
                         fresco:placeholderImage="@drawable/orange_left_arrow" />
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/button_arrow_right_filter"
                         android:layout_width="134dp"
                         android:layout_height="134dp"
-                        android:visibility="visible"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginEnd="27dp"
+                        android:visibility="visible"
                         fresco:placeholderImage="@drawable/orange_right_arrow" />
                 </RelativeLayout>
             </LinearLayout>
@@ -1090,6 +1170,7 @@
             android:layout_above="@id/linear_close_filters"
             android:orientation="vertical"
             android:visibility="gone">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1255,8 +1336,8 @@
 
                 <LinearLayout
                     android:id="@+id/linear_condiciones_comerciales_solo_voz"
-                    android:layout_width="1dp"
-                    android:layout_height="1dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:background="@drawable/bg_condiciones_comerciales"
                     android:gravity="center"
@@ -1303,8 +1384,8 @@
 
                 <LinearLayout
                     android:id="@+id/linear_condiciones_comerciales_smart_fun"
-                    android:layout_width="1dp"
-                    android:layout_height="1dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
                     android:background="@drawable/bg_condiciones_comerciales"
                     android:gravity="center"
@@ -1351,14 +1432,122 @@
 
                 <LinearLayout
                     android:id="@+id/linear_condiciones_comerciales_control_fun"
-                    android:layout_width="1dp"
-                    android:layout_height="1dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
                     android:background="@drawable/bg_condiciones_comerciales"
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintRight_toRightOf="parent"
                     fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_controlfun">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="2dp"
+                        android:text="Ver "
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Condiciones Comerciales_"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_mi_primer_plan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_banner_plan"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView299"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:text="Mi Primer"
+                    android:textColor="@color/blue"
+                    android:textSize="53sp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView355"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:text="Plan Multimedia_"
+                    android:textColor="@color/orange"
+                    android:textSize="53sp"
+                    fresco:layout_constraintLeft_toRightOf="@+id/textView299"
+                    fresco:layout_constraintTop_toTopOf="@+id/textView299" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_mi_primer_plan_multimedia"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView355" />
+
+                <TextView
+                    android:id="@+id/textView444"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Mi Primer"
+                    android:textColor="@color/blue"
+                    android:textSize="53sp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_multimedia" />
+
+                <TextView
+                    android:id="@+id/textView455"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:text="Plan Voz_"
+                    android:textColor="@color/orange"
+                    android:textSize="53sp"
+                    fresco:layout_constraintLeft_toRightOf="@+id/textView444"
+                    fresco:layout_constraintTop_toTopOf="@+id/textView444" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_mi_primer_plan_voz"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    fresco:layout_constraintHorizontal_bias="0.0"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView455" />
+
+                <LinearLayout
+                    android:id="@+id/linear_condiciones_comerciales_primerplan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_condiciones_comerciales"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_voz">
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -1453,19 +1642,11 @@
 
     </LinearLayout>
 
-
     <FrameLayout
         android:id="@+id/fragment_accesorio"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/image_destacado"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        fresco:actualImageScaleType="fitCenter"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/rl_popup"
@@ -1483,38 +1664,46 @@
             android:id="@+id/image_popup"
             android:layout_width="match_parent"
             android:layout_height="1400dp"
-            android:layout_marginStart="100dp"
             android:layout_marginEnd="100dp"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="200dp"
-            fresco:actualImageScaleType="fitCenter"/>
+            fresco:actualImageScaleType="fitCenter" />
 
-        <LinearLayout
-            android:id="@+id/linear_close_popup"
-            android:layout_width="291dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="74dp"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/bg_button_close_filter"
-            android:gravity="center"
+        <RelativeLayout
+            android:layout_width="305dp"
+            android:layout_height="115dp"
             android:layout_below="@id/image_popup"
             android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
+            android:layout_marginBottom="74dp"
+            android:layout_marginTop="80dp"
+            android:background="@android:drawable/dialog_holo_dark_frame">
 
-            <TextView
-                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cerrar"
-                android:textColor="@color/white"
-                android:textSize="41sp" />
+            <LinearLayout
+                android:id="@+id/linear_close_popup"
+                android:layout_width="291dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/bg_button_close_filter"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="29.29dp"
-                android:layout_height="29.32dp"
-                android:layout_marginStart="30dp"
-                android:src="@drawable/close_blur" />
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cerrar"
+                    android:textColor="@color/white"
+                    android:textSize="41sp" />
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="29.29dp"
+                    android:layout_height="29.32dp"
+                    android:layout_marginStart="30dp"
+                    android:src="@drawable/close_blur" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
 
     </RelativeLayout>
 
@@ -1530,191 +1719,229 @@
             app:realtimeBlurRadius="10dp"
             app:realtimeOverlayColor="#c8000000" />
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraint_equipo_destacado_sf"
-            android:layout_width="970dp"
-            android:layout_height="1070dp"
+        <RelativeLayout
+            android:id="@+id/rl_parent_equipos_destacados"
+            android:layout_width="985dp"
+            android:layout_height="1085dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="260dp"
-            android:background="@color/backgroundGray">
-
-            <LinearLayout
-                android:layout_marginTop="32dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                android:gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-                android:id="@+id/linearLayout11">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="{ Equipos"
-                    fontPath="fonts/DINNextLTPro-Bold.otf"
-                    android:textSize="47sp"
-                    android:textColor="@color/blue"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Recomendados_"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:textSize="47sp"
-                    android:textColor="@color/orange"
-                    />
-            </LinearLayout>
+            android:background="@android:drawable/dialog_holo_dark_frame">
 
             <android.support.constraint.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="165dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/blue"
-                android:id="@+id/constraintLayout2"
-                android:layout_marginTop="-2dp"
-                app:layout_constraintHorizontal_bias="0.0">
+                android:id="@+id/constraint_equipo_destacado_sf"
+                android:layout_width="970dp"
+                android:layout_height="1070dp"
+                android:background="@color/backgroundGray">
 
-                <TextView
-                    android:id="@+id/textView56"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/linearLayout11"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="$"
-                    android:textColor="@color/white"
-                    android:textSize="22sp"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_precio_equipo_destacado_sf"
-                    app:layout_constraintTop_toTopOf="@+id/tv_precio_equipo_destacado_sf"
-                    app:layout_constraintVertical_bias="0.733"
-                    app:layout_constraintRight_toLeftOf="@+id/tv_precio_equipo_destacado_sf" />
+                    android:layout_marginTop="32dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-                <TextView
-                    android:id="@+id/tv_precio_equipo_destacado_sf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="24.990"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:textColor="@color/white"
-                    android:textSize="48sp"
-                    tools:layout_editor_absoluteY="623dp"
-                    android:layout_marginTop="95dp"
-                    app:layout_constraintRight_toRightOf="@+id/textView54"
-                    app:layout_constraintLeft_toLeftOf="@+id/textView54"
-                    app:layout_constraintTop_toBottomOf="parent"/>
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Bold.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{ Equipos"
+                        android:textColor="@color/blue"
+                        android:textSize="47sp" />
 
-                <TextView
-                    android:id="@+id/textView54"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="VALOR DEL PLAN"
-                    android:textColor="@color/white"
-                    fontPath="fonts/DINNextLTPro-Medium.otf"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintRight_toRightOf="@+id/textView53"
-                    android:layout_marginLeft="8dp"
-                    app:layout_constraintLeft_toLeftOf="@+id/textView49"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintVertical_bias="0.59000003"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp" />
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Recomendados_"
+                        android:textColor="@color/orange"
+                        android:textSize="47sp" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView53"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" GB"
-                    fontPath="fonts/DINNextLTPro-Bold.otf"
-                    android:textColor="@color/white"
-                    android:textSize="37sp"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_gb_plan_sf"
-                    app:layout_constraintTop_toTopOf="@+id/tv_gb_plan_sf" />
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraintLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="165dp"
+                    android:layout_marginTop="-2dp"
+                    android:background="@color/blue"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Bold.otf"
-                    android:id="@+id/tv_gb_plan_sf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4.5"
-                    android:textColor="@color/white"
-                    android:textSize="37sp"
-                    app:layout_constraintLeft_toRightOf="@+id/textView51"
-                    app:layout_constraintTop_toTopOf="@+id/textView51" />
+                    <TextView
+                        android:id="@+id/textView56"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_precio_equipo_destacado_sf"
+                        app:layout_constraintRight_toLeftOf="@+id/tv_precio_equipo_destacado_sf"
+                        app:layout_constraintTop_toTopOf="@+id/tv_precio_equipo_destacado_sf"
+                        app:layout_constraintVertical_bias="0.733" />
 
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Bold.otf"
-                    android:id="@+id/textView51"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Smart Fun SIMple "
-                    android:textColor="@color/white"
-                    android:textSize="37sp"
-                    app:layout_constraintLeft_toRightOf="@+id/textView49"
-                    app:layout_constraintTop_toTopOf="@+id/textView49" />
+                    <TextView
+                        android:id="@+id/tv_precio_equipo_destacado_sf"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="95dp"
+                        android:text="24.990"
+                        android:textColor="@color/white"
+                        android:textSize="48sp"
+                        app:layout_constraintLeft_toLeftOf="@+id/textView54"
+                        app:layout_constraintRight_toRightOf="@+id/textView54"
+                        app:layout_constraintTop_toBottomOf="parent"
+                        tools:layout_editor_absoluteY="623dp" />
 
-                <TextView
-                    android:id="@+id/textView49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="61dp"
-                    android:layout_marginLeft="240dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Plan "
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:textColor="@color/white"
-                    android:textSize="37sp"
+                    <TextView
+                        android:id="@+id/textView54"
+                        fontPath="fonts/DINNextLTPro-Medium.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="10dp"
+                        android:text="VALOR DEL PLAN"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="@+id/linear_text"
+                        app:layout_constraintRight_toRightOf="@+id/linear_text"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.59000003" />
+
+                    <LinearLayout
+                        android:id="@+id/linear_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="61dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.5">
+
+                        <TextView
+                            android:id="@+id/textView49"
+                            fontPath="fonts/DINNextLTPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Plan "
+                            android:textColor="@color/white"
+                            android:textSize="37sp" />
+
+                        <TextView
+                            android:id="@+id/textView51"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Smart Fun SIMple "
+                            android:textColor="@color/white"
+                            android:textSize="37sp" />
+
+                        <TextView
+                            android:id="@+id/tv_gb_plan_sf"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4.5"
+                            android:textColor="@color/white"
+                            android:textSize="37sp"
+                            app:layout_constraintLeft_toRightOf="@+id/textView51"
+                            app:layout_constraintTop_toTopOf="@+id/textView51" />
+
+                        <TextView
+                            android:id="@+id/textView53"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" GB"
+                            android:textColor="@color/white"
+                            android:textSize="37sp"
+                            app:layout_constraintLeft_toRightOf="@+id/tv_gb_plan_sf"
+                            app:layout_constraintTop_toTopOf="@+id/tv_gb_plan_sf" />
+
+                    </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.525" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout11">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_equipos_destacados_sf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="45dp"
+                        />
+                </LinearLayout>
+
+
             </android.support.constraint.ConstraintLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_equipos_destacados_sf"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="45dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout11"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+        </RelativeLayout>
 
-        </android.support.constraint.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/linear_close_equipo_destacado_sf"
-            android:layout_width="291dp"
-            android:layout_height="100dp"
+        <RelativeLayout
+            android:layout_width="305dp"
+            android:layout_height="115dp"
+            android:layout_below="@id/rl_parent_equipos_destacados"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="74dp"
             android:layout_marginTop="80dp"
-            android:background="@drawable/bg_button_close_filter"
-            android:gravity="center"
-            android:layout_below="@id/constraint_equipo_destacado_sf"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
+            android:background="@android:drawable/dialog_holo_dark_frame">
 
-            <TextView
-                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cerrar"
-                android:textColor="@color/white"
-                android:textSize="41sp" />
+            <LinearLayout
+                android:id="@+id/linear_close_equipo_destacado_sf"
+                android:layout_width="291dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/bg_button_close_filter"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="29.29dp"
-                android:layout_height="29.32dp"
-                android:layout_marginStart="30dp"
-                android:src="@drawable/close_blur" />
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cerrar"
+                    android:textColor="@color/white"
+                    android:textSize="41sp" />
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="29.29dp"
+                    android:layout_height="29.32dp"
+                    android:layout_marginStart="30dp"
+                    android:src="@drawable/close_blur" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image_destacado"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue"
+        android:visibility="gone" />
 </RelativeLayout>

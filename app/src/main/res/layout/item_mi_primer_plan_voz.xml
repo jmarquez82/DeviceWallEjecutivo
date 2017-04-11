@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="994dp"
+    android:layout_height="165dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/controlfun_content">
+
+    <TextView
+        android:id="@+id/textView55"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mi Primer Plan"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="52dp"
+        android:layout_marginLeft="33dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_precio_nombre_mpv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="5dp"
+        android:text="7999"
+        fontPath="fonts/DINNextLTPro-Bold.otf"
+        android:textColor="@color/white"
+        android:textSize="31sp"
+        app:layout_constraintLeft_toLeftOf="@+id/textView55"
+        app:layout_constraintRight_toRightOf="@+id/textView55"
+        app:layout_constraintTop_toBottomOf="@+id/textView55" />
+
+    <TextView
+        android:id="@+id/textView62"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="108dp"
+        android:layout_marginTop="57dp"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:text="Habla Hasta*"
+        android:textColor="@color/dimGray"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/textView55"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_habla_hasta_mpv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        android:textColor="@color/dimGray"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:textSize="25sp"
+        app:layout_constraintLeft_toLeftOf="@+id/textView62"
+        app:layout_constraintRight_toRightOf="@+id/textView62"
+        app:layout_constraintTop_toBottomOf="@+id/textView62" />
+
+    <TextView
+        android:id="@+id/textView67"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="111dp"
+        android:layout_marginTop="57dp"
+        android:text="VALOR DEL PLAN"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:textColor="@color/dimGray"
+        android:textSize="12sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_precio_mi_primer_plan_mpv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:text="7990"
+        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+        android:textColor="@color/blue"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintLeft_toLeftOf="@+id/textView67"
+        app:layout_constraintRight_toRightOf="@+id/textView67"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.63" />
+
+    <TextView
+        android:id="@+id/textView69"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$"
+        android:textColor="@color/blue"
+        android:textSize="22sp"
+        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_precio_mi_primer_plan_mpv"
+        app:layout_constraintTop_toTopOf="@+id/tv_precio_mi_primer_plan_mpv"
+        android:layout_marginTop="0dp"
+        app:layout_constraintRight_toLeftOf="@+id/tv_precio_mi_primer_plan_mpv"
+        android:layout_marginRight="0dp"
+        app:layout_constraintVertical_bias="0.72" />
+
+    <TextView
+        android:id="@+id/textView70"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="114dp"
+        android:layout_marginTop="0dp"
+        android:text="SMS TODO DESTINO"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:textColor="@color/dimGray"
+        android:textSize="12sp"
+        app:layout_constraintRight_toLeftOf="@+id/textView67"
+        app:layout_constraintTop_toTopOf="@+id/textView67" />
+
+    <TextView
+        android:id="@+id/tv_sms_mpv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:text="6000"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:textSize="25sp"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintLeft_toLeftOf="@+id/textView70"
+        app:layout_constraintRight_toRightOf="@+id/textView70"
+        app:layout_constraintTop_toBottomOf="@+id/textView70" />
+</android.support.constraint.ConstraintLayout>

@@ -1,14 +1,19 @@
 package cl.rinno.newdevicewall;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -30,6 +34,9 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.github.mmin18.widget.RealtimeBlurView;
+import android.widget.FrameLayout;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,22 +49,30 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.rinno.newdevicewall.adapters.AccesoriosAdapter;
+import cl.rinno.newdevicewall.adapters.CaracteristicasDestacadoAdapter;
 import cl.rinno.newdevicewall.adapters.EquiposCompatiblesAdapter;
 import cl.rinno.newdevicewall.adapters.EquiposDestacadosAdapter;
 import cl.rinno.newdevicewall.adapters.FiltrosAdapter;
+import cl.rinno.newdevicewall.adapters.MiPrimerPlanMultimediaAdapter;
+import cl.rinno.newdevicewall.adapters.MiPrimerPlanVozAdapter;
 import cl.rinno.newdevicewall.adapters.PlanDeVozAdapter;
 import cl.rinno.newdevicewall.adapters.PlanesControlFunSimpleAdapter;
 import cl.rinno.newdevicewall.adapters.PlanesSmartFunSimpleAdapter;
+import cl.rinno.newdevicewall.cls.NonSwipeableViewPager;
 import cl.rinno.newdevicewall.cls.TimerDestacado;
+import cl.rinno.newdevicewall.cls.ViewPagerCarruselAdapter;
 import cl.rinno.newdevicewall.fragments.AccentedAccessoryFragment;
 import cl.rinno.newdevicewall.gridlibrery.GridBuilder;
 import cl.rinno.newdevicewall.gridlibrery.GridItem;
 import cl.rinno.newdevicewall.gridlibrery.GridViewHolder;
 import cl.rinno.newdevicewall.gridlibrery.calculator.HorizontalPositionCalculator;
+import cl.rinno.newdevicewall.gridlibrery.calculator.VerticalBasePositionCalculator;
 import cl.rinno.newdevicewall.gridlibrery.listener.OnViewCreateCallBack;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
 import cl.rinno.newdevicewall.models.Session;
+import me.crosswall.lib.coverflow.CoverFlow;
+import me.crosswall.lib.coverflow.core.PagerContainer;
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -66,14 +81,16 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageCloseType;
     ImageView imageCloseFilter;
 
+    int contMoveGrid;
+
     RelativeLayout rlParent;
 
     String filtro = "";
     ArrayList<String> filterList;
 
-    TimerDestacado timerDestacado;
-
     LinearLayoutManager linearLayoutManagerACC;
+
+    ArrayList<String> caracteristicasList;
 
     ArrayList<Producto> equiposCompatiblesList;
     @BindView(R.id.horizontal_scroll_grid)
@@ -189,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.linear_resultado_equipo_compatible)
     LinearLayout linearResultadoEquipoCompatible;
     @BindView(R.id.image_destacado)
-    SimpleDraweeView imgDestacado;
+    ImageView imgDestacado;
     @BindView(R.id.textView29)
     TextView textView29;
     @BindView(R.id.textView35)
@@ -234,11 +251,35 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout linearCloseEquipoDestacadoSf;
     @BindView(R.id.rl_equipo_destacado_smart_fun)
     RelativeLayout rlEquipoDestacadoSmartFun;
+    @BindView(R.id.icn_primer_plan)
+    ImageView icnPrimerPlan;
+    @BindView(R.id.text_primer_plan)
+    TextView textPrimerPlan;
+    @BindView(R.id.button_miprimerplan)
+    LinearLayout btnMiprimerplan;
+    @BindView(R.id.textView299)
+    TextView textView299;
+    @BindView(R.id.textView355)
+    TextView textView355;
+    @BindView(R.id.rv_mi_primer_plan_multimedia)
+    RecyclerView rvMiPrimerPlanMultimedia;
+    @BindView(R.id.textView444)
+    TextView textView444;
+    @BindView(R.id.textView455)
+    TextView textView455;
+    @BindView(R.id.rv_mi_primer_plan_voz)
+    RecyclerView rvMiPrimerPlanVoz;
+    @BindView(R.id.linear_condiciones_comerciales_primerplan)
+    LinearLayout linearCondicionesComercialesPrimerplan;
+    @BindView(R.id.constraint_mi_primer_plan)
+    ConstraintLayout constraintMiPrimerPlan;
     private GridLayout mGridLayout;
 
     Boolean deviceState, accessoryState, planState;
     ArrayList<Producto> productList;
     ArrayList<Producto> filterProductList;
+
+
 
     @BindView(R.id.linear_que_buscas)
     LinearLayout linearQueBuscas;
@@ -317,17 +358,23 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences configuracionFile;
 
-    AccentedAccessoryFragment accentedAccessoryFragment;
-    LinearLayoutManager linearLayoutManagerVCC, linearLayoutManagerVI, linearLayoutManagerSF, linearLayoutManagerCF, llmEquiposDestacados;
+    LinearLayoutManager linearLayoutManagerVCC, linearLayoutManagerVI, linearLayoutManagerSF, linearLayoutManagerCF, llmEquiposDestacados, linearLayoutManagerMPM, linearLayoutManagerMPV;
 
     PlanDeVozAdapter planCuentraControladaAdapter, planVozIlimitadoAdapter;
     PlanesSmartFunSimpleAdapter planesSmartFunSimpleAdapter;
     PlanesControlFunSimpleAdapter planesControlFunSimpleAdapter;
+    MiPrimerPlanMultimediaAdapter miPrimerPlanMultimediaAdapter;
+    MiPrimerPlanVozAdapter miPrimerPlanVozAdapter;
 
     ArrayList<Producto> accesoriosList;
     ArrayList<Producto> equiposDestacadosRandom;
 
     int cont = 0;
+
+    Boolean gridMoveMax;
+
+
+    TimerDestacado timerDestacado;
 
     @Override
     protected void onPause() {
@@ -348,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
         timerDestacado.start();
     }
 
+    int contArrow = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -381,6 +429,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mGridLayout = (GridLayout) findViewById(R.id.grid_container);
 
+        contMoveGrid = 0;
+
+        gridMoveMax = false;
+
         imageCloseType = new ImageView(this);
         imageCloseFilter = new ImageView(this);
         rlParent = new RelativeLayout(this);
@@ -388,9 +440,11 @@ public class MainActivity extends AppCompatActivity {
         accessoryState = false;
         planState = false;
 
-        timerDestacado = new TimerDestacado(120000, 1000, MainActivity.this);
+        timerDestacado = new TimerDestacado(180000, 1000, MainActivity.this);
 
         configuracionFile = this.getSharedPreferences("configuracion", MODE_PRIVATE);
+
+        caracteristicasList = new ArrayList<>();
 
         filterList = new ArrayList<>();
         productList = new ArrayList<>();
@@ -409,57 +463,93 @@ public class MainActivity extends AppCompatActivity {
 
         linearLayoutManagerCF = new LinearLayoutManager(this);
         linearLayoutManagerCF.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManagerMPM = new LinearLayoutManager(this);
+        linearLayoutManagerMPM.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManagerMPV = new LinearLayoutManager(this);
+        linearLayoutManagerMPV.setOrientation(LinearLayoutManager.VERTICAL);
 
-        llmEquiposDestacados = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
+        llmEquiposDestacados = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
 
         rvPlanesVozIlimitado.setLayoutManager(linearLayoutManagerVI);
         rvPlanesCuentaControlada.setLayoutManager(linearLayoutManagerVCC);
         rvPlanesSmartfun.setLayoutManager(linearLayoutManagerSF);
         rvPlanesControlfun.setLayoutManager(linearLayoutManagerCF);
         rvEquiposDestacadosSf.setLayoutManager(llmEquiposDestacados);
+        rvMiPrimerPlanVoz.setLayoutManager(linearLayoutManagerMPV);
+        rvMiPrimerPlanMultimedia.setLayoutManager(linearLayoutManagerMPM);
 
         rvPlanesControlfun.setHasFixedSize(true);
         rvPlanesSmartfun.setHasFixedSize(true);
         rvPlanesCuentaControlada.setHasFixedSize(true);
         rvPlanesVozIlimitado.setHasFixedSize(true);
         rvEquiposDestacadosSf.setHasFixedSize(true);
+        rvMiPrimerPlanMultimedia.setHasFixedSize(true);
+        rvMiPrimerPlanVoz.setHasFixedSize(true);
 
         imageCloseType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rlButtonsParent.removeView(imageCloseType);
-                closeContents();
-                closeTextFilters();
-                linearQueBuscas.setVisibility(View.VISIBLE);
-                setDefuaultColors();
-                rlParent.removeView(imageCloseFilter);
-                blurContent.setVisibility(View.GONE);
-                filterDevices(Global.allProducts);
-                deviceState = false;
-                accessoryState = false;
-                planState = false;
+                imageCloseType.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        closeContents();
+                        closeTextFilters();
+                        linearQueBuscas.setVisibility(View.VISIBLE);
+                        setDefuaultColors();
+                        rlParent.removeView(imageCloseFilter);
+                        blurContent.setVisibility(View.GONE);
+                        filterDevices(Global.allProducts);
+                        deviceState = false;
+                        accessoryState = false;
+                        planState = false;
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        rlButtonsParent.removeView(imageCloseType);
+                    }
+                });
+
             }
         });
 
         imageCloseFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rlParent.removeView(imageCloseFilter);
-                setDefuaultColors();
-                closeTextFilters();
-                linearSearchError.setVisibility(View.GONE);
-                blurContent.setVisibility(View.GONE);
-                if (deviceState) {
-                    closePlans();
-                    linearSeleccionaFiltro.setVisibility(View.VISIBLE);
-                } else if (accessoryState) {
-                    closePlans();
-                    linearSeleccionaFiltro.setVisibility(View.VISIBLE);
-                } else if (planState) {
-                    closePlans();
-                    filterDevices(Global.allPlans);
-                    linearSeleccionaPlan.setVisibility(View.VISIBLE);
-                }
+
+                imageCloseFilter.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        setDefuaultColors();
+                        closeTextFilters();
+                        linearSearchError.setVisibility(View.GONE);
+                        blurContent.setVisibility(View.GONE);
+                        if (deviceState) {
+                            closePlans();
+                            linearSeleccionaFiltro.setVisibility(View.VISIBLE);
+                            filterDevices(Global.allDevices);
+                        } else if (accessoryState) {
+                            closePlans();
+                            linearSeleccionaFiltro.setVisibility(View.VISIBLE);
+                            filterDevices(Global.allAccessories);
+                        } else if (planState) {
+                            closePlans();
+                            filterDevices(Global.allPlans);
+                            linearSeleccionaPlan.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        rlParent.removeView(imageCloseFilter);
+                    }
+                });
+
             }
         });
 
@@ -468,16 +558,61 @@ public class MainActivity extends AppCompatActivity {
             public void onScrollChanged() {
                 int scrollX = horizontalScrollGrid.getScrollX();
                 if (scrollX == 0) {
-                    btnArrowLeft.setVisibility(View.GONE);
-                    pulsatorLeft.setVisibility(View.GONE);
+                    gridMoveMax = false;
+                    btnArrowLeft.animate().alpha(0.0f).scaleX(0.0f).scaleY(0.0f)
+                            .setDuration(300)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    btnArrowLeft.setVisibility(View.GONE);
+
+                                }
+                            });
+                    contArrow = 0;
                 } else if (scrollX == horizontalScrollGrid.getChildAt(0).getMeasuredWidth() - getWindowManager().getDefaultDisplay().getWidth()) {
-                    btnArrowRight.setVisibility(View.GONE);
-                    pulsatorRight.setVisibility(View.GONE);
+                    gridMoveMax = true;
+                    btnArrowRight.animate().scaleX(0.0f).scaleY(0.0f)
+                            .alpha(0.0f)
+                            .setDuration(300)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    btnArrowRight.setVisibility(View.GONE);
+
+                                }
+                            });
+                    contArrow = 0;
                 } else {
-                    btnArrowLeft.setVisibility(View.VISIBLE);
-                    btnArrowRight.setVisibility(View.VISIBLE);
-                    pulsatorLeft.setVisibility(View.VISIBLE);
-                    pulsatorRight.setVisibility(View.VISIBLE);
+                    gridMoveMax = false;
+                    if (contArrow == 0) {
+                        if (btnArrowRight.getVisibility() == View.GONE) {
+                            btnArrowRight.animate().alpha(1.0f).scaleX(1.0f).scaleY(1.0f)
+                                    .setDuration(300)
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnArrowRight.setVisibility(View.VISIBLE);
+                                        }
+                                    });
+                        } else if (btnArrowLeft.getVisibility() == View.GONE) {
+                            btnArrowLeft.animate().alpha(1.0f).scaleX(1.0f).scaleY(1.0f)
+                                    .setDuration(300)
+                                    .setListener(new AnimatorListenerAdapter() {
+
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnArrowLeft.setVisibility(View.VISIBLE);
+                                        }
+                                    });
+                        }
+                        contArrow++;
+                    }
+                    /*pulsatorLeft.setVisibility(View.VISIBLE);
+                    pulsatorRight.setVisibility(View.VISIBLE);*/
                 }
             }
         });
@@ -485,14 +620,39 @@ public class MainActivity extends AppCompatActivity {
         rvAccesorios.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                Log.d("DX", "" + dx);
-                if (linearLayoutManagerACC.findFirstVisibleItemPosition() == 0) {
-                    buttonArrowLeftFilter.setVisibility(View.GONE);
+                if (linearLayoutManagerACC.findFirstCompletelyVisibleItemPosition() == 0) {
+                    buttonArrowLeftFilter.animate().alpha(0.0f).scaleY(0.0f).scaleX(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            buttonArrowLeftFilter.setVisibility(View.GONE);
+                        }
+                    });
                 } else if (linearLayoutManagerACC.findLastCompletelyVisibleItemPosition() == accesoriosList.size() - 1) {
-                    buttonArrowRightFilter.setVisibility(View.GONE);
+                    buttonArrowRightFilter.animate().alpha(0.0f).scaleY(0.0f).scaleX(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            buttonArrowRightFilter.setVisibility(View.GONE);
+                        }
+                    });
                 } else {
-                    buttonArrowRightFilter.setVisibility(View.VISIBLE);
-                    buttonArrowLeftFilter.setVisibility(View.VISIBLE);
+                    buttonArrowRightFilter.animate().alpha(1.0f).scaleY(1.0f).scaleX(1.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            buttonArrowRightFilter.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    buttonArrowLeftFilter.animate().alpha(1.0f).scaleY(1.0f).scaleX(1.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            buttonArrowLeftFilter.setVisibility(View.VISIBLE);
+                        }
+                    });
+
                 }
             }
         });
@@ -510,7 +670,15 @@ public class MainActivity extends AppCompatActivity {
         imageCloseType.setImageDrawable(myDrawable);
         imageCloseType.setX(linear.getX() + 250);
         imageCloseType.setY(10);
-        rlButtonsParent.addView(imageCloseType);
+        imageCloseType.animate().alpha(1.0f).setDuration(300).scaleY(1.0f).scaleX(1.0f).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                rlButtonsParent.removeView(imageCloseType);
+                rlButtonsParent.addView(imageCloseType);
+
+            }
+        });
     }
 
     private void setCloseFilterImage(LinearLayout linear) {
@@ -518,9 +686,19 @@ public class MainActivity extends AppCompatActivity {
         rlParent.removeView(imageCloseFilter);
         imageCloseFilter.setLayoutParams(new ViewGroup.LayoutParams(50, 50));
         imageCloseFilter.setImageDrawable(myDrawable);
+        imageCloseFilter.setAlpha(0.0f);
+        imageCloseFilter.setScaleX(0.0f);
+        imageCloseFilter.setScaleY(0.0f);
         imageCloseFilter.setX(linear.getX() + 182);
         imageCloseFilter.setY(linear.getY() - 20);
-        rlParent.addView(imageCloseFilter);
+        imageCloseFilter.animate().alpha(1.0f).setDuration(300).scaleY(1.0f).scaleX(1.0f).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                rlParent.removeView(imageCloseFilter);
+                rlParent.addView(imageCloseFilter);
+            }
+        });
     }
 
     private void closeTextFilters() {
@@ -533,11 +711,54 @@ public class MainActivity extends AppCompatActivity {
 
     private void closeContents() {
         rlContentDevices.setVisibility(View.GONE);
+        rlContentDevices.setAlpha(0.0f);
         rlContentAccessory.setVisibility(View.GONE);
+        rlContentAccessory.setAlpha(0.0f);
         rlContentPlans.setVisibility(View.GONE);
+        rlContentPlans.setAlpha(0.0f);
         closePlans();
         linearSearchError.setVisibility(View.GONE);
         closeFilterAccessory();
+
+        /* Botones Filtros Equipos */
+        btnFiltroMarca.setAlpha(0.0f);
+        btnFiltroMarca.setScaleX(0.0f);
+        btnFiltroMarca.setScaleY(0.0f);
+        btnFiltroPantalla.setAlpha(0.0f);
+        btnFiltroPantalla.setScaleX(0.0f);
+        btnFiltroPantalla.setScaleY(0.0f);
+        btnFiltroCamaraFrontal.setAlpha(0.0f);
+        btnFiltroCamaraFrontal.setScaleX(0.0f);
+        btnFiltroCamaraFrontal.setScaleY(0.0f);
+        btnFiltroCamaraTrasera.setAlpha(0.0f);
+        btnFiltroCamaraTrasera.setScaleX(0.0f);
+        btnFiltroCamaraTrasera.setScaleY(0.0f);
+        /* Botones Filtros Accesorios */
+        btnMultimediaFilter.setAlpha(0.0f);
+        btnMultimediaFilter.setScaleX(0.0f);
+        btnMultimediaFilter.setScaleY(0.0f);
+        btnProteccionFilter.setAlpha(0.0f);
+        btnProteccionFilter.setScaleX(0.0f);
+        btnProteccionFilter.setScaleY(0.0f);
+        btnEnergiaFilter.setAlpha(0.0f);
+        btnEnergiaFilter.setScaleX(0.0f);
+        btnEnergiaFilter.setScaleY(0.0f);
+        btnPorEquipoFilter.setAlpha(0.0f);
+        btnPorEquipoFilter.setScaleX(0.0f);
+        btnPorEquipoFilter.setScaleY(0.0f);
+        /* Botones Planes */
+        btnSmartfun.setAlpha(0.0f);
+        btnSmartfun.setScaleX(0.0f);
+        btnSmartfun.setScaleY(0.0f);
+        btnControlfun.setAlpha(0.0f);
+        btnControlfun.setScaleX(0.0f);
+        btnControlfun.setScaleY(0.0f);
+        btnPlanvoz.setAlpha(0.0f);
+        btnPlanvoz.setScaleX(0.0f);
+        btnPlanvoz.setScaleY(0.0f);
+        btnMiprimerplan.setAlpha(0.0f);
+        btnMiprimerplan.setScaleX(0.0f);
+        btnMiprimerplan.setScaleY(0.0f);
     }
 
     private void closePlans() {
@@ -545,6 +766,7 @@ public class MainActivity extends AppCompatActivity {
         constraintPlanVoz.setVisibility(View.GONE);
         constraintPlanControlfun.setVisibility(View.GONE);
         constraintPlanSmartfun.setVisibility(View.GONE);
+        constraintMiPrimerPlan.setVisibility(View.GONE);
     }
 
     private void closeFilterAccessory() {
@@ -556,6 +778,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDefuaultColors() {
+        btnMiprimerplan.setBackground(getResources().getDrawable(R.drawable.bg_filter_plans));
         btnSmartfun.setBackground(getResources().getDrawable(R.drawable.bg_filter_plans));
         btnPlanvoz.setBackground(getResources().getDrawable(R.drawable.bg_filter_plans));
         btnControlfun.setBackground(getResources().getDrawable(R.drawable.bg_filter_plans));
@@ -580,6 +803,7 @@ public class MainActivity extends AppCompatActivity {
         icnPlanSmartfun.setImageResource(R.drawable.icn_smartfun);
         icnPlanControlfun.setImageResource(R.drawable.icn_controlfun);
         icnPlanVoz.setImageResource(R.drawable.icn_planvoz);
+        icnPrimerPlan.setImageResource(R.drawable.icn_mi_primer_plan);
 
 
         textFiltroPorEquipo.setTextColor(getResources().getColor(R.color.white));
@@ -593,6 +817,7 @@ public class MainActivity extends AppCompatActivity {
         textPlanControlfun.setTextColor(getResources().getColor(R.color.white));
         textPlanSmartfun.setTextColor(getResources().getColor(R.color.white));
         textPlanVoz.setTextColor(getResources().getColor(R.color.white));
+        textPrimerPlan.setTextColor(getResources().getColor(R.color.white));
     }
 
     private void openBlur(String filter) {
@@ -634,32 +859,65 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void moveGrid(int position) {
+    public void moveGrid() {
+        contMoveGrid++;
         rlPopup.setVisibility(View.GONE);
         imgDestacado.setVisibility(View.GONE);
-        rlButtonsParent.removeView(imageCloseType);
         closeContents();
         fragmentAccesorio.setVisibility(View.GONE);
         closeTextFilters();
         linearQueBuscas.setVisibility(View.VISIBLE);
         setDefuaultColors();
-        rlParent.removeView(imageCloseFilter);
+        rlEquipoDestacadoSmartFun.setVisibility(View.GONE);
         blurContent.setVisibility(View.GONE);
-        filterDevices(Global.allProducts);
-        deviceState = false;
-        accessoryState = false;
-        planState = false;
-        Log.d("posicion", "" + position);
-        horizontalScrollGrid.fullScroll(View.FOCUS_LEFT);
-        horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() + position, horizontalScrollGrid.getTop());
-
+        Random random = new Random();
+        if(deviceState || accessoryState || planState){
+            deviceState = false;
+            accessoryState = false;
+            planState = false;
+            rlParent.removeView(imageCloseFilter);
+            rlButtonsParent.removeView(imageCloseType);
+            filterDevices(Global.allProducts);
+        }else{
+            if(!gridMoveMax){
+                horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() + 960, horizontalScrollGrid.getTop());
+            }else{
+                int move = (-960 * random.nextInt(9));
+                horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() + move, horizontalScrollGrid.getTop());
+            }
+        }
+        switch (configuracionFile.getString("pantalla_id_index", "5")) {
+            case "1":
+                if(contMoveGrid == 1){
+                    openImageHigh(configuracionFile.getString("pantalla_id_index", "1"));
+                }
+                break;
+            case "2":
+                if(contMoveGrid == 2){
+                    openImageHigh(configuracionFile.getString("pantalla_id_index", "2"));
+                }
+                break;
+            case "3":
+                if(contMoveGrid == 3){
+                    openImageHigh(configuracionFile.getString("pantalla_id_index", "3"));
+                }
+                break;
+            case "4":
+                if(contMoveGrid == 4){
+                    openImageHigh(configuracionFile.getString("pantalla_id_index", "4"));
+                    contMoveGrid = 0;
+                }
+                break;
+        }
     }
 
 
-    @OnClick({R.id.linear_condiciones_comerciales_control_fun, R.id.linear_close_nosearch, R.id.linear_condiciones_comerciales_solo_voz, R.id.linear_condiciones_comerciales_smart_fun, R.id.constraint_plans, R.id.button_smartfun, R.id.button_controlfun, R.id.button_planvoz, R.id.button_devices, R.id.linear_close_filters, R.id.button_accessories, R.id.button_plans, R.id.button_arrow_right, R.id.button_arrow_left, R.id.button_marca_filter, R.id.button_pantalla_filter, R.id.button_camara_trasera_filter, R.id.button_camara_frontal_filter, R.id.button_multimedia_filter, R.id.button_proteccion_filter, R.id.button_energia_filter, R.id.button_por_equipo_filter})
+    @OnClick({R.id.blur_content, R.id.button_miprimerplan, R.id.linear_condiciones_comerciales_control_fun, R.id.linear_close_nosearch, R.id.linear_condiciones_comerciales_solo_voz, R.id.linear_condiciones_comerciales_smart_fun, R.id.constraint_plans, R.id.button_smartfun, R.id.button_controlfun, R.id.button_planvoz, R.id.button_devices, R.id.linear_close_filters, R.id.button_accessories, R.id.button_plans, R.id.button_arrow_right, R.id.button_arrow_left, R.id.button_marca_filter, R.id.button_pantalla_filter, R.id.button_camara_trasera_filter, R.id.button_camara_frontal_filter, R.id.button_multimedia_filter, R.id.button_proteccion_filter, R.id.button_energia_filter, R.id.button_por_equipo_filter})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.constraint_plans:
+                break;
+            case R.id.blur_content:
                 break;
             case R.id.linear_close_filters:
                 blurContent.setVisibility(View.GONE);
@@ -677,8 +935,68 @@ public class MainActivity extends AppCompatActivity {
                 if (!deviceState) {
                     blurContent.setVisibility(View.GONE);
                     setCloseTypeImage(btnDevices);
-                    rlParent.removeView(imageCloseFilter);
-                    rlContentDevices.setVisibility(View.VISIBLE);
+                    imageCloseFilter.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            rlParent.removeView(imageCloseFilter);
+                        }
+                    });
+                    rlContentDevices.animate().setDuration(300).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            rlContentDevices.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            btnFiltroMarca.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
+                                    btnFiltroMarca.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    btnFiltroPantalla.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnFiltroPantalla.setVisibility(View.VISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            btnFiltroCamaraTrasera.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationStart(Animator animation) {
+                                                    super.onAnimationStart(animation);
+                                                    btnFiltroCamaraTrasera.setVisibility(View.VISIBLE);
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    btnFiltroCamaraFrontal.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                        @Override
+                                                        public void onAnimationStart(Animator animation) {
+                                                            super.onAnimationStart(animation);
+                                                            btnFiltroCamaraFrontal.setVisibility(View.VISIBLE);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                     linearSeleccionaFiltro.setVisibility(View.VISIBLE);
                     tvFilterProductType.setText("equipos_");
                     filterDevices(Global.allDevices);
@@ -686,7 +1004,13 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     closeTextFilters();
                     linearQueBuscas.setVisibility(View.VISIBLE);
-                    rlButtonsParent.removeView(imageCloseType);
+                    imageCloseType.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            rlButtonsParent.removeView(imageCloseType);
+                        }
+                    });
                     rlParent.removeView(imageCloseFilter);
                     blurContent.setVisibility(View.GONE);
                     filterDevices(Global.allProducts);
@@ -702,15 +1026,81 @@ public class MainActivity extends AppCompatActivity {
                 if (!accessoryState) {
                     blurContent.setVisibility(View.GONE);
                     setCloseTypeImage(btnAccessories);
-                    rlParent.removeView(imageCloseFilter);
-                    rlContentAccessory.setVisibility(View.VISIBLE);
+                    imageCloseFilter.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            rlParent.removeView(imageCloseFilter);
+                        }
+                    });
+                    rlContentAccessory.animate().setDuration(300).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            rlContentAccessory.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            btnMultimediaFilter.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
+                                    btnMultimediaFilter.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    btnProteccionFilter.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnProteccionFilter.setVisibility(View.VISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            btnEnergiaFilter.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationStart(Animator animation) {
+                                                    super.onAnimationStart(animation);
+                                                    btnEnergiaFilter.setVisibility(View.VISIBLE);
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    btnPorEquipoFilter.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                        @Override
+                                                        public void onAnimationStart(Animator animation) {
+                                                            super.onAnimationStart(animation);
+                                                            btnPorEquipoFilter.setVisibility(View.VISIBLE);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                     linearSeleccionaFiltro.setVisibility(View.VISIBLE);
                     tvFilterProductType.setText("accesorios_");
                     accessoryState = true;
                     filterDevices(Global.allAccessories);
                 } else {
                     linearQueBuscas.setVisibility(View.VISIBLE);
-                    rlButtonsParent.removeView(imageCloseType);
+                    imageCloseType.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            rlButtonsParent.removeView(imageCloseType);
+                        }
+                    });
                     rlParent.removeView(imageCloseFilter);
                     blurContent.setVisibility(View.GONE);
                     filterDevices(Global.allProducts);
@@ -728,14 +1118,73 @@ public class MainActivity extends AppCompatActivity {
                     blurContent.setVisibility(View.GONE);
                     setCloseTypeImage(btnPlans);
                     rlParent.removeView(imageCloseFilter);
-                    rlContentPlans.setVisibility(View.VISIBLE);
+                    rlContentPlans.animate().setDuration(300).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            rlContentPlans.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            btnSmartfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
+                                    btnSmartfun.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    btnControlfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnControlfun.setVisibility(View.VISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            btnPlanvoz.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationStart(Animator animation) {
+                                                    super.onAnimationStart(animation);
+                                                    btnPlanvoz.setVisibility(View.VISIBLE);
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    btnMiprimerplan.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                        @Override
+                                                        public void onAnimationStart(Animator animation) {
+                                                            super.onAnimationStart(animation);
+                                                            btnMiprimerplan.setVisibility(View.VISIBLE);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                     linearSeleccionaPlan.setVisibility(View.VISIBLE);
                     filterDevices(Global.allPlans);
                     planState = true;
                 } else {
                     linearQueBuscas.setVisibility(View.VISIBLE);
-                    rlButtonsParent.removeView(imageCloseType);
-                    rlParent.removeView(imageCloseFilter);
+                    imageCloseType.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            rlButtonsParent.removeView(imageCloseType);
+                        }
+                    });
                     blurContent.setVisibility(View.GONE);
                     filterDevices(Global.allProducts);
                     planState = false;
@@ -908,7 +1357,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.button_planvoz:
                 selectPlanVoz();
                 break;
-
+            case R.id.button_miprimerplan:
+                selectMiPrimerPlan();
+                break;
             case R.id.linear_condiciones_comerciales_solo_voz:
                 rlPopup.setVisibility(View.VISIBLE);
                 imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(2).getCondicionImage())));
@@ -919,7 +1370,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.linear_condiciones_comerciales_control_fun:
                 rlPopup.setVisibility(View.VISIBLE);
-                imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(0).getCondicionImage())));
+                imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(1).getCondicionImage())));
                 break;
             case R.id.linear_close_nosearch:
                 linearSearchError.setVisibility(View.GONE);
@@ -947,7 +1398,68 @@ public class MainActivity extends AppCompatActivity {
         closeTextFilters();
         closePlans();
         rlParent = rlContentPlans;
-        setCloseFilterImage(btnControlfun);
+        if (!planState) {
+            planState = true;
+            rlContentPlans.animate().setDuration(300).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    rlContentPlans.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    btnSmartfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            btnSmartfun.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+
+                            btnControlfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
+                                    btnControlfun.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    setCloseFilterImage(btnControlfun);
+                                    btnPlanvoz.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnPlanvoz.setVisibility(View.VISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            btnMiprimerplan.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationStart(Animator animation) {
+                                                    super.onAnimationStart(animation);
+                                                    btnMiprimerplan.setVisibility(View.VISIBLE);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            setCloseFilterImage(btnControlfun);
+        }
         btnControlfun.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
         icnPlanControlfun.setImageResource(R.drawable.icn_controlfun_selected);
         textPlanControlfun.setTextColor(getResources().getColor(R.color.yellow));
@@ -957,8 +1469,7 @@ public class MainActivity extends AppCompatActivity {
         constraintPlanControlfun.setVisibility(View.VISIBLE);
         planesControlFunSimpleAdapter = new PlanesControlFunSimpleAdapter(Global.planesControlFunSimple, MainActivity.this);
         rvPlanesControlfun.setAdapter(planesControlFunSimpleAdapter);
-        constraintPlans.setVisibility(View.VISIBLE);
-        constraintPlanControlfun.setVisibility(View.VISIBLE);
+        setAnimationRecycler(rvPlanesControlfun);
         imgBannerPlan.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(1).getBannerImage())));
     }
 
@@ -967,17 +1478,80 @@ public class MainActivity extends AppCompatActivity {
         setDefuaultColors();
         closeTextFilters();
         closePlans();
+        rlParent = rlContentPlans;
+        if (!planState) {
+            planState = true;
+            rlContentPlans.animate().setDuration(300).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    rlContentPlans.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    btnSmartfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            btnSmartfun.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            btnControlfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
+                                    btnControlfun.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    btnPlanvoz.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnPlanvoz.setVisibility(View.VISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            setCloseFilterImage(btnPlanvoz);
+                                            btnMiprimerplan.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationStart(Animator animation) {
+                                                    super.onAnimationStart(animation);
+                                                    btnMiprimerplan.setVisibility(View.VISIBLE);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            setCloseFilterImage(btnPlanvoz);
+        }
+
         btnPlanvoz.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
         icnPlanVoz.setImageResource(R.drawable.icn_planvoz_selected);
         textPlanVoz.setTextColor(getResources().getColor(R.color.yellow));
-        rlParent = rlContentPlans;
-        setCloseFilterImage(btnPlanvoz);
         constraintPlans.setVisibility(View.VISIBLE);
         constraintPlanVoz.setVisibility(View.VISIBLE);
         planVozIlimitadoAdapter = new PlanDeVozAdapter(Global.planesDeVozIlimitado, 2);
         planCuentraControladaAdapter = new PlanDeVozAdapter(Global.planesDeVozCCList, 1);
         rvPlanesCuentaControlada.setAdapter(planCuentraControladaAdapter);
         rvPlanesVozIlimitado.setAdapter(planVozIlimitadoAdapter);
+        setAnimationRecycler(rvPlanesVozIlimitado);
+        setAnimationRecycler(rvPlanesCuentaControlada);
         linearPlanElegido.setVisibility(View.VISIBLE);
         tvPlanType.setText("Sólo Voz_ ");
         imgBannerPlan.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(2).getBannerImage())));
@@ -989,17 +1563,167 @@ public class MainActivity extends AppCompatActivity {
         closeTextFilters();
         closePlans();
         rlParent = rlContentPlans;
-        setCloseFilterImage(btnSmartfun);
+        if (!planState) {
+            planState = true;
+            rlContentPlans.animate().setDuration(300).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    rlContentPlans.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    btnSmartfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            btnSmartfun.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            setCloseFilterImage(btnSmartfun);
+                            btnControlfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
+                                    btnControlfun.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    btnPlanvoz.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnPlanvoz.setVisibility(View.VISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            btnMiprimerplan.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationStart(Animator animation) {
+                                                    super.onAnimationStart(animation);
+                                                    btnMiprimerplan.setVisibility(View.VISIBLE);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            setCloseFilterImage(btnSmartfun);
+        }
         btnSmartfun.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
         icnPlanSmartfun.setImageResource(R.drawable.icn_smartfun_selected);
         textPlanSmartfun.setTextColor(getResources().getColor(R.color.yellow));
         linearPlanElegido.setVisibility(View.VISIBLE);
         tvPlanType.setText("Smart Fun_");
-        planesSmartFunSimpleAdapter = new PlanesSmartFunSimpleAdapter(Global.planesSmartFunSimple, MainActivity.this);
-        rvPlanesSmartfun.setAdapter(planesSmartFunSimpleAdapter);
         constraintPlans.setVisibility(View.VISIBLE);
         constraintPlanSmartfun.setVisibility(View.VISIBLE);
+        planesSmartFunSimpleAdapter = new PlanesSmartFunSimpleAdapter(Global.planesSmartFunSimple, MainActivity.this);
+        rvPlanesSmartfun.setAdapter(planesSmartFunSimpleAdapter);
+        setAnimationRecycler(rvPlanesSmartfun);
         imgBannerPlan.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(0).getBannerImage())));
+    }
+
+    private void selectMiPrimerPlan() {
+        linearSearchError.setVisibility(View.GONE);
+        setDefuaultColors();
+        closeTextFilters();
+        closePlans();
+        rlParent = rlContentPlans;
+        if (!planState) {
+            planState = true;
+            rlContentPlans.animate().setDuration(300).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    rlContentPlans.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    btnSmartfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            btnSmartfun.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            btnControlfun.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    super.onAnimationStart(animation);
+                                    btnControlfun.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    btnPlanvoz.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            btnPlanvoz.setVisibility(View.VISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            btnMiprimerplan.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationStart(Animator animation) {
+                                                    super.onAnimationStart(animation);
+                                                    btnMiprimerplan.setVisibility(View.VISIBLE);
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    setCloseFilterImage(btnMiprimerplan);
+                                                }
+                                            });
+
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            setCloseFilterImage(btnMiprimerplan);
+        }
+        btnMiprimerplan.setBackground(getResources().getDrawable(R.drawable.bg_filter_selected));
+        icnPrimerPlan.setImageResource(R.drawable.icn_mi_primer_plan_selected);
+        textPrimerPlan.setTextColor(getResources().getColor(R.color.yellow));
+        linearPlanElegido.setVisibility(View.VISIBLE);
+        tvPlanType.setText("Mi Primer Plan_");
+        constraintPlans.setVisibility(View.VISIBLE);
+        constraintMiPrimerPlan.setVisibility(View.VISIBLE);
+        miPrimerPlanMultimediaAdapter = new MiPrimerPlanMultimediaAdapter(Global.miPrimerPlanMultimedia, MainActivity.this);
+        rvMiPrimerPlanMultimedia.setAdapter(miPrimerPlanMultimediaAdapter);
+        miPrimerPlanVozAdapter = new MiPrimerPlanVozAdapter(Global.miPrimerPlanVoz);
+        rvMiPrimerPlanVoz.setAdapter(miPrimerPlanVozAdapter);
+        setAnimationRecycler(rvMiPrimerPlanMultimedia);
+        setAnimationRecycler(rvMiPrimerPlanVoz);
+        imgBannerPlan.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(3).getBannerImage())));
     }
 
     private void seleccionarPantalla() {
@@ -1016,6 +1740,7 @@ public class MainActivity extends AppCompatActivity {
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
+        setAnimationRecycler(rvFilters);
     }
 
     private void seleccionarCamaraFrontal() {
@@ -1033,6 +1758,7 @@ public class MainActivity extends AppCompatActivity {
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
+        setAnimationRecycler(rvFilters);
     }
 
     private void seleccionarCamaraTrasera() {
@@ -1050,6 +1776,7 @@ public class MainActivity extends AppCompatActivity {
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
+        setAnimationRecycler(rvFilters);
     }
 
     private void seleccionarMarca() {
@@ -1058,6 +1785,30 @@ public class MainActivity extends AppCompatActivity {
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
+        setAnimationRecycler(rvFilters);
+    }
+
+    private void setAnimationRecycler(final RecyclerView recyclerView) {
+        recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                    View v = recyclerView.getChildAt(i);
+                    v.setScaleY(0);
+                    v.setAlpha(0);
+                    v.setScaleX(0);
+                    v.animate().alpha(1.0f)
+                            .setDuration(250)
+                            .setStartDelay(i * 50)
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .start();
+                }
+                return true;
+            }
+        });
     }
 
     private void seleccionarEquipoCompatible() {
@@ -1066,6 +1817,7 @@ public class MainActivity extends AppCompatActivity {
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvFilters.setLayoutManager(gridLayoutManager);
         rvFilters.setAdapter(filtrosAdapter);
+        setAnimationRecycler(rvFilters);
     }
 
     public void setFilter(String value, String valueTwo) {
@@ -1090,6 +1842,12 @@ public class MainActivity extends AppCompatActivity {
                         filterProductList.add(Session.objData.getDevices().get(i));
                     }
                 }
+                Collections.sort(filterProductList, new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
                 filterDevices(filterProductList);
                 break;
             case "Pantalla":
@@ -1231,8 +1989,6 @@ public class MainActivity extends AppCompatActivity {
 
                 EquiposCompatiblesAdapter equiposCompatiblesAdapter = new EquiposCompatiblesAdapter(equiposCompatiblesList, MainActivity.this);
                 rvEquiposCompatibles.setHasFixedSize(true);
-                rvEquiposCompatibles.setAdapter(equiposCompatiblesAdapter);
-
                 if (equiposCompatiblesList.size() > 10) {
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
                     gridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -1242,8 +1998,9 @@ public class MainActivity extends AppCompatActivity {
                     gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     rvEquiposCompatibles.setLayoutManager(gridLayoutManager);
                 }
-
                 tvFilterResultDevice.setText(equiposCompatiblesList.size() + " equipos_");
+                rvEquiposCompatibles.setAdapter(equiposCompatiblesAdapter);
+                setAnimationRecycler(rvEquiposCompatibles);
                 break;
         }
     }
@@ -1275,137 +2032,173 @@ public class MainActivity extends AppCompatActivity {
         Collections.shuffle(accesoriosList);
         AccesoriosAdapter accesoriosAdapter = new AccesoriosAdapter(accesoriosList, this);
         rvAccesorios.setAdapter(accesoriosAdapter);
+        setAnimationRecycler(rvAccesorios);
         tvFilterResultDevice.setText(accesoriosList.size() + " accesorios_");
-
     }
 
-    private void filterDevices(final ArrayList<Producto> filterProductList) {
-        horizontalScrollGrid.fullScroll(View.FOCUS_LEFT);
-        mGridLayout.removeAllViews();
-        btnArrowLeft.setVisibility(View.GONE);
-        pulsatorLeft.setVisibility(View.GONE);
-
-        if (filterProductList.isEmpty()) {
-            linearSearchError.setVisibility(View.VISIBLE);
-        }
-
-        if (filterProductList.size() <= 9) {
-            btnArrowRight.setVisibility(View.GONE);
-        } else {
+    private void filterDevices(ArrayList<Producto> filterProductList) {
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        imagePipeline.clearCaches();
+        try {
+            Boolean sizeState = false;
+            horizontalScrollGrid.fullScroll(View.FOCUS_LEFT);
+            mGridLayout.removeAllViews();
+            btnArrowLeft.setVisibility(View.GONE);
             btnArrowRight.setVisibility(View.VISIBLE);
-        }
 
-        tvFilterResultDevice.setText(String.valueOf(filterProductList.size()));
-
-        final List<GridItem> gridItemList = new ArrayList<>();
-
-        for (int i = 0; i < filterProductList.size(); i++) {
-            GridItem gridItem = new GridItem() {
-            };
-
-            switch (filterProductList.get(i).getProduct_type_id()) {
-                case "1":
-                    gridItem.setRowSpec(1);
-                    gridItem.setColumnSpec(1);
-                    gridItem.setProducto(filterProductList.get(i));
-                    gridItemList.add(gridItem);
-                    break;
-                case "2":
-                    switch (filterProductList.get(i).getSizes()) {
-                        case "1":
-                        case "2":
-                            gridItem.setRowSpec(1);
-                            gridItem.setColumnSpec(1);
-                            gridItem.setProducto(filterProductList.get(i));
-                            gridItemList.add(gridItem);
-                            break;
-                        case "3":
-                            gridItem.setRowSpec(2);
-                            gridItem.setColumnSpec(1);
-                            gridItem.setProducto(filterProductList.get(i));
-                            gridItemList.add(gridItem);
-                            break;
-                        case "4":
-                            gridItem.setRowSpec(1);
-                            gridItem.setColumnSpec(2);
-                            gridItem.setProducto(filterProductList.get(i));
-                            gridItemList.add(gridItem);
-                            break;
-                    }
-                    break;
-                case "3":
-                    gridItem.setRowSpec(1);
-                    gridItem.setColumnSpec(2);
-                    gridItem.setProducto(filterProductList.get(i));
-                    gridItemList.add(gridItem);
-                    break;
-
-                case "4":
-                    switch (filterProductList.get(i).getSizes()) {
-                        case "1":
-                        case "2":
-                            gridItem.setRowSpec(1);
-                            gridItem.setColumnSpec(1);
-                            gridItem.setProducto(filterProductList.get(i));
-                            gridItemList.add(gridItem);
-                            break;
-                        case "3":
-                            gridItem.setRowSpec(2);
-                            gridItem.setColumnSpec(1);
-                            gridItem.setProducto(filterProductList.get(i));
-                            gridItemList.add(gridItem);
-                            break;
-                        case "4":
-                            gridItem.setRowSpec(1);
-                            gridItem.setColumnSpec(2);
-                            gridItem.setProducto(filterProductList.get(i));
-                            gridItemList.add(gridItem);
-                            break;
-                    }
-                    break;
+            if (filterProductList.isEmpty()) {
+                linearSearchError.setVisibility(View.VISIBLE);
+            } else if (filterProductList.size() <= 8) {
+                sizeState = !filterProductList.get(0).getProduct_type_id().equalsIgnoreCase("3");
             }
-        }
 
-        GridViewHolder holder = new GridViewHolder(mGridLayout);
-        GridBuilder.newInstance(this, mGridLayout)
-                .setScaleAnimationDuration(0)
-                .setPositionCalculator(new HorizontalPositionCalculator(3))
-                .setBaseSize(300, 410)
-                .setMargin(20)
-                .setOutMargin(0, 0, 20, 20)
-                .setGridItemList(gridItemList)
-                .setViewHolder(holder)
-                .setOnCreateViewCallBack(new OnViewCreateCallBack() {
-                    @Override
-                    public View onViewCreate(LayoutInflater inflater, View convertView, final GridItem gridItem) {
-                        View view = inflater.inflate(R.layout.masonry_item, null);
+            if (filterProductList.size() <= 9) {
+                btnArrowRight.setVisibility(View.GONE);
+            } else {
+                btnArrowRight.setVisibility(View.VISIBLE);
+                btnArrowRight.setAlpha(1.0f);
+                btnArrowRight.setScaleY(1.0f);
+                btnArrowRight.setScaleX(1.0f);
+            }
 
-                        RelativeLayout itemParent = (RelativeLayout) view.findViewById(R.id.item_parent);
-                        LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
-                        final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById(R.id.image_product);
-                        SimpleDraweeView imgComplete = (SimpleDraweeView) view.findViewById(R.id.image_complete_product);
-                        TextView providerName = (TextView) view.findViewById(R.id.provider_name);
-                        final TextView accessoryName = (TextView) view.findViewById(R.id.product_name);
+            tvFilterResultDevice.setText(String.valueOf(filterProductList.size()));
 
-                        Random rand = new Random();
-                        int numberColorRandom = rand.nextInt(6);
+            final List<GridItem> gridItemList = new ArrayList<>();
 
-                        String Colors[][] = Global.getBackgroundColorsCard();
+            for (int i = 0; i < filterProductList.size(); i++) {
+                GridItem gridItem = new GridItem() {
+                };
 
-                        switch (gridItem.getProducto().getProduct_type_id()) {
+                switch (filterProductList.get(i).getProduct_type_id()) {
+                    case "1":
+                        if (sizeState) {
+                            gridItem.setRowSpec(1);
+                            gridItem.setColumnSpec(1);
+                            gridItem.setProducto(filterProductList.get(i));
+                            gridItemList.add(gridItem);
+                        } else {
+                            switch (filterProductList.get(i).getSizes()) {
+                                case "1":
+                                case "2":
+                                    gridItem.setRowSpec(1);
+                                    gridItem.setColumnSpec(1);
+                                    gridItem.setProducto(filterProductList.get(i));
+                                    gridItemList.add(gridItem);
+                                    break;
+                                case "3":
+                                    gridItem.setRowSpec(2);
+                                    gridItem.setColumnSpec(1);
+                                    gridItem.setProducto(filterProductList.get(i));
+                                    gridItemList.add(gridItem);
+                                    break;
+                                case "4":
+                                    gridItem.setRowSpec(1);
+                                    gridItem.setColumnSpec(2);
+                                    gridItem.setProducto(filterProductList.get(i));
+                                    gridItemList.add(gridItem);
+                                    break;
+                            }
+                        }
+                        break;
+                    case "2":
+                        switch (filterProductList.get(i).getSizes()) {
                             case "1":
-                                itemContainer.setVisibility(View.VISIBLE);
-                                imgComplete.setVisibility(View.GONE);
-                                imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
-                                providerName.setText(gridItem.getProducto().getProvider_name());
-                                if (gridItem.getProducto().getName().length() > 30) {
-                                    accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
-                                } else {
-                                    accessoryName.setText(gridItem.getProducto().getName());
-                                }
-                                break;
                             case "2":
-                                switch (gridItem.getProducto().getSizes()) {
+                                gridItem.setRowSpec(1);
+                                gridItem.setColumnSpec(1);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                            case "3":
+                                gridItem.setRowSpec(2);
+                                gridItem.setColumnSpec(1);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                            case "4":
+                                gridItem.setRowSpec(1);
+                                gridItem.setColumnSpec(2);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                        }
+                        break;
+                    case "3":
+                        switch (filterProductList.get(i).getSizes()) {
+                            case "1":
+                            case "2":
+                                gridItem.setRowSpec(1);
+                                gridItem.setColumnSpec(1);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                            case "3":
+                                gridItem.setRowSpec(2);
+                                gridItem.setColumnSpec(1);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                            case "4":
+                                gridItem.setRowSpec(1);
+                                gridItem.setColumnSpec(2);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                        }
+                        break;
+                    case "4":
+                        switch (filterProductList.get(i).getSizes()) {
+                            case "1":
+                            case "2":
+                                gridItem.setRowSpec(1);
+                                gridItem.setColumnSpec(1);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                            case "3":
+                                gridItem.setRowSpec(2);
+                                gridItem.setColumnSpec(1);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                            case "4":
+                                gridItem.setRowSpec(1);
+                                gridItem.setColumnSpec(2);
+                                gridItem.setProducto(filterProductList.get(i));
+                                gridItemList.add(gridItem);
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            if (sizeState) {
+                GridViewHolder holder = new GridViewHolder(mGridLayout);
+                GridBuilder.newInstance(this, mGridLayout)
+                        .setScaleAnimationDuration(0)
+                        .setPositionCalculator(new VerticalBasePositionCalculator(3))
+                        .setBaseSize(300, 410)
+                        .setMargin(20)
+                        .setOutMargin(0, 0, 20, 20)
+                        .setGridItemList(gridItemList)
+                        .setViewHolder(holder)
+                        .setOnCreateViewCallBack(new OnViewCreateCallBack() {
+                            @Override
+                            public View onViewCreate(LayoutInflater inflater, View convertView, final GridItem gridItem) {
+                                View view = inflater.inflate(R.layout.masonry_item, null);
+                                RelativeLayout itemParent = (RelativeLayout) view.findViewById(R.id.item_parent);
+                                LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
+                                final ImageView imageAccessory = (ImageView) view.findViewById(R.id.image_product);
+                                ImageView imgComplete = (ImageView) view.findViewById(R.id.image_complete_product);
+                                TextView providerName = (TextView) view.findViewById(R.id.provider_name);
+                                final TextView accessoryName = (TextView) view.findViewById(R.id.product_name);
+
+                                Random rand = new Random();
+                                int numberColorRandom = rand.nextInt(6);
+
+                                String Colors[][] = Global.getBackgroundColorsCard();
+
+                                switch (gridItem.getProducto().getProduct_type_id()) {
                                     case "1":
                                         imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
                                         itemContainer.setVisibility(View.VISIBLE);
@@ -1418,109 +2211,318 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                         break;
                                     case "2":
-                                        if (gridItem.getProducto().getImageHigh().equalsIgnoreCase("1") || gridItem.getProducto().getImageHigh().equalsIgnoreCase("0")) {
-                                            imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
-                                            itemContainer.setVisibility(View.VISIBLE);
-                                            imgComplete.setVisibility(View.GONE);
-                                            providerName.setText(gridItem.getProducto().getProvider_name());
-                                            accessoryName.setTextColor(getResources().getColor(R.color.white));
-                                            providerName.setTextColor(getResources().getColor(R.color.white));
-                                            if (gridItem.getProducto().getName().length() > 30) {
-                                                accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
-                                            } else {
-                                                accessoryName.setText(gridItem.getProducto().getName());
-                                            }
-                                            itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
-                                        } else {
-                                            itemContainer.setVisibility(View.GONE);
-                                            imgComplete.setVisibility(View.VISIBLE);
-                                            imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                        switch (gridItem.getProducto().getSizes()) {
+                                            case "1":
+                                                imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
+                                                itemContainer.setVisibility(View.VISIBLE);
+                                                imgComplete.setVisibility(View.GONE);
+                                                providerName.setText(gridItem.getProducto().getProvider_name());
+                                                if (gridItem.getProducto().getName().length() > 30) {
+                                                    accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                                                } else {
+                                                    accessoryName.setText(gridItem.getProducto().getName());
+                                                }
+                                                break;
+                                            case "2":
+                                                if (gridItem.getProducto().getImageHigh().equalsIgnoreCase("1") || gridItem.getProducto().getImageHigh().equalsIgnoreCase("0")) {
+                                                    imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
+                                                    itemContainer.setVisibility(View.VISIBLE);
+                                                    imgComplete.setVisibility(View.GONE);
+                                                    providerName.setText(gridItem.getProducto().getProvider_name());
+                                                    accessoryName.setTextColor(getResources().getColor(R.color.white));
+                                                    providerName.setTextColor(getResources().getColor(R.color.white));
+                                                    if (gridItem.getProducto().getName().length() > 30) {
+                                                        accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                                                    } else {
+                                                        accessoryName.setText(gridItem.getProducto().getName());
+                                                    }
+                                                    itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
+                                                } else {
+                                                    itemContainer.setVisibility(View.GONE);
+                                                    imgComplete.setVisibility(View.VISIBLE);
+                                                    imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                }
+                                                break;
+                                            case "3":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                break;
+                                            case "4":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                break;
                                         }
                                         break;
                                     case "3":
                                         itemContainer.setVisibility(View.GONE);
                                         imgComplete.setVisibility(View.VISIBLE);
-                                        imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                        imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getPrimaryImage())));
                                         break;
-                                    case "4":
-                                        itemContainer.setVisibility(View.GONE);
-                                        imgComplete.setVisibility(View.VISIBLE);
-                                        imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
-                                        break;
-                                }
-                                break;
-                            case "3":
-                                itemContainer.setVisibility(View.GONE);
-                                imgComplete.setVisibility(View.VISIBLE);
-                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getPrimaryImage())));
-                                break;
 
-                            case "4":
-                                switch (gridItem.getProducto().getSizes()) {
-                                    case "2":
-                                    case "3":
-                                        itemContainer.setVisibility(View.GONE);
-                                        imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getBannerImage())));
-                                        imgComplete.setVisibility(View.VISIBLE);
-                                        break;
                                     case "4":
-                                        break;
+                                        switch (gridItem.getProducto().getSizes()) {
+                                            case "2":
+                                            case "3":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getBannerImage())));
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                break;
+                                            case "4":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getBannerImage())));
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                break;
+                                        }
                                 }
-                        }
 
-                        itemParent.setOnClickListener(new View.OnClickListener() {
+                                itemParent.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Global.producto = gridItem.getProducto();
+                                        Log.d("ROWs", gridItem.getRowSpec() + " xd");
+                                        Log.d("IDK", gridItem.getProducto().toString());
+                                        switch (gridItem.getProducto().getProduct_type_id()) {
+                                            case "1":
+                                                startActivity(new Intent(MainActivity.this, FichaEquipo.class));
+                                                break;
+                                            case "2":
+                                                Global.accesorio = gridItem.getProducto();
+                                                startActivity(new Intent(MainActivity.this, AccesoriosActivity.class));
+                                                overridePendingTransition(0,0);
+                                                break;
+                                            case "3":
+                                                blurContent.setVisibility(View.GONE);
+                                                setCloseTypeImage(btnPlans);
+                                                rlParent.removeView(imageCloseFilter);
+                                                rlContentPlans.setVisibility(View.VISIBLE);
+                                                linearSeleccionaPlan.setVisibility(View.VISIBLE);
+                                                if (gridItem.getProducto().getName().startsWith("Smart")) {
+                                                    selectPlanSmartFun();
+                                                } else if (gridItem.getProducto().getName().startsWith("Planes")) {
+                                                    selectPlanVoz();
+                                                } else if (gridItem.getProducto().getName().startsWith("Control")) {
+                                                    selectPlanControlFun();
+                                                } else if (gridItem.getProducto().getName().startsWith("Mi")) {
+                                                    selectMiPrimerPlan();
+                                                }
+                                                break;
+                                            case "4":
+                                                closeContents();
+                                                closePlans();
+                                                rlPopup.setVisibility(View.VISIBLE);
+                                                imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getPrimaryImage())));
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                });
+
+
+                                return view;
+                            }
+                        })
+                        .build();
+            } else {
+                final GridViewHolder holder = new GridViewHolder(mGridLayout);
+                GridBuilder.newInstance(this, mGridLayout)
+                        .setScaleAnimationDuration(0)
+                        .setPositionCalculator(new HorizontalPositionCalculator(3))
+                        .setBaseSize(300, 410)
+                        .setMargin(20)
+                        .setOutMargin(0, 0, 20, 20)
+                        .setGridItemList(gridItemList)
+                        .setViewHolder(holder)
+                        .setOnCreateViewCallBack(new OnViewCreateCallBack() {
                             @Override
-                            public void onClick(View v) {
-                                Global.producto = gridItem.getProducto();
-                                Log.d("ROWs", gridItem.getRowSpec() + " xd");
-                                Log.d("IDK", gridItem.getProducto().toString());
+                            public View onViewCreate(LayoutInflater inflater, View convertView, final GridItem gridItem) {
+                                View view = inflater.inflate(R.layout.masonry_item, null);
+
+                                RelativeLayout itemParent = (RelativeLayout) view.findViewById(R.id.item_parent);
+                                final LinearLayout itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
+                                final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById(R.id.image_product);
+                                SimpleDraweeView imgComplete = (SimpleDraweeView) view.findViewById(R.id.image_complete_product);
+                                TextView providerName = (TextView) view.findViewById(R.id.provider_name);
+                                final TextView accessoryName = (TextView) view.findViewById(R.id.product_name);
+
+                                Random rand = new Random();
+                                int numberColorRandom = rand.nextInt(6);
+
+                                String Colors[][] = Global.getBackgroundColorsCard();
+
                                 switch (gridItem.getProducto().getProduct_type_id()) {
                                     case "1":
-                                        startActivity(new Intent(MainActivity.this, FichaEquipo.class));
-                                        break;
-                                    case "2":
-                                        accentedAccessoryFragment = new AccentedAccessoryFragment(MainActivity.this, Global.producto);
-                                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                                        transaction.add(R.id.fragment_accesorio, accentedAccessoryFragment);
-                                        transaction.commit();
-                                        fragmentAccesorio.setVisibility(View.VISIBLE);
-                                        break;
-                                    case "3":
-                                        blurContent.setVisibility(View.GONE);
-                                        setCloseTypeImage(btnPlans);
-                                        rlParent.removeView(imageCloseFilter);
-                                        rlContentPlans.setVisibility(View.VISIBLE);
-                                        linearSeleccionaPlan.setVisibility(View.VISIBLE);
-                                        planState = true;
-                                        if (gridItem.getProducto().getName().startsWith("Smart")) {
-                                            selectPlanSmartFun();
-                                        } else if (gridItem.getProducto().getName().startsWith("Planes")) {
-                                            selectPlanVoz();
-                                        } else if (gridItem.getProducto().getName().startsWith("Control")) {
-                                            selectPlanControlFun();
+                                        switch (gridItem.getProducto().getSizes()) {
+                                            case "1":
+                                                imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
+                                                itemContainer.setVisibility(View.VISIBLE);
+                                                imgComplete.setVisibility(View.GONE);
+                                                providerName.setText(gridItem.getProducto().getProvider_name());
+                                                if (gridItem.getProducto().getName().length() > 30) {
+                                                    accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                                                } else {
+                                                    accessoryName.setText(gridItem.getProducto().getName());
+                                                }
+                                                break;
+                                            case "2":
+                                                if (gridItem.getProducto().getImageHigh().equalsIgnoreCase("1") || gridItem.getProducto().getImageHigh().equalsIgnoreCase("0")) {
+                                                    imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
+                                                    itemContainer.setVisibility(View.VISIBLE);
+                                                    imgComplete.setVisibility(View.GONE);
+                                                    providerName.setText(gridItem.getProducto().getProvider_name());
+                                                    accessoryName.setTextColor(getResources().getColor(R.color.white));
+                                                    providerName.setTextColor(getResources().getColor(R.color.white));
+                                                    if (gridItem.getProducto().getName().length() > 30) {
+                                                        accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                                                    } else {
+                                                        accessoryName.setText(gridItem.getProducto().getName());
+                                                    }
+                                                    itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
+                                                } else {
+                                                    itemContainer.setVisibility(View.GONE);
+                                                    imgComplete.setVisibility(View.VISIBLE);
+                                                    imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                }
+                                                break;
+                                            case "3":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                break;
+                                            case "4":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                break;
                                         }
                                         break;
-                                    case "4":
-                                        closeContents();
-                                        closePlans();
-                                        rlPopup.setVisibility(View.VISIBLE);
-                                        imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getPrimaryImage())));
+                                    case "2":
+                                        switch (gridItem.getProducto().getSizes()) {
+                                            case "1":
+                                                imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
+                                                itemContainer.setVisibility(View.VISIBLE);
+                                                imgComplete.setVisibility(View.GONE);
+                                                providerName.setText(gridItem.getProducto().getProvider_name());
+                                                if (gridItem.getProducto().getName().length() > 30) {
+                                                    accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                                                } else {
+                                                    accessoryName.setText(gridItem.getProducto().getName());
+                                                }
+                                                break;
+                                            case "2":
+                                                if (gridItem.getProducto().getImageHigh().equalsIgnoreCase("1") || gridItem.getProducto().getImageHigh().equalsIgnoreCase("0")) {
+                                                    imageAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getDetalles().get(0).getValue())));
+                                                    itemContainer.setVisibility(View.VISIBLE);
+                                                    imgComplete.setVisibility(View.GONE);
+                                                    providerName.setText(gridItem.getProducto().getProvider_name());
+                                                    accessoryName.setTextColor(getResources().getColor(R.color.white));
+                                                    providerName.setTextColor(getResources().getColor(R.color.white));
+                                                    if (gridItem.getProducto().getName().length() > 30) {
+                                                        accessoryName.setText(gridItem.getProducto().getName().substring(0, 27) + "...");
+                                                    } else {
+                                                        accessoryName.setText(gridItem.getProducto().getName());
+                                                    }
+                                                    itemContainer.setBackgroundColor(Color.parseColor(Colors[numberColorRandom][0]));
+                                                } else {
+                                                    itemContainer.setVisibility(View.GONE);
+                                                    imgComplete.setVisibility(View.VISIBLE);
+                                                    imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                }
+                                                break;
+                                            case "3":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                break;
+                                            case "4":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getImageHigh())));
+                                                break;
+                                        }
                                         break;
+                                    case "3":
+                                        itemContainer.setVisibility(View.GONE);
+                                        imgComplete.setVisibility(View.VISIBLE);
+                                        imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getPrimaryImage())));
+                                        break;
+
+                                    case "4":
+                                        switch (gridItem.getProducto().getSizes()) {
+                                            case "2":
+                                            case "3":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getBannerImage())));
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                break;
+                                            case "4":
+                                                itemContainer.setVisibility(View.GONE);
+                                                imgComplete.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getBannerImage())));
+                                                imgComplete.setVisibility(View.VISIBLE);
+                                                break;
+                                        }
                                 }
+
+                                itemParent.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Global.producto = gridItem.getProducto();
+                                        Log.d("ROWs", gridItem.getRowSpec() + " xd");
+                                        Log.d("IDK", gridItem.getProducto().toString());
+                                        switch (gridItem.getProducto().getProduct_type_id()) {
+                                            case "1":
+                                                startActivity(new Intent(MainActivity.this, FichaEquipo.class));
+                                                break;
+                                            case "2":
+                                                Global.accesorio = gridItem.getProducto();
+                                                startActivity(new Intent(MainActivity.this, AccesoriosActivity.class));
+                                                overridePendingTransition(0,0);
+                                                break;
+                                            case "3":
+                                                blurContent.setVisibility(View.GONE);
+                                                setCloseTypeImage(btnPlans);
+                                                rlParent.removeView(imageCloseFilter);
+                                                rlContentPlans.setVisibility(View.VISIBLE);
+                                                linearSeleccionaPlan.setVisibility(View.VISIBLE);
+                                                if (gridItem.getProducto().getName().startsWith("Smart")) {
+                                                    selectPlanSmartFun();
+                                                } else if (gridItem.getProducto().getName().startsWith("Planes")) {
+                                                    selectPlanVoz();
+                                                } else if (gridItem.getProducto().getName().startsWith("Control")) {
+                                                    selectPlanControlFun();
+                                                } else if (gridItem.getProducto().getName().startsWith("Mi")) {
+                                                    selectMiPrimerPlan();
+                                                }
+                                                break;
+                                            case "4":
+                                                rlPopup.setVisibility(View.VISIBLE);
+                                                imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getPrimaryImage())));
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                });
+
+
+                                return view;
                             }
-                        });
+                        })
+                        .build();
+            }
+        } catch (IllegalArgumentException ex) {
+            Log.e("ERROR", ex.toString());
+            Intent i = new Intent(MainActivity.this, MainActivity.class);
+            overridePendingTransition(0, 0);
+            Collections.shuffle(Global.allAccessories);
+            Collections.shuffle(Global.allProducts);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
 
-
-                        return view;
-                    }
-                })
-                .build();
     }
-
-    public void closeBlurAccessories() {
-        fragmentAccesorio.setVisibility(View.GONE);
-    }
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
@@ -1529,6 +2531,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         timerDestacado.cancel();
+        cont = 0;
         super.onDestroy();
 
     }
@@ -1537,53 +2540,57 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         timerDestacado.cancel();
         super.onStop();
+        cont = 0;
     }
 
-    public void openEDSmartFun(String gbPlan, String precioPlan, int type) {
+    public void openEDSmartFun(String gbPlan, String precioPlan, int type, Producto producto) {
         equiposDestacadosRandom.clear();
         tvGbPlanSf.setText(gbPlan);
+        tvGbPlanSf.setVisibility(View.VISIBLE);
         tvPrecioEquipoDestacadoSF.setText(precioPlan);
-        Random rdm = new Random();
-        equiposDestacadosRandom.add(Session.objData.getDevices().get(rdm.nextInt(Session.objData.getDevices().size())));
-        equiposDestacadosRandom.add(Session.objData.getDevices().get(rdm.nextInt(Session.objData.getDevices().size())));
-        equiposDestacadosRandom.add(Session.objData.getDevices().get(rdm.nextInt(Session.objData.getDevices().size())));
+        textView53.setVisibility(View.VISIBLE);
+        textView49.setVisibility(View.VISIBLE);
+        for(int i = 0;i < Session.objData.getDevices().size(); i++ ){
+            if(Session.objData.getDevices().get(i).getId().equalsIgnoreCase(producto.getEquno()) || Session.objData.getDevices().get(i).getId().equalsIgnoreCase(producto.getEqdos())){
+                if(Session.objData.getDevices().get(i).getId().equalsIgnoreCase("44")){
+                    Session.objData.getDevices().get(i).setCae(Session.objData.getDevices().get(i).getHijos().get(3).getCae());
+                    Session.objData.getDevices().get(i).setPrecios(Session.objData.getDevices().get(i).getHijos().get(3).getPrecios());
+                }
+                equiposDestacadosRandom.add(Session.objData.getDevices().get(i));
+            }
+        }
         EquiposDestacadosAdapter equiposDestacadosAdapter = new EquiposDestacadosAdapter(equiposDestacadosRandom, this);
         rvEquiposDestacadosSf.setAdapter(equiposDestacadosAdapter);
-        if(type == 0){
+        if (type == 0) {
             constraintLayout2.setBackgroundColor(getResources().getColor(R.color.blue));
             textView51.setText("Smart Fun SIMple ");
-        }
-        else{
+        } else if (type == 1) {
             textView51.setText("Control Fun SIMple ");
             constraintLayout2.setBackgroundColor(getResources().getColor(R.color.orange));
+        } else if (type == 2) {
+            textView51.setText("Mi Primer Plan Multimedia ");
+            constraintLayout2.setBackgroundColor(getResources().getColor(R.color.greenMint));
+            textView49.setVisibility(View.GONE);
+            tvGbPlanSf.setText(precioPlan);
+            textView53.setVisibility(View.GONE);
         }
-
-
         rlEquipoDestacadoSmartFun.setVisibility(View.VISIBLE);
-
     }
 
-    @OnClick({R.id.constraintLayout2, R.id.rv_equipos_destacados_sf, R.id.constraint_equipo_destacado_sf, R.id.linear_close_equipo_destacado_sf, R.id.rl_equipo_destacado_smart_fun, R.id.button_arrow_left_filter, R.id.button_arrow_right_filter, R.id.linear_que_buscas, R.id.image_destacado, R.id.image_popup, R.id.linear_close_popup, R.id.rl_popup})
+    @OnClick({R.id.linear_condiciones_comerciales_primerplan, R.id.constraint_mi_primer_plan, R.id.constraintLayout2, R.id.rv_equipos_destacados_sf, R.id.constraint_equipo_destacado_sf, R.id.linear_close_equipo_destacado_sf, R.id.rl_equipo_destacado_smart_fun, R.id.button_arrow_left_filter, R.id.button_arrow_right_filter, R.id.linear_que_buscas, R.id.image_destacado, R.id.image_popup, R.id.linear_close_popup, R.id.rl_popup})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.button_arrow_left_filter:
-                if (linearLayoutManagerACC.findFirstVisibleItemPosition() > 0) {
-                    rvAccesorios.smoothScrollToPosition(linearLayoutManagerACC.findFirstVisibleItemPosition() - 1);
-                }
-                break;
-            case R.id.button_arrow_right_filter:
-                rvAccesorios.smoothScrollToPosition(linearLayoutManagerACC.findLastCompletelyVisibleItemPosition() + 1);
-                break;
             case R.id.linear_que_buscas:
                 cont++;
-                if (cont == 20) {
-                    finish();
-                    startActivity(new Intent(this, SettingsActivity.class));
+                if(cont == 20){
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                    this.finish();
                 }
                 break;
             case R.id.image_destacado:
                 switch (configuracionFile.getString("pantalla_id_index", "5")) {
                     case "1":
+                        Log.d("ID ONE", Session.objData.getCatalog().getScreenThreeId());
                         for (int i = 0; i < Global.allDevices.size(); i++) {
                             if (Session.objData.getCatalog().getScreenOneId().equalsIgnoreCase(Global.allDevices.get(i).getId())) {
                                 Global.producto = Global.allDevices.get(i);
@@ -1593,26 +2600,39 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case "2":
+                        for (int i = 0; i < Global.allAccessories.size(); i++) {
+                            if (Session.objData.getCatalog().getScreenTwoId().equalsIgnoreCase(Global.allAccessories.get(i).getId())) {
+                                Global.accesorio = Global.allAccessories.get(i);
+                                startActivity(new Intent(MainActivity.this, AccesoriosActivity.class));
+                                overridePendingTransition(0,0);
+                                break;
+                            }
+                        }
                         break;
                     case "3":
+                        Log.d("ID THREE", Session.objData.getCatalog().getScreenThreeId());
                         for (int i = 0; i < Global.allDevices.size(); i++) {
+                            Log.d("ID", Global.allDevices.get(i).getId());
                             if (Session.objData.getCatalog().getScreenThreeId().equalsIgnoreCase(Global.allDevices.get(i).getId())) {
                                 Global.producto = Global.allDevices.get(i);
+                                Global.producto.setCae(Global.allDevices.get(i).getHijos().get(3).getCae());
+                                Global.producto.setDetalles(Global.allDevices.get(i).getHijos().get(3).getDetalles());
+                                Global.producto.setPrecios(Global.allDevices.get(i).getHijos().get(3).getPrecios());
+                                Global.producto.setPlanes(Global.allDevices.get(i).getHijos().get(3).getPlanes());
                                 startActivity(new Intent(this, FichaEquipo.class));
                                 break;
                             }
                         }
                         break;
                     case "4":
+                        selectPlanSmartFun();
                         break;
                     case "5":
                         startActivity(new Intent(this, SettingsActivity.class));
                         finish();
                         break;
                 }
-
                 imgDestacado.setVisibility(View.GONE);
-
                 break;
 
             case R.id.image_popup:
@@ -1636,38 +2656,37 @@ public class MainActivity extends AppCompatActivity {
             case R.id.rl_equipo_destacado_smart_fun:
                 rlEquipoDestacadoSmartFun.setVisibility(View.GONE);
                 break;
+            case R.id.linear_condiciones_comerciales_primerplan:
+                rlPopup.setVisibility(View.VISIBLE);
+                imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(3).getCondicionImage())));
+                break;
+            case R.id.constraint_mi_primer_plan:
+                break;
         }
     }
 
-    public void openImageHigh() {
+    public void openImageHigh(String id) {
         closeContents();
         fragmentAccesorio.setVisibility(View.GONE);
-        switch (configuracionFile.getString("pantalla_id_index", "5")) {
+        switch (id) {
             case "1":
-                imgDestacado.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getCatalog().getScreenOneImage())));
-                imgDestacado.setVisibility(View.VISIBLE);
+                Uri f = Uri.fromFile(new File(Global.dirImages + Session.objData.getCatalog().getScreenOneImage()));
+                Log.d("IMAGE", f.toString());
+                imgDestacado.setImageURI(f);
                 break;
             case "2":
                 Uri uri = Uri.fromFile(new File(Global.dirImages + Session.objData.getCatalog().getScreenTwoImage()));
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setUri(uri)
-                        .setAutoPlayAnimations(true)
-                        .build();
-                imgDestacado.setController(controller);
-                imgDestacado.setVisibility(View.VISIBLE);
+                imgDestacado.setImageURI(uri);
                 break;
             case "3":
                 imgDestacado.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getCatalog().getScreenThreeImage())));
-                imgDestacado.setVisibility(View.VISIBLE);
                 break;
             case "4":
                 imgDestacado.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getCatalog().getScreenFourImage())));
-                imgDestacado.setVisibility(View.VISIBLE);
+
                 break;
-            case "5":
-                startActivity(new Intent(this, SettingsActivity.class));
-                finish();
-                break;
+
         }
+        imgDestacado.setVisibility(View.VISIBLE);
     }
 }

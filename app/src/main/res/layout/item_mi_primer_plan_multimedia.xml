@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="994dp"
+    android:layout_height="165.0dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical"
+    android:background="@drawable/controlfun_content">
+
+
+    <TextView
+        android:id="@+id/textView61"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="habla hasta"
+        android:textAllCaps="true"
+        android:textColor="@color/dimGray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/textView39"
+        android:layout_marginRight="72dp" />
+
+    <TextView
+        android:id="@+id/tv_minutos_mpm"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:text="500 Min."
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/textView61"
+        app:layout_constraintRight_toRightOf="@+id/textView61"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19999999" />
+
+    <TextView
+        android:id="@+id/textView63"
+        fontPath="fonts/DINNextLTPro-Bold.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:text="ó"
+        android:textColor="@color/orange"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_minutos_mpm"
+        app:layout_constraintRight_toRightOf="@+id/tv_minutos_mpm"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.36" />
+
+    <TextView
+        android:id="@+id/textView64"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:text="navega hasta*"
+        android:textAllCaps="true"
+        android:textColor="@color/dimGray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/textView63"
+        app:layout_constraintRight_toRightOf="@+id/textView63"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_navega_hasta_mpm"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:text="3.3 GB"
+        android:textColor="@color/dimGray"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/textView64"
+        app:layout_constraintRight_toRightOf="@+id/textView64"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.649"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <TextView
+        android:id="@+id/textView66"
+        fontPath="fonts/DINNextLTPro-Regular.otf"
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:text="*Usando todo tu saldo en bolsas de Datos + la cuota de Datos incluida en tu plan"
+        android:textAlignment="center"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_navega_hasta_mpm"
+        app:layout_constraintRight_toRightOf="@+id/tv_navega_hasta_mpm"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <TextView
+        android:id="@+id/textView52"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="37dp"
+        android:includeFontPadding="false"
+        android:text="Mi Primer Plan\nMultimedia"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_precio_nombre"
+        fontPath="fonts/DINNextLTPro-Bold.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="43dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:text="7990"
+        android:textColor="@color/white"
+        android:textSize="31sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/textView52"
+        app:layout_constraintRight_toRightOf="@+id/textView52" />
+
+    <TextView
+        android:id="@+id/textView57"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:text="CUOTA DE\nDATOS"
+        android:textAlignment="center"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:textColor="@color/dimGray"
+        android:textSize="12sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/textView52"
+        android:layout_marginLeft="76dp" />
+
+    <TextView
+        android:id="@+id/tv_cuota_datos_mpm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:layout_marginTop="4dp"
+        android:text="1 GB"
+        android:textSize="25sp"
+        app:layout_constraintLeft_toLeftOf="@+id/textView57"
+        app:layout_constraintRight_toRightOf="@+id/textView57"
+        app:layout_constraintTop_toBottomOf="@+id/textView57" />
+
+    <LinearLayout
+        android:layout_width="32dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintLeft_toRightOf="@+id/textView57"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/linearLayout12">
+
+        <TextView
+            android:id="@+id/textView41"
+            fontPath="fonts/DINNextLTPro-Medium.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:includeFontPadding="false"
+            android:text="+"
+            android:textColor="@color/orange"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView59"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="WHATSAPP\nILIMITADO"
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:textAlignment="center"
+        android:textColor="@color/dimGray"
+        android:textSize="12sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/linearLayout12"
+        android:layout_marginLeft="16dp" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/whatsapp_logo"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/textView59"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/textView59"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintVertical_bias="0.52" />
+
+    <TextView
+        fontPath="fonts/DINNextLTPro-Regular.otf"
+        android:id="@+id/textView60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
+        android:text="Para mensajería,\nfotos y videos"
+        android:textAlignment="center"
+        android:textColor="@color/dimGray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/textView59"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/textView59"
+        app:layout_constraintHorizontal_bias="0.481" />
+
+    <LinearLayout
+        android:id="@+id/linear_equipos_destacados"
+        android:layout_width="130dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="@color/orange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginRight="0dp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            fontPath="fonts/DINNextLTPro-Medium.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Equipos"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+
+        <TextView
+            fontPath="fonts/DINNextLTPro-MediumItalic.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recomendados"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+
+    <TextView
+        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+        android:id="@+id/tv_valor_plan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="519.990"
+        android:textColor="@color/blue"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        app:layout_constraintRight_toLeftOf="@+id/linear_equipos_destacados"
+        android:layout_marginEnd="29dp"
+        app:layout_constraintVertical_bias="0.504" />
+    <TextView
+        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+        android:id="@+id/textView39"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$"
+        android:textColor="@color/blue"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_valor_plan"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintTop_toTopOf="@+id/tv_valor_plan"
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_bias="0.51"
+        app:layout_constraintRight_toLeftOf="@+id/tv_valor_plan"
+        android:layout_marginRight="0dp" />
+    <TextView
+        fontPath="fonts/DINNextLTPro-Medium.otf"
+        android:id="@+id/textView40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="valor del plan"
+        android:textSize="14sp"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toTopOf="@+id/tv_valor_plan"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_valor_plan"
+        app:layout_constraintRight_toRightOf="@+id/tv_valor_plan" />
+
+
+</android.support.constraint.ConstraintLayout>

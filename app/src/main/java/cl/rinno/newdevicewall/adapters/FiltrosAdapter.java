@@ -6,6 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -81,6 +84,8 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
                 holder.rlParentImage.setLayoutParams(layoutParams);
             }
         }
+
+        //setAnimation(holder.itemView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +184,10 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
         }else{
             return filterList.size();
         }
+    }
+
+    private void setAnimation(View viewToAnimate) {
+        viewToAnimate.animate().setDuration(300).alpha(1.0f).scaleX(1.0f).scaleY(1.0f).start();
     }
 
     public class FiltrosViewHolder extends RecyclerView.ViewHolder {
