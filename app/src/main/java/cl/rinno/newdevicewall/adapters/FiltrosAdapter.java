@@ -13,10 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import cl.rinno.newdevicewall.AnalyticsApplication;
 import cl.rinno.newdevicewall.MainActivity;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Global;
@@ -35,16 +38,22 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
     private MainActivity mainActivity;
     private ArrayList<Provider> providersArrayList;
 
+    Tracker mTracker;
+
     public FiltrosAdapter(ArrayList<Provider> providersArrayList, int type, MainActivity mainActivity, String xd) {
         this.providersArrayList = providersArrayList;
         this.type = type;
         this.mainActivity = mainActivity;
+        AnalyticsApplication application = (AnalyticsApplication) this.mainActivity.getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     public FiltrosAdapter(ArrayList<String> filterList, int type, MainActivity mainActivity) {
         this.filterList = filterList;
         this.type = type;
         this.mainActivity = mainActivity;
+        AnalyticsApplication application = (AnalyticsApplication) this.mainActivity.getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     @Override
@@ -85,20 +94,21 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
             }
         }
 
-        //setAnimation(holder.itemView);
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String value = holder.txtFilter.getText().toString();
                 String valueTwo = "";
+                String filter = "";
                 switch(type){
                     case 0:
                     case 4:
+                        filter = "Marca";
                         value = Global.providersDevices.get(position).getName();
                         valueTwo = Global.providersDevices.get(position).getId();
                         break;
                     case 1:
+                        filter = "Pantalla";
                         switch (value) {
                             case "3\"":
                                 valueTwo = "0\"";
@@ -121,6 +131,7 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
                         }
                         break;
                     case 2:
+                        filter = "Cámara Trasera";
                         switch (value) {
                             case "1.3MP":
                                 valueTwo = "0M";
@@ -143,6 +154,7 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
                         }
                         break;
                     case 3:
+                        filter = "Cámara Frontal";
                         switch (value) {
                             case "1.3MP":
                                 valueTwo = "0 ";
@@ -167,9 +179,24 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
                 }
                 final String finalValue = value;
                 final String finalValueTwo = valueTwo;
+                final String finalFilter = filter;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if (type == 4){
+                            mTracker.send(new HitBuilders.EventBuilder()
+                                    .setCategory("Accesorio")
+                                    .setAction("Filtro Equipo Compatible")
+                                    .setLabel(finalValue)
+                                    .build());
+                        } else{
+                            mTracker.send(new HitBuilders.EventBuilder()
+                                    .setCategory("Equipo")
+                                    .setAction("Filtro: "+ finalFilter)
+                                    .setLabel(finalValue)
+                                    .build());
+                        }
+
                         mainActivity.setFilter(finalValue, finalValueTwo);
                     }
                 },0);
@@ -184,10 +211,6 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
         }else{
             return filterList.size();
         }
-    }
-
-    private void setAnimation(View viewToAnimate) {
-        viewToAnimate.animate().setDuration(300).alpha(1.0f).scaleX(1.0f).scaleY(1.0f).start();
     }
 
     public class FiltrosViewHolder extends RecyclerView.ViewHolder {

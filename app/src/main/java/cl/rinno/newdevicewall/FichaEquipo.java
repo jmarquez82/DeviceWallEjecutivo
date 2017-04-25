@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.mmin18.widget.RealtimeBlurView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public class FichaEquipo extends AppCompatActivity {
     ArrayList<Producto> listHijos;
 
     TimerInactivity timerInactivity;
+
+    Tracker mTracker;
 
     @BindView(R.id.image_device)
     SimpleDraweeView imageDevice;
@@ -197,6 +201,9 @@ public class FichaEquipo extends AppCompatActivity {
         setContentView(R.layout.activity_ficha_equipo);
         ButterKnife.bind(this);
 
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+
         listHijos = new ArrayList<>();
         accesoriosCompatibles = new ArrayList<>();
 
@@ -339,6 +346,7 @@ public class FichaEquipo extends AppCompatActivity {
 
         cont = 0;
 
+
         vpCarrusel.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -442,6 +450,11 @@ public class FichaEquipo extends AppCompatActivity {
 
     private void showAccessory(final Producto producto) {
         caracteristicasList = new ArrayList<>();
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Accesorio")
+                .setAction(producto.getProvider_name() +" - "+producto.getName())
+                .setLabel("Accesorios compatibles: "+Global.producto.getProvider_name()+" - "+Global.producto.getName())
+                .build());
         linearLayoutManagerCaract = new LinearLayoutManager(this);
         linearLayoutManagerCaract.setOrientation(LinearLayoutManager.VERTICAL);
         tvNameAccessory.setText(producto.getName());

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -86,6 +89,8 @@ public class EquipoConPlanActivity extends AppCompatActivity {
     @BindView(R.id.rl_popup)
     RelativeLayout rlPopup;
 
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +113,14 @@ public class EquipoConPlanActivity extends AppCompatActivity {
         controlFunState = false;
         timerInactivity = new TimerInactivity(180000, 1000, this);
         timerInactivity.start();
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Equipo")
+                .setAction(Global.producto.getProvider_name() +" - "+Global.producto.getName())
+                .setLabel("Plan: Smart Fun (Default)")
+                .build());
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -180,7 +193,6 @@ public class EquipoConPlanActivity extends AppCompatActivity {
         timerInactivity.cancel();
     }
 
-
     private void setAnimationRecycler(final RecyclerView recyclerView) {
         recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -223,6 +235,11 @@ public class EquipoConPlanActivity extends AppCompatActivity {
                     setAnimationRecycler(rvPlanes);
                     controlFunState = false;
                     smartFunState = true;
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Equipo")
+                            .setAction(Global.producto.getProvider_name() +" - "+Global.producto.getName())
+                            .setLabel("Plan: Smart Fun")
+                            .build());
                 }
 
                 break;
@@ -235,6 +252,11 @@ public class EquipoConPlanActivity extends AppCompatActivity {
                     setAnimationRecycler(rvPlanes);
                     smartFunState = false;
                     controlFunState = true;
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Equipo")
+                            .setAction(Global.producto.getProvider_name() +" - "+Global.producto.getName())
+                            .setLabel("Plan: Control Fun")
+                            .build());
                 }
                 break;
             case R.id.linear_volver_al_equipo:
@@ -248,8 +270,18 @@ public class EquipoConPlanActivity extends AppCompatActivity {
             case R.id.linear_condiciones_comerciales:
                 rlPopup.setVisibility(View.VISIBLE);
                 if (smartFunState) {
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Ver Equipo Com Plan")
+                            .setAction(Global.producto.getProvider_name() +" - "+Global.producto.getName())
+                            .setLabel("Condiciones Comerciales - Smart Fun")
+                            .build());
                     imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(0).getCondicionImage())));
                 } else if (controlFunState) {
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Ver Equipo Com Plan")
+                            .setAction(Global.producto.getProvider_name() +" - "+Global.producto.getName())
+                            .setLabel("Condiciones Comerciales - Control Fun")
+                            .build());
                     imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + Session.objData.getPlanes().get(1).getCondicionImage())));
                 }
                 break;

@@ -8,13 +8,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -32,11 +29,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
-import com.github.mmin18.widget.RealtimeBlurView;
-import android.widget.FrameLayout;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,7 +45,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cl.rinno.newdevicewall.adapters.AccesoriosAdapter;
-import cl.rinno.newdevicewall.adapters.CaracteristicasDestacadoAdapter;
 import cl.rinno.newdevicewall.adapters.EquiposCompatiblesAdapter;
 import cl.rinno.newdevicewall.adapters.EquiposDestacadosAdapter;
 import cl.rinno.newdevicewall.adapters.FiltrosAdapter;
@@ -58,10 +53,7 @@ import cl.rinno.newdevicewall.adapters.MiPrimerPlanVozAdapter;
 import cl.rinno.newdevicewall.adapters.PlanDeVozAdapter;
 import cl.rinno.newdevicewall.adapters.PlanesControlFunSimpleAdapter;
 import cl.rinno.newdevicewall.adapters.PlanesSmartFunSimpleAdapter;
-import cl.rinno.newdevicewall.cls.NonSwipeableViewPager;
 import cl.rinno.newdevicewall.cls.TimerDestacado;
-import cl.rinno.newdevicewall.cls.ViewPagerCarruselAdapter;
-import cl.rinno.newdevicewall.fragments.AccentedAccessoryFragment;
 import cl.rinno.newdevicewall.gridlibrery.GridBuilder;
 import cl.rinno.newdevicewall.gridlibrery.GridItem;
 import cl.rinno.newdevicewall.gridlibrery.GridViewHolder;
@@ -71,8 +63,6 @@ import cl.rinno.newdevicewall.gridlibrery.listener.OnViewCreateCallBack;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
 import cl.rinno.newdevicewall.models.Session;
-import me.crosswall.lib.coverflow.CoverFlow;
-import me.crosswall.lib.coverflow.core.PagerContainer;
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -280,7 +270,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Producto> filterProductList;
 
 
-
     @BindView(R.id.linear_que_buscas)
     LinearLayout linearQueBuscas;
     @BindView(R.id.tv_filter_product_type)
@@ -375,6 +364,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     TimerDestacado timerDestacado;
+
+    Tracker mTracker;
 
     @Override
     protected void onPause() {
@@ -486,6 +477,19 @@ public class MainActivity extends AppCompatActivity {
         rvMiPrimerPlanMultimedia.setHasFixedSize(true);
         rvMiPrimerPlanVoz.setHasFixedSize(true);
 
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+
+        /*
+        type = 0: sin filtros.
+        type = 1: Click tab equipos.
+        type = 2: click tab accesorios.
+        type = 3: click tab planes.
+        type = 4: filtro equipo.
+        type = 5: filtro accesorio.
+        */
+
+
         imageCloseType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -499,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
                         setDefuaultColors();
                         rlParent.removeView(imageCloseFilter);
                         blurContent.setVisibility(View.GONE);
-                        filterDevices(Global.allProducts);
+                        filterDevices(Global.allProducts, 0);
                         deviceState = false;
                         accessoryState = false;
                         planState = false;
@@ -531,14 +535,14 @@ public class MainActivity extends AppCompatActivity {
                         if (deviceState) {
                             closePlans();
                             linearSeleccionaFiltro.setVisibility(View.VISIBLE);
-                            filterDevices(Global.allDevices);
+                            filterDevices(Global.allDevices, 1);
                         } else if (accessoryState) {
                             closePlans();
                             linearSeleccionaFiltro.setVisibility(View.VISIBLE);
-                            filterDevices(Global.allAccessories);
+                            filterDevices(Global.allAccessories, 2);
                         } else if (planState) {
                             closePlans();
-                            filterDevices(Global.allPlans);
+                            filterDevices(Global.allPlans, 3);
                             linearSeleccionaPlan.setVisibility(View.VISIBLE);
                         }
                     }
@@ -659,7 +663,7 @@ public class MainActivity extends AppCompatActivity {
 
         timerDestacado.start();
 
-        filterDevices(Global.allProducts);
+        filterDevices(Global.allProducts, 0);
     }
 
 
@@ -871,39 +875,39 @@ public class MainActivity extends AppCompatActivity {
         rlEquipoDestacadoSmartFun.setVisibility(View.GONE);
         blurContent.setVisibility(View.GONE);
         Random random = new Random();
-        if(deviceState || accessoryState || planState){
+        if (deviceState || accessoryState || planState) {
             deviceState = false;
             accessoryState = false;
             planState = false;
             rlParent.removeView(imageCloseFilter);
             rlButtonsParent.removeView(imageCloseType);
-            filterDevices(Global.allProducts);
-        }else{
-            if(!gridMoveMax){
+            filterDevices(Global.allProducts, 0);
+        } else {
+            if (!gridMoveMax) {
                 horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() + 960, horizontalScrollGrid.getTop());
-            }else{
+            } else {
                 int move = (-960 * random.nextInt(9));
                 horizontalScrollGrid.smoothScrollBy(horizontalScrollGrid.getLeft() + move, horizontalScrollGrid.getTop());
             }
         }
         switch (configuracionFile.getString("pantalla_id_index", "5")) {
             case "1":
-                if(contMoveGrid == 1){
+                if (contMoveGrid == 1) {
                     openImageHigh(configuracionFile.getString("pantalla_id_index", "1"));
                 }
                 break;
             case "2":
-                if(contMoveGrid == 2){
+                if (contMoveGrid == 2) {
                     openImageHigh(configuracionFile.getString("pantalla_id_index", "2"));
                 }
                 break;
             case "3":
-                if(contMoveGrid == 3){
+                if (contMoveGrid == 3) {
                     openImageHigh(configuracionFile.getString("pantalla_id_index", "3"));
                 }
                 break;
             case "4":
-                if(contMoveGrid == 4){
+                if (contMoveGrid == 4) {
                     openImageHigh(configuracionFile.getString("pantalla_id_index", "4"));
                     contMoveGrid = 0;
                 }
@@ -999,7 +1003,12 @@ public class MainActivity extends AppCompatActivity {
                     });
                     linearSeleccionaFiltro.setVisibility(View.VISIBLE);
                     tvFilterProductType.setText("equipos_");
-                    filterDevices(Global.allDevices);
+                    filterDevices(Global.allDevices, 1);
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Catálogo")
+                            .setAction("Filtros")
+                            .setLabel("Equipos")
+                            .build());
                     deviceState = true;
                 } else {
                     closeTextFilters();
@@ -1013,7 +1022,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     rlParent.removeView(imageCloseFilter);
                     blurContent.setVisibility(View.GONE);
-                    filterDevices(Global.allProducts);
+                    filterDevices(Global.allProducts, 0);
                     deviceState = false;
                 }
                 break;
@@ -1091,7 +1100,12 @@ public class MainActivity extends AppCompatActivity {
                     linearSeleccionaFiltro.setVisibility(View.VISIBLE);
                     tvFilterProductType.setText("accesorios_");
                     accessoryState = true;
-                    filterDevices(Global.allAccessories);
+                    filterDevices(Global.allAccessories, 2);
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Catálogo")
+                            .setAction("Filtros")
+                            .setLabel("Accesorios")
+                            .build());
                 } else {
                     linearQueBuscas.setVisibility(View.VISIBLE);
                     imageCloseType.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
@@ -1103,7 +1117,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     rlParent.removeView(imageCloseFilter);
                     blurContent.setVisibility(View.GONE);
-                    filterDevices(Global.allProducts);
+                    filterDevices(Global.allProducts, 0);
                     accessoryState = false;
                 }
 
@@ -1174,8 +1188,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     linearSeleccionaPlan.setVisibility(View.VISIBLE);
-                    filterDevices(Global.allPlans);
+                    filterDevices(Global.allPlans, 3);
                     planState = true;
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Catálogo")
+                            .setAction("Filtros")
+                            .setLabel("Planes")
+                            .build());
                 } else {
                     linearQueBuscas.setVisibility(View.VISIBLE);
                     imageCloseType.animate().scaleX(0.0f).scaleY(0.0f).alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
@@ -1186,7 +1205,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     blurContent.setVisibility(View.GONE);
-                    filterDevices(Global.allProducts);
+                    filterDevices(Global.allProducts, 0);
                     planState = false;
                 }
                 break;
@@ -1207,6 +1226,11 @@ public class MainActivity extends AppCompatActivity {
                 filtro = "Marca";
                 tvFilterName.setText(filtro);
                 linearNombreFiltro.setVisibility(View.VISIBLE);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Equipo")
+                        .setAction("Filtros")
+                        .setLabel(filtro)
+                        .build());
                 openBlur(filtro);
                 break;
             case R.id.button_pantalla_filter:
@@ -1220,6 +1244,11 @@ public class MainActivity extends AppCompatActivity {
                 filtro = "Pantalla";
                 tvFilterName.setText(filtro);
                 linearNombreFiltro.setVisibility(View.VISIBLE);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Equipo")
+                        .setAction("Filtros")
+                        .setLabel(filtro)
+                        .build());
                 openBlur(filtro);
                 break;
             case R.id.button_camara_trasera_filter:
@@ -1233,6 +1262,11 @@ public class MainActivity extends AppCompatActivity {
                 filtro = "Cámara Trasera";
                 tvFilterName.setText(filtro);
                 linearNombreFiltro.setVisibility(View.VISIBLE);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Equipo")
+                        .setAction("Filtros")
+                        .setLabel(filtro)
+                        .build());
                 openBlur(filtro);
                 break;
             case R.id.button_camara_frontal_filter:
@@ -1246,6 +1280,11 @@ public class MainActivity extends AppCompatActivity {
                 filtro = "Cámara Frontal";
                 tvFilterName.setText(filtro);
                 linearNombreFiltro.setVisibility(View.VISIBLE);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Equipo")
+                        .setAction("Filtros")
+                        .setLabel(filtro)
+                        .build());
                 openBlur(filtro);
                 break;
             case R.id.button_multimedia_filter:
@@ -1275,7 +1314,12 @@ public class MainActivity extends AppCompatActivity {
                         return o1.getProvider_name().compareTo(o2.getProvider_name());
                     }
                 });
-                filterDevices(filterProductList);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Accesorio")
+                        .setAction("Filtros")
+                        .setLabel(filtro)
+                        .build());
+                filterDevices(filterProductList, 5);
                 break;
             case R.id.button_proteccion_filter:
                 linearSearchError.setVisibility(View.GONE);
@@ -1304,7 +1348,12 @@ public class MainActivity extends AppCompatActivity {
                         return o1.getProvider_name().compareTo(o2.getProvider_name());
                     }
                 });
-                filterDevices(filterProductList);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Accesorio")
+                        .setAction("Filtros")
+                        .setLabel(filtro)
+                        .build());
+                filterDevices(filterProductList, 5);
                 break;
             case R.id.button_energia_filter:
                 linearSearchError.setVisibility(View.GONE);
@@ -1333,7 +1382,12 @@ public class MainActivity extends AppCompatActivity {
                         return o1.getProvider_name().compareTo(o2.getProvider_name());
                     }
                 });
-                filterDevices(filterProductList);
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Accesorio")
+                        .setAction("Filtros")
+                        .setLabel(filtro)
+                        .build());
+                filterDevices(filterProductList, 5);
                 break;
             case R.id.button_por_equipo_filter:
                 setDefuaultColors();
@@ -1346,19 +1400,44 @@ public class MainActivity extends AppCompatActivity {
                 textFiltroPorEquipo.setTextColor(getResources().getColor(R.color.greenMint));
                 icnFiltroPorEquipo.setImageResource(R.drawable.icn_por_equipo_selected);
                 filtro = "EquiposCompatibles";
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Accesorio")
+                        .setAction("Filtros")
+                        .setLabel(filtro)
+                        .build());
                 openBlur(filtro);
                 break;
             case R.id.button_smartfun:
                 selectPlanSmartFun();
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Planes")
+                        .setAction("Filtros")
+                        .setLabel("Smart Fun")
+                        .build());
                 break;
             case R.id.button_controlfun:
                 selectPlanControlFun();
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Planes")
+                        .setAction("Filtros")
+                        .setLabel("Control Fun")
+                        .build());
                 break;
             case R.id.button_planvoz:
                 selectPlanVoz();
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Planes")
+                        .setAction("Filtros")
+                        .setLabel("Plan de Voz")
+                        .build());
                 break;
             case R.id.button_miprimerplan:
                 selectMiPrimerPlan();
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Planes")
+                        .setAction("Filtros")
+                        .setLabel("Mi Primer Plan")
+                        .build());
                 break;
             case R.id.linear_condiciones_comerciales_solo_voz:
                 rlPopup.setVisibility(View.VISIBLE);
@@ -1379,10 +1458,10 @@ public class MainActivity extends AppCompatActivity {
                 rlParent.removeView(imageCloseFilter);
                 if (deviceState) {
                     linearSeleccionaFiltro.setVisibility(View.VISIBLE);
-                    filterDevices(Global.allDevices);
+                    filterDevices(Global.allDevices, 1);
                 } else if (accessoryState) {
                     linearSeleccionaFiltro.setVisibility(View.VISIBLE);
-                    filterDevices(Global.allAccessories);
+                    filterDevices(Global.allAccessories, 2);
                 } else {
                     linearQueBuscas.setVisibility(View.VISIBLE);
                 }
@@ -1848,7 +1927,7 @@ public class MainActivity extends AppCompatActivity {
                         return o1.getName().compareTo(o2.getName());
                     }
                 });
-                filterDevices(filterProductList);
+                filterDevices(filterProductList, 4);
                 break;
             case "Pantalla":
                 filterProductList.clear();
@@ -1876,7 +1955,7 @@ public class MainActivity extends AppCompatActivity {
                         return o1.getProvider_name().compareTo(o2.getProvider_name());
                     }
                 });
-                filterDevices(filterProductList);
+                filterDevices(filterProductList, 4);
                 break;
             case "Cámara Trasera":
                 filterProductList.clear();
@@ -1920,7 +1999,7 @@ public class MainActivity extends AppCompatActivity {
                         return o1.getProvider_name().compareTo(o2.getProvider_name());
                     }
                 });
-                filterDevices(filterProductList);
+                filterDevices(filterProductList, 4);
                 break;
             case "Cámara Frontal":
                 filterProductList.clear();
@@ -1949,7 +2028,7 @@ public class MainActivity extends AppCompatActivity {
                         return o1.getProvider_name().compareTo(o2.getProvider_name());
                     }
                 });
-                filterDevices(filterProductList);
+                filterDevices(filterProductList, 4);
                 break;
 
             case "EquiposCompatibles":
@@ -2009,6 +2088,11 @@ public class MainActivity extends AppCompatActivity {
         linearResultadoEquipoCompatible.setVisibility(View.VISIBLE);
         linearElegirEquipoCompatible.setVisibility(View.GONE);
         accesoriosList = new ArrayList<>();
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Accesorio")
+                .setAction("Filtro Equipo Compatible - Marca: "+device.getProvider_name())
+                .setLabel(device.getName())
+                .build());
         tvNombreEquipoCompatibleSeleccionado.setText(device.getName());
         tvProveedorEquipoCompatibleSeleccionado.setText(device.getProvider_name());
         imgDeviceSelected.setImageURI(Uri.fromFile(new File(Global.dirImages + device.getDetalles().get(0).getValue())));
@@ -2036,7 +2120,7 @@ public class MainActivity extends AppCompatActivity {
         tvFilterResultDevice.setText(accesoriosList.size() + " accesorios_");
     }
 
-    private void filterDevices(ArrayList<Producto> filterProductList) {
+    private void filterDevices(ArrayList<Producto> filterProductList, final int type) {
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
         imagePipeline.clearCaches();
         try {
@@ -2281,16 +2365,64 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
                                         Global.producto = gridItem.getProducto();
-                                        Log.d("ROWs", gridItem.getRowSpec() + " xd");
-                                        Log.d("IDK", gridItem.getProducto().toString());
                                         switch (gridItem.getProducto().getProduct_type_id()) {
                                             case "1":
+                                                mTracker.send(new HitBuilders.EventBuilder()
+                                                        .setCategory("Catálogo")
+                                                        .setAction("Equipo")
+                                                        .setLabel(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                                                        .build());
+                                                if (type == 0) {
+
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Equipo")
+                                                            .setAction(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                                                            .setLabel("Catálogo")
+                                                            .build());
+                                                } else if (type == 1) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Equipo")
+                                                            .setAction(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                                                            .setLabel("Filtro 'Equipos'")
+                                                            .build());
+                                                } else if (type == 4) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Equipo")
+                                                            .setAction(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                                                            .setLabel("Filtro: " + filtro)
+                                                            .build());
+                                                }
                                                 startActivity(new Intent(MainActivity.this, FichaEquipo.class));
                                                 break;
                                             case "2":
                                                 Global.accesorio = gridItem.getProducto();
+                                                mTracker.send(new HitBuilders.EventBuilder()
+                                                        .setCategory("Catálogo")
+                                                        .setAction("Accesorios")
+                                                        .setLabel(Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName())
+                                                        .build());
+                                                if (type == 0) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Accesorio")
+                                                            .setAction(Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName())
+                                                            .setLabel("Catálogo Principal")
+                                                            .build());
+                                                } else if (type == 2) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Accesorio")
+                                                            .setAction(Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName())
+                                                            .setLabel("Filtro 'Accesorios'")
+                                                            .build());
+                                                } else if (type == 5) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Accesorio")
+                                                            .setAction(Global.accesorio.getProvider_name() +" - "+Global.accesorio.getName())
+                                                            .setLabel("Filtro: "+filtro)
+                                                            .build());
+
+                                                }
                                                 startActivity(new Intent(MainActivity.this, AccesoriosActivity.class));
-                                                overridePendingTransition(0,0);
+                                                overridePendingTransition(0, 0);
                                                 break;
                                             case "3":
                                                 blurContent.setVisibility(View.GONE);
@@ -2300,19 +2432,67 @@ public class MainActivity extends AppCompatActivity {
                                                 linearSeleccionaPlan.setVisibility(View.VISIBLE);
                                                 if (gridItem.getProducto().getName().startsWith("Smart")) {
                                                     selectPlanSmartFun();
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Catálogo")
+                                                            .setAction("Planes")
+                                                            .setLabel("Smart Fun")
+                                                            .build());
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Planes")
+                                                            .setAction("Catálogo Principal")
+                                                            .setLabel("Smart Fun")
+                                                            .build());
                                                 } else if (gridItem.getProducto().getName().startsWith("Planes")) {
                                                     selectPlanVoz();
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Catálogo")
+                                                            .setAction("Planes")
+                                                            .setLabel("Plan de Voz")
+                                                            .build());
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Planes")
+                                                            .setAction("Catálogo Principal")
+                                                            .setLabel("Plan de Voz")
+                                                            .build());
                                                 } else if (gridItem.getProducto().getName().startsWith("Control")) {
                                                     selectPlanControlFun();
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Catálogo")
+                                                            .setAction("Planes")
+                                                            .setLabel("Control Fun")
+                                                            .build());
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Planes")
+                                                            .setAction("Catálogo Principal")
+                                                            .setLabel("Control Fun")
+                                                            .build());
                                                 } else if (gridItem.getProducto().getName().startsWith("Mi")) {
                                                     selectMiPrimerPlan();
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Catálogo")
+                                                            .setAction("Planes")
+                                                            .setLabel("Mi Primer Plan")
+                                                            .build());
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Planes")
+                                                            .setAction("Catálogo Principal")
+                                                            .setLabel("Mi Primer Plan")
+                                                            .build());
                                                 }
                                                 break;
                                             case "4":
-                                                closeContents();
-                                                closePlans();
                                                 rlPopup.setVisibility(View.VISIBLE);
                                                 imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getPrimaryImage())));
+                                                mTracker.send(new HitBuilders.EventBuilder()
+                                                        .setCategory("Catálogo")
+                                                        .setAction("Ofertas")
+                                                        .setLabel("http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage())
+                                                        .build());
+                                                mTracker.send(new HitBuilders.EventBuilder()
+                                                        .setCategory("Ofertas")
+                                                        .setAction("Catálogo Principal")
+                                                        .setLabel("http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage())
+                                                        .build());
                                                 break;
                                             default:
                                                 break;
@@ -2469,16 +2649,64 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
                                         Global.producto = gridItem.getProducto();
-                                        Log.d("ROWs", gridItem.getRowSpec() + " xd");
-                                        Log.d("IDK", gridItem.getProducto().toString());
                                         switch (gridItem.getProducto().getProduct_type_id()) {
                                             case "1":
+                                                mTracker.send(new HitBuilders.EventBuilder()
+                                                        .setCategory("Catálogo")
+                                                        .setAction("Equipo")
+                                                        .setLabel(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                                                        .build());
+                                                if (type == 0) {
+
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Equipo")
+                                                            .setAction(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                                                            .setLabel("Catálogo")
+                                                            .build());
+                                                } else if (type == 1) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Equipo")
+                                                            .setAction(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                                                            .setLabel("Filtro 'Equipos'")
+                                                            .build());
+                                                } else if (type == 4) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Equipo")
+                                                            .setAction(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                                                            .setLabel("Filtro: " + filtro)
+                                                            .build());
+                                                }
                                                 startActivity(new Intent(MainActivity.this, FichaEquipo.class));
                                                 break;
                                             case "2":
                                                 Global.accesorio = gridItem.getProducto();
+                                                mTracker.send(new HitBuilders.EventBuilder()
+                                                        .setCategory("Catálogo")
+                                                        .setAction("Accesorios")
+                                                        .setLabel(Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName())
+                                                        .build());
+                                                if (type == 0) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Accesorio")
+                                                            .setAction(Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName())
+                                                            .setLabel("Catálogo Principal")
+                                                            .build());
+                                                } else if (type == 2) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Accesorio")
+                                                            .setAction(Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName())
+                                                            .setLabel("Filtro 'Accesorios'")
+                                                            .build());
+                                                } else if (type == 5) {
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Accesorio")
+                                                            .setAction(Global.accesorio.getProvider_name() +" - "+Global.accesorio.getName())
+                                                            .setLabel("Filtro: "+filtro)
+                                                            .build());
+
+                                                }
                                                 startActivity(new Intent(MainActivity.this, AccesoriosActivity.class));
-                                                overridePendingTransition(0,0);
+                                                overridePendingTransition(0, 0);
                                                 break;
                                             case "3":
                                                 blurContent.setVisibility(View.GONE);
@@ -2488,17 +2716,67 @@ public class MainActivity extends AppCompatActivity {
                                                 linearSeleccionaPlan.setVisibility(View.VISIBLE);
                                                 if (gridItem.getProducto().getName().startsWith("Smart")) {
                                                     selectPlanSmartFun();
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Catálogo")
+                                                            .setAction("Planes")
+                                                            .setLabel("Smart Fun")
+                                                            .build());
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Planes")
+                                                            .setAction("Catálogo Principal")
+                                                            .setLabel("Smart Fun")
+                                                            .build());
                                                 } else if (gridItem.getProducto().getName().startsWith("Planes")) {
                                                     selectPlanVoz();
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Catálogo")
+                                                            .setAction("Planes")
+                                                            .setLabel("Plan de Voz")
+                                                            .build());
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Planes")
+                                                            .setAction("Catálogo Principal")
+                                                            .setLabel("Plan de Voz")
+                                                            .build());
                                                 } else if (gridItem.getProducto().getName().startsWith("Control")) {
                                                     selectPlanControlFun();
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Catálogo")
+                                                            .setAction("Planes")
+                                                            .setLabel("Control Fun")
+                                                            .build());
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Planes")
+                                                            .setAction("Catálogo Principal")
+                                                            .setLabel("Control Fun")
+                                                            .build());
                                                 } else if (gridItem.getProducto().getName().startsWith("Mi")) {
                                                     selectMiPrimerPlan();
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Catálogo")
+                                                            .setAction("Planes")
+                                                            .setLabel("Mi Primer Plan")
+                                                            .build());
+                                                    mTracker.send(new HitBuilders.EventBuilder()
+                                                            .setCategory("Planes")
+                                                            .setAction("Catálogo Principal")
+                                                            .setLabel("Mi Primer Plan")
+                                                            .build());
                                                 }
                                                 break;
                                             case "4":
                                                 rlPopup.setVisibility(View.VISIBLE);
                                                 imagePopup.setImageURI(Uri.fromFile(new File(Global.dirImages + gridItem.getProducto().getPrimaryImage())));
+                                                mTracker.send(new HitBuilders.EventBuilder()
+                                                        .setCategory("Catálogo")
+                                                        .setAction("Ofertas")
+                                                        .setLabel("http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage())
+                                                        .build());
+                                                mTracker.send(new HitBuilders.EventBuilder()
+                                                        .setCategory("Ofertas")
+                                                        .setAction("Catálogo Principal")
+                                                        .setLabel("http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage())
+                                                        .build());
                                                 break;
                                             default:
                                                 break;
@@ -2523,6 +2801,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
@@ -2550,9 +2829,9 @@ public class MainActivity extends AppCompatActivity {
         tvPrecioEquipoDestacadoSF.setText(precioPlan);
         textView53.setVisibility(View.VISIBLE);
         textView49.setVisibility(View.VISIBLE);
-        for(int i = 0;i < Session.objData.getDevices().size(); i++ ){
-            if(Session.objData.getDevices().get(i).getId().equalsIgnoreCase(producto.getEquno()) || Session.objData.getDevices().get(i).getId().equalsIgnoreCase(producto.getEqdos())){
-                if(Session.objData.getDevices().get(i).getId().equalsIgnoreCase("44")){
+        for (int i = 0; i < Session.objData.getDevices().size(); i++) {
+            if (Session.objData.getDevices().get(i).getId().equalsIgnoreCase(producto.getEquno()) || Session.objData.getDevices().get(i).getId().equalsIgnoreCase(producto.getEqdos())) {
+                if (Session.objData.getDevices().get(i).getId().equalsIgnoreCase("44")) {
                     Session.objData.getDevices().get(i).setCae(Session.objData.getDevices().get(i).getHijos().get(3).getCae());
                     Session.objData.getDevices().get(i).setPrecios(Session.objData.getDevices().get(i).getHijos().get(3).getPrecios());
                 }
@@ -2582,7 +2861,7 @@ public class MainActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.linear_que_buscas:
                 cont++;
-                if(cont == 20){
+                if (cont == 20) {
                     startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                     this.finish();
                 }
@@ -2604,7 +2883,7 @@ public class MainActivity extends AppCompatActivity {
                             if (Session.objData.getCatalog().getScreenTwoId().equalsIgnoreCase(Global.allAccessories.get(i).getId())) {
                                 Global.accesorio = Global.allAccessories.get(i);
                                 startActivity(new Intent(MainActivity.this, AccesoriosActivity.class));
-                                overridePendingTransition(0,0);
+                                overridePendingTransition(0, 0);
                                 break;
                             }
                         }

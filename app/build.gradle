@@ -43,6 +43,9 @@ dependencies {
     compile 'pl.bclogic:pulsator4droid:1.0.3'
     compile 'com.github.moondroid.coverflow:library:1.0'
     compile 'com.facebook.fresco:animated-gif:1.2.0'
+    compile 'com.google.android.gms:play-services-analytics:9.2.0'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

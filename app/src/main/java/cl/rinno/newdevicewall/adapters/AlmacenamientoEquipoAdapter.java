@@ -10,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.ArrayList;
 
+import cl.rinno.newdevicewall.AnalyticsApplication;
 import cl.rinno.newdevicewall.FichaEquipo;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Global;
@@ -23,12 +27,16 @@ import cl.rinno.newdevicewall.models.Producto;
 
 public class AlmacenamientoEquipoAdapter extends RecyclerView.Adapter<AlmacenamientoEquipoAdapter.AlmacenamientoEquipoViewHolder> {
 
-    Context context;
+    FichaEquipo context;
     ArrayList<Producto> listaHIjos;
 
-    public AlmacenamientoEquipoAdapter(Context context, ArrayList<Producto> listaHIjos) {
+    Tracker mTracker;
+
+    public AlmacenamientoEquipoAdapter(FichaEquipo context, ArrayList<Producto> listaHIjos) {
         this.context = context;
         this.listaHIjos = listaHIjos;
+        AnalyticsApplication application = (AnalyticsApplication) this.context.getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     @Override
@@ -48,13 +56,18 @@ public class AlmacenamientoEquipoAdapter extends RecyclerView.Adapter<Almacenami
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Activity activity = (Activity) context;
+                Activity activity = context;
                 if (!Global.producto.getDetalles().get(5).getValue().equals(listaHIjos.get(position).getDetalles().get(5).getValue())) {
                     listaHIjos.get(position).getDetalles().set(0, Global.producto.getDetalles().get(0));
                     Global.producto.setDetalles(listaHIjos.get(position).getDetalles());
                     Global.producto.setPlanes(listaHIjos.get(position).getPlanes());
                     Global.producto.setPrecios(listaHIjos.get(position).getPrecios());
                     Global.producto.setCae(listaHIjos.get(position).getCae());
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Equipo")
+                            .setAction(Global.producto.getProvider_name() + " - " + Global.producto.getName())
+                            .setLabel("Almacenamiento: "+Global.producto.getDetalles().get(5).getValue())
+                            .build());
                     activity.startActivity(new Intent(activity.getApplicationContext(), FichaEquipo.class));
                     activity.overridePendingTransition(0,0);
                     activity.finish();
