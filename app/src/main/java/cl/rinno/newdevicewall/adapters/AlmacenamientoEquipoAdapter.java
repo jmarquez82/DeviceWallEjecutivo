@@ -3,6 +3,7 @@ package cl.rinno.newdevicewall.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,9 +50,15 @@ public class AlmacenamientoEquipoAdapter extends RecyclerView.Adapter<Almacenami
     public void onBindViewHolder(AlmacenamientoEquipoViewHolder holder, final int position) {
         holder.txtGB.setText(listaHIjos.get(position).getDetalles().get(5).getValue());
         if (listaHIjos.get(position).getDetalles().get(5).getValue().equals(Global.producto.getDetalles().get(5).getValue())) {
-            holder.itemView.setBackgroundResource(R.drawable.bg_gb_selected);
-            holder.txtGB.setTextColor(context.getResources().getColor(R.color.yellow));
+            if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                holder.itemView.setBackgroundResource(R.drawable.bg_gb_selected_land);
+                holder.txtGB.setTextColor(context.getResources().getColor(R.color.white));
+            }else{
+                holder.itemView.setBackgroundResource(R.drawable.bg_gb_selected);
+                holder.txtGB.setTextColor(context.getResources().getColor(R.color.yellow));
+            }
             holder.txtGB.setTypeface(null,Typeface.BOLD_ITALIC);
+
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

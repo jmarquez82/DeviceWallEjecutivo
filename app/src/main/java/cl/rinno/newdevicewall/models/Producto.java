@@ -33,14 +33,16 @@ public class Producto {
     private String primaryImage;
     private String bannerImage;
     private String condicionImage;
+    private String condicionImageHorizontal;
     private String equno;
     private String eqdos;
     private String imagen_oferta;
+    private String primaryImage_h;
 
     public Producto() {
     }
 
-    public Producto(String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name, String provider_image, String sizes, String imageHigh, ArrayList<Detalle> cae, String primaryImage, String bannerImage, String condicionImage, String equno, String eqdos, String imagen_oferta) {
+    public Producto(String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name, String provider_image, String sizes, String imageHigh, ArrayList<Detalle> cae, String primaryImage, String bannerImage, String condicionImage, String condicionImageHorizontal, String equno, String eqdos, String imagen_oferta, String primaryImage_h) {
         this.id = id;
         this.provider_id = provider_id;
         this.product_type_id = product_type_id;
@@ -67,9 +69,11 @@ public class Producto {
         this.primaryImage = primaryImage;
         this.bannerImage = bannerImage;
         this.condicionImage = condicionImage;
+        this.condicionImageHorizontal = condicionImageHorizontal;
         this.equno = equno;
         this.eqdos = eqdos;
         this.imagen_oferta = imagen_oferta;
+        this.primaryImage_h = primaryImage_h;
     }
 
     public String getId() {
@@ -280,6 +284,14 @@ public class Producto {
         this.condicionImage = condicionImage;
     }
 
+    public String getCondicionImageHorizontal() {
+        return condicionImageHorizontal;
+    }
+
+    public void setCondicionImageHorizontal(String condicionImageHorizontal) {
+        this.condicionImageHorizontal = condicionImageHorizontal;
+    }
+
     public String getEquno() {
         return equno;
     }
@@ -302,6 +314,14 @@ public class Producto {
 
     public void setImagen_oferta(String imagen_oferta) {
         this.imagen_oferta = imagen_oferta;
+    }
+
+    public String getPrimaryImage_h() {
+        return primaryImage_h;
+    }
+
+    public void setPrimaryImage_h(String primaryImage_h) {
+        this.primaryImage_h = primaryImage_h;
     }
 
     @Override
@@ -333,6 +353,11 @@ public class Producto {
                 ", primaryImage='" + primaryImage + '\'' +
                 ", bannerImage='" + bannerImage + '\'' +
                 ", condicionImage='" + condicionImage + '\'' +
+                ", condicionImageHorizontal='" + condicionImageHorizontal + '\'' +
+                ", equno='" + equno + '\'' +
+                ", eqdos='" + eqdos + '\'' +
+                ", imagen_oferta='" + imagen_oferta + '\'' +
+                ", primaryImage_h='" + primaryImage_h + '\'' +
                 '}';
     }
 }

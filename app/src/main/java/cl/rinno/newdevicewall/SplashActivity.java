@@ -131,11 +131,9 @@ public class SplashActivity extends AppCompatActivity {
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable,errorResponse);
                     tvStatus.setText("ERROR");
-                    tvDetalle.setText(errorResponse.toString()+"\nReinicia la App");
+                    tvDetalle.setText("Reinicia la App");
                 }
             });
-
-
         }
     }
 
@@ -168,6 +166,7 @@ public class SplashActivity extends AppCompatActivity {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 if (status == 0) {
+                    cargaLista();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 } else if (status == 1) {
@@ -218,10 +217,14 @@ public class SplashActivity extends AppCompatActivity {
                             bajar(Session.objData.getCatalog().getScreenOneImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
                             bajar(Session.objData.getCatalog().getScreenThreeImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
                             bajar(Session.objData.getCatalog().getScreenFourImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            bajar(Session.objData.getCatalog().getScreenTwoImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            bajar(Session.objData.getCatalog().getScreenOneImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            bajar(Session.objData.getCatalog().getScreenThreeImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                            bajar(Session.objData.getCatalog().getScreenFourImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
                             Runnable m3 = new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvStatus.setText("Descargando Recursos de Destacados...");
+                                    tvStatus.setText("Descargando Recursos de Ofertas...");
                                     pbHorizontal.setProgress(55);
                                 }
                             };
@@ -229,6 +232,7 @@ public class SplashActivity extends AppCompatActivity {
                             for (int i = 0; i < Session.objData.getCatalog().getOfertas().size(); i++) {
                                 bajar(Session.objData.getCatalog().getOfertas().get(i).getBannerImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
                                 bajar(Session.objData.getCatalog().getOfertas().get(i).getPrimaryImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
+                                bajar(Session.objData.getCatalog().getOfertas().get(i).getPrimaryImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/");
                             }
                             Runnable m4 = new Runnable() {
                                 @Override
@@ -264,6 +268,7 @@ public class SplashActivity extends AppCompatActivity {
 
                                 }
                                 bajar(Session.objData.getPlanes().get(i).getCondicionImage(), Global.dirImages, "http://entel.rinno.cl/images/groups/");
+                                bajar(Session.objData.getPlanes().get(i).getCondicionImageHorizontal(), Global.dirImages, "http://entel.rinno.cl/images/groups/");
                                 bajar(Session.objData.getPlanes().get(i).getPrimaryImage(), Global.dirImages, "http://entel.rinno.cl/images/groups/");
                                 bajar(Session.objData.getPlanes().get(i).getBannerImage(), Global.dirImages, "http://entel.rinno.cl/images/groups/");
                             }
@@ -443,6 +448,7 @@ public class SplashActivity extends AppCompatActivity {
         pbHorizontal.setProgress(97);
         tvStatus.setText("CREANDO JSON...");
         tvDetalle.setText("");
+        Log.d("JSON", "EMPEZANDO A CREAR");
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -495,7 +501,6 @@ public class SplashActivity extends AppCompatActivity {
         try {
             double downloadedSize = 0;
             double totalSize;
-
             URL url = new URL(urlCo + salida);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");

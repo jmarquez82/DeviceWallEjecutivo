@@ -2,6 +2,7 @@ package cl.rinno.newdevicewall;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -198,10 +199,8 @@ public class EquipoConPlanActivity extends AppCompatActivity {
             @Override
             public boolean onPreDraw() {
                 recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-
                 for (int i = 0; i < recyclerView.getChildCount(); i++) {
                     View v = recyclerView.getChildAt(i);
-
                     v.setScaleY(0);
                     v.setAlpha(0);
                     v.setScaleX(0);
@@ -297,10 +296,17 @@ public class EquipoConPlanActivity extends AppCompatActivity {
     }
 
     private void defaultColor() {
-        btnTabControlfun.setBackground(getResources().getDrawable(R.drawable.bg_tab));
-        btnTabSmartfun.setBackground(getResources().getDrawable(R.drawable.bg_tab));
-        tvTabControlfun.setTextColor(getResources().getColor(R.color.dimGray));
-        tvTabSmartfun.setTextColor(getResources().getColor(R.color.dimGray));
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            btnTabControlfun.setBackground(getResources().getDrawable(R.drawable.bg_tab_land));
+            btnTabSmartfun.setBackground(getResources().getDrawable(R.drawable.bg_tab_land));
+            tvTabControlfun.setTextColor(getResources().getColor(R.color.white));
+            tvTabSmartfun.setTextColor(getResources().getColor(R.color.white));
+        }else{
+            btnTabControlfun.setBackground(getResources().getDrawable(R.drawable.bg_tab));
+            btnTabSmartfun.setBackground(getResources().getDrawable(R.drawable.bg_tab));
+            tvTabControlfun.setTextColor(getResources().getColor(R.color.dimGray));
+            tvTabSmartfun.setTextColor(getResources().getColor(R.color.dimGray));
+        }
     }
 
     public void verPromo(String img) {

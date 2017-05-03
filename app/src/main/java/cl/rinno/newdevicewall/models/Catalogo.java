@@ -11,15 +11,19 @@ public class Catalogo {
     private String uploaded_at;
     private String screenOneId;
     private String screenOneImage;
+    private String screenOneImage_h;
     private String screenTwoId;
     private String screenTwoImage;
+    private String screenTwoImage_h;
     private String screenThreeId;
     private String screenThreeImage;
+    private String screenThreeImage_h;
     private String screenFourId;
     private String screenFourImage;
+    private String screenFourImage_h;
     private ArrayList<Producto> ofertas;
 
-    public Catalogo(String id, String name, String status, String created_at, String uploaded_at, String screenOneId, String screenOneImage, String screenTwoId, String screenTwoImage, String screenThreeId, String screenThreeImage, String screenFourId, String screenFourImage, ArrayList<Producto> ofertas) {
+    public Catalogo(String id, String name, String status, String created_at, String uploaded_at, String screenOneId, String screenOneImage, String screenOneImage_h, String screenTwoId, String screenTwoImage, String screenTwoImage_h, String screenThreeId, String screenThreeImage, String screenThreeImage_h, String screenFourId, String screenFourImage, String screenFourImage_h, ArrayList<Producto> ofertas) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -27,12 +31,16 @@ public class Catalogo {
         this.uploaded_at = uploaded_at;
         this.screenOneId = screenOneId;
         this.screenOneImage = screenOneImage;
+        this.screenOneImage_h = screenOneImage_h;
         this.screenTwoId = screenTwoId;
         this.screenTwoImage = screenTwoImage;
+        this.screenTwoImage_h = screenTwoImage_h;
         this.screenThreeId = screenThreeId;
         this.screenThreeImage = screenThreeImage;
+        this.screenThreeImage_h = screenThreeImage_h;
         this.screenFourId = screenFourId;
         this.screenFourImage = screenFourImage;
+        this.screenFourImage_h = screenFourImage_h;
         this.ofertas = ofertas;
     }
 
@@ -92,6 +100,14 @@ public class Catalogo {
         this.screenOneImage = screenOneImage;
     }
 
+    public String getScreenOneImage_h() {
+        return screenOneImage_h;
+    }
+
+    public void setScreenOneImage_h(String screenOneImage_h) {
+        this.screenOneImage_h = screenOneImage_h;
+    }
+
     public String getScreenTwoId() {
         return screenTwoId;
     }
@@ -106,6 +122,14 @@ public class Catalogo {
 
     public void setScreenTwoImage(String screenTwoImage) {
         this.screenTwoImage = screenTwoImage;
+    }
+
+    public String getScreenTwoImage_h() {
+        return screenTwoImage_h;
+    }
+
+    public void setScreenTwoImage_h(String screenTwoImage_h) {
+        this.screenTwoImage_h = screenTwoImage_h;
     }
 
     public String getScreenThreeId() {
@@ -124,6 +148,14 @@ public class Catalogo {
         this.screenThreeImage = screenThreeImage;
     }
 
+    public String getScreenThreeImage_h() {
+        return screenThreeImage_h;
+    }
+
+    public void setScreenThreeImage_h(String screenThreeImage_h) {
+        this.screenThreeImage_h = screenThreeImage_h;
+    }
+
     public String getScreenFourId() {
         return screenFourId;
     }
@@ -138,6 +170,14 @@ public class Catalogo {
 
     public void setScreenFourImage(String screenFourImage) {
         this.screenFourImage = screenFourImage;
+    }
+
+    public String getScreenFourImage_h() {
+        return screenFourImage_h;
+    }
+
+    public void setScreenFourImage_h(String screenFourImage_h) {
+        this.screenFourImage_h = screenFourImage_h;
     }
 
     public ArrayList<Producto> getOfertas() {

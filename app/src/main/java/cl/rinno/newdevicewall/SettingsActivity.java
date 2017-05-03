@@ -87,28 +87,16 @@ public class SettingsActivity extends AppCompatActivity {
         Field[] fields = Build.VERSION_CODES.class.getFields();
         String osName = fields[Build.VERSION.SDK_INT].getName();
 
-        versionApp.setText(String.valueOf(BuildConfig.VERSION_CODE));
+        versionApp.setText(BuildConfig.VERSION_NAME);
         androidVersion.setText(Build.VERSION.RELEASE + " - " + osName + " - " + Build.VERSION.SDK_INT);
         serialNumberDevice.setText(Build.SERIAL);
         fabricModel.setText(Build.MODEL + " - " + Build.MANUFACTURER);
-
-        if (!configuracionFile.getBoolean("hasSettings", false)) {
-            btnVolver.setVisibility(View.GONE);
-        }
-
-        if (!Global.isOnlineNet()) {
-            status.setBackground(getResources().getDrawable(R.drawable.circle_status_network_red));
-        } else {
-            status.setBackground(getResources().getDrawable(R.drawable.circle_status_network_green));
-        }
-
 
         DWApi.get("/api/catalog/list", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d("SET", response.toString());
                 dataCatalog = response;
-
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject object = response.getJSONObject(i);
@@ -124,6 +112,32 @@ public class SettingsActivity extends AppCompatActivity {
                 populateSpinner(list);
             }
         });
+
+        if (!configuracionFile.getBoolean("hasSettings", false)) {
+            btnVolver.setVisibility(View.GONE);
+            editorConfiguracionFile.putString("pantalla_id_index", "1");
+        }else{
+            switch (configuracionFile.getString("pantalla_id_index", "1")){
+                case "1":
+                    spinnerPantallas.setSelection(0);
+                    break;
+                case "2":
+                    spinnerPantallas.setSelection(1);
+                    break;
+                case "3":
+                    spinnerPantallas.setSelection(2);
+                    break;
+                case "4":
+                    spinnerPantallas.setSelection(3);
+                    break;
+            }
+        }
+
+        if (!Global.isOnlineNet()) {
+            status.setBackground(getResources().getDrawable(R.drawable.circle_status_network_red));
+        } else {
+            status.setBackground(getResources().getDrawable(R.drawable.circle_status_network_green));
+        }
 
 
         spinnerCatalog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

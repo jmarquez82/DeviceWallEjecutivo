@@ -11,79 +11,65 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
-        android:orientation="vertical"
-        android:weightSum="10">
+        android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6.9">
-
-            <HorizontalScrollView
-                android:id="@+id/horizontal_scroll_grid"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none"
-                android:visibility="visible">
-
-                <GridLayout
-                    android:id="@+id/grid_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-
-            </HorizontalScrollView>
-
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
-            android:gravity="bottom"
-            android:orientation="horizontal">
+            android:id="@+id/rl_buttons_parent"
+            android:layout_width="302dp"
+            android:background="@color/white"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/linear_que_buscas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:visibility="visible">
+                android:orientation="horizontal">
 
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/linear_que_buscas"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="¿Qué "
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:gravity="center"
+                    android:layout_marginTop="214dp"
+                    android:visibility="visible">
 
-                <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="buscas_"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¿Qué "
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="35sp" />
 
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="\?"
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="buscas_"
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        android:textSize="35sp" />
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="\?"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="35sp" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linear_selecciona_filtro"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="197dp"
                 android:visibility="gone">
 
                 <TextView
@@ -93,213 +79,46 @@
                     android:text="Selecciona un "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="25sp" />
 
-                <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="filtro para "
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:layout_height="wrap_content">
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="filtro para "
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        android:textSize="25sp" />
 
-                <TextView
-                    android:id="@+id/tv_filter_product_type"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="accesorios-equipos"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    <TextView
+                        android:id="@+id/tv_filter_product_type"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="accesorios_"
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        android:textSize="25sp" />
+                </LinearLayout>
+
+
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_selecciona_plan"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Selecciona un "
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
-
-                <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="plan_"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_nombre_filtro"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Filtro: "
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
-
-                <TextView
-                    android:id="@+id/tv_filter_name"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Marca"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_filter_results_devices"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tv_filter_type"
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Marca"
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
-
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
-
-                <TextView
-                    android:id="@+id/tv_filter_name_device"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="50dp"
-                    android:layout_marginStart="10dp"
-                    android:text="Apple"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
-
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Resultado:"
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
-
-                <TextView
-                    android:id="@+id/tv_filter_result_device"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_plan_elegido"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Planes "
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
-
-                <TextView
-                    android:id="@+id/tv_plan_type"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Smart Fun_"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_selecciona_una_marca_equipo_comp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Selecciona una "
-                    android:textAlignment="center"
-                    android:textColor="@color/blue"
-                    android:textSize="35sp" />
-
-                <TextView
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="marca para equipo compatible_"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="35sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_buttons_parent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.95">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="center">
 
                 <LinearLayout
                     android:id="@+id/button_devices"
-                    android:layout_width="300dp"
-                    android:layout_height="110dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="238dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/bg_button_blue"
                     android:gravity="center">
 
@@ -323,10 +142,10 @@
 
                 <LinearLayout
                     android:id="@+id/button_accessories"
-                    android:layout_width="300dp"
-                    android:layout_height="110dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="238dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/bg_button_green"
                     android:gravity="center">
 
@@ -349,10 +168,10 @@
 
                 <LinearLayout
                     android:id="@+id/button_plans"
-                    android:layout_width="300dp"
-                    android:layout_height="110dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="238dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/bg_button_yellow"
                     android:gravity="center">
 
@@ -374,14 +193,199 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/linear_selecciona_plan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="197dp"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona un "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp" />
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="plan_"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_nombre_filtro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="197dp"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filtro: "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_filter_name"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Marca"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_filter_results_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="180dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_filter_type"
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Marca"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="25sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_filter_name_device"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apple"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Resultado: "
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/tv_filter_result_device"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:text="0"
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        android:textSize="25sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_plan_elegido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="197dp"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Planes "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/tv_plan_type"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Smart Fun_"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_selecciona_una_marca_equipo_comp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="193dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona una "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp" />
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="marca para\nequipo compatible_"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp" />
+            </LinearLayout>
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/linear_content_filters"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2.15">
+            android:layout_width="302dp"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/relative_content_devices"
@@ -393,27 +397,25 @@
                 android:visibility="gone">
 
                 <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_marginStart="72dp"
-                    android:background="@drawable/triangule_blue"
-                    android:orientation="horizontal" />
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:rotation="-90"
+                    android:layout_marginTop="360dp"
+                    android:background="@drawable/triangule_blue_land"
+                    android:orientation="horizontal"
+                    android:visibility="visible"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:paddingEnd="40dp"
-                    android:paddingStart="40dp"
-                    android:paddingTop="80dp">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/button_marca_filter"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="25dp"
                         android:alpha="0"
                         android:background="@drawable/bg_filter_devices"
                         android:gravity="center"
@@ -443,8 +445,8 @@
                         android:id="@+id/button_pantalla_filter"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
                         android:alpha="0"
                         android:background="@drawable/bg_filter_devices"
                         android:gravity="center"
@@ -475,8 +477,8 @@
                         android:id="@+id/button_camara_trasera_filter"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
                         android:alpha="0"
                         android:background="@drawable/bg_filter_devices"
                         android:gravity="center"
@@ -506,8 +508,8 @@
                         android:id="@+id/button_camara_frontal_filter"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
                         android:alpha="0"
                         android:background="@drawable/bg_filter_devices"
                         android:gravity="center"
@@ -548,37 +550,30 @@
                 android:visibility="gone">
 
                 <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_marginStart="393dp"
-                    android:background="@drawable/triangule_green"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:rotation="-90"
+                    android:background="@drawable/triangule_green_land"
                     android:orientation="horizontal" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:paddingEnd="40dp"
-                        android:paddingStart="40dp"
-                        android:paddingTop="80dp">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:id="@+id/button_multimedia_filter"
                             android:layout_width="220.0dp"
                             android:layout_height="84.0dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginBottom="25dp"
                             android:alpha="0"
                             android:background="@drawable/bg_filter_accessory"
                             android:gravity="center"
                             android:scaleX="0"
                             android:scaleY="0"
-                            android:visibility="invisible">
+                            android:visibility="visible">
 
                             <ImageView
                                 android:id="@+id/icn_filtro_multimedia"
@@ -602,14 +597,14 @@
                             android:id="@+id/button_proteccion_filter"
                             android:layout_width="220.0dp"
                             android:layout_height="84.0dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginBottom="25dp"
+                            android:layout_marginTop="25dp"
                             android:alpha="0"
                             android:background="@drawable/bg_filter_accessory"
                             android:gravity="center"
                             android:scaleX="0"
                             android:scaleY="0"
-                            android:visibility="invisible">
+                            android:visibility="visible">
 
                             <ImageView
                                 android:id="@+id/icn_filtro_proteccion"
@@ -633,8 +628,8 @@
                             android:id="@+id/button_energia_filter"
                             android:layout_width="220.0dp"
                             android:layout_height="84.0dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginBottom="25dp"
+                            android:layout_marginTop="25dp"
                             android:alpha="0"
                             android:background="@drawable/bg_filter_accessory"
                             android:gravity="center_vertical"
@@ -642,7 +637,7 @@
                             android:paddingStart="20dp"
                             android:scaleX="0"
                             android:scaleY="0"
-                            android:visibility="invisible">
+                            android:visibility="visible">
 
                             <ImageView
                                 android:id="@+id/icn_filtro_energia"
@@ -666,14 +661,14 @@
                             android:id="@+id/button_por_equipo_filter"
                             android:layout_width="220.0dp"
                             android:layout_height="84.0dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp"
                             android:alpha="0"
                             android:background="@drawable/bg_filter_accessory"
                             android:gravity="center"
                             android:scaleX="0"
                             android:scaleY="0"
-                            android:visibility="invisible">
+                            android:layout_marginBottom="25dp"
+                            android:layout_marginTop="25dp"
+                            android:visibility="visible">
 
                             <ImageView
                                 android:id="@+id/icn_filtro_por_equipo"
@@ -694,7 +689,6 @@
                         </LinearLayout>
 
                     </LinearLayout>
-                </HorizontalScrollView>
 
 
             </RelativeLayout>
@@ -705,29 +699,28 @@
                 android:layout_height="match_parent"
                 android:alpha="0"
                 android:background="@color/yellow"
-                android:orientation="horizontal"
                 android:visibility="gone">
 
                 <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_marginStart="715dp"
-                    android:background="@drawable/triangule_yellow"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="360dp"
+                    android:layout_alignParentBottom="true"
+                    android:rotation="-90"
+                    android:background="@drawable/triangule_yellow_land"
                     android:orientation="horizontal" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:paddingTop="80dp">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/button_smartfun"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="25dp"
                         android:alpha="0"
                         android:background="@drawable/bg_filter_plans"
                         android:gravity="center"
@@ -756,8 +749,8 @@
                         android:id="@+id/button_controlfun"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="25dp"
                         android:alpha="0"
                         android:background="@drawable/bg_filter_plans"
                         android:gravity="center"
@@ -786,8 +779,8 @@
                         android:id="@+id/button_planvoz"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="25dp"
                         android:alpha="0"
                         android:background="@drawable/bg_filter_plans"
                         android:gravity="center_vertical"
@@ -818,8 +811,7 @@
                         android:id="@+id/button_miprimerplan"
                         android:layout_width="220.0dp"
                         android:layout_height="84.0dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="25dp"
                         android:alpha="0"
                         android:background="@drawable/bg_filter_plans"
                         android:gravity="center_vertical"
@@ -853,6 +845,53 @@
             </RelativeLayout>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <HorizontalScrollView
+                android:id="@+id/horizontal_scroll_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                android:layout_marginTop="120dp"
+                android:visibility="visible">
+
+                <GridLayout
+                    android:id="@+id/grid_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+            </HorizontalScrollView>
+
+            <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                android:id="@+id/pulsator_left"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
+                android:layout_centerVertical="true"
+                app:pulse_color="@color/orange"
+                app:pulse_count="6"
+                app:pulse_duration="4500"
+                app:pulse_interpolator="Linear"
+                app:pulse_repeat="0"
+                app:pulse_startFromScratch="false">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/button_arrow_left"
+                    android:layout_width="134dp"
+                    android:layout_height="134dp"
+                    android:layout_centerInParent="true"
+                    android:animateLayoutChanges="true"
+                    android:visibility="gone"
+                    fresco:placeholderImage="@drawable/orange_left_arrow" />
+
+            </pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 
@@ -863,7 +902,7 @@
         android:layout_height="170dp"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="830dp"
+        android:layout_centerVertical="true"
         app:pulse_color="@color/orange"
         app:pulse_count="6"
         app:pulse_duration="4500"
@@ -876,42 +915,16 @@
             android:layout_width="134dp"
             android:layout_height="134dp"
             android:layout_centerInParent="true"
-            android:layout_marginTop="850dp"
             android:animateLayoutChanges="true"
             fresco:placeholderImage="@drawable/orange_right_arrow" />
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
-
-    <pl.bclogic.pulsator4droid.library.PulsatorLayout
-        android:id="@+id/pulsator_left"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="830dp"
-        app:pulse_color="@color/orange"
-        app:pulse_count="6"
-        app:pulse_duration="4500"
-        app:pulse_interpolator="Linear"
-        app:pulse_repeat="0"
-        app:pulse_startFromScratch="false">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/button_arrow_left"
-            android:layout_width="134dp"
-            android:layout_height="134dp"
-            android:layout_centerInParent="true"
-            android:animateLayoutChanges="true"
-            android:visibility="gone"
-            fresco:placeholderImage="@drawable/orange_left_arrow" />
-
-    </pl.bclogic.pulsator4droid.library.PulsatorLayout>
-
+    <!-- Contenedor Blur y todo su contenido -->
     <RelativeLayout
         android:id="@+id/blur_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="575dp"
+        android:layout_marginStart="604dp"
         android:visibility="gone">
 
         <com.github.mmin18.widget.RealtimeBlurView
@@ -919,7 +932,6 @@
             android:layout_height="match_parent"
             app:realtimeBlurRadius="10dp"
             app:realtimeOverlayColor="#c8000000" />
-
 
         <LinearLayout
             android:id="@+id/linear_close_filters"
@@ -959,7 +971,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="290dp"
+                android:layout_height="182dp"
                 android:background="#5d000000"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -1009,13 +1021,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
+                android:layout_marginTop="44dp"
                 android:orientation="vertical">
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="61dp"
                     android:text="Elige el equipo"
                     android:textColor="@color/white"
                     android:textSize="40sp" />
@@ -1024,9 +1036,9 @@
                     android:id="@+id/rv_equipos_compatibles"
                     android:layout_width="match_parent"
                     android:layout_height="584dp"
-                    android:layout_marginEnd="72dp"
-                    android:layout_marginStart="72dp"
-                    android:layout_marginTop="59dp" />
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="170dp"
+                    android:layout_marginStart="170dp"/>
 
             </LinearLayout>
 
@@ -1044,7 +1056,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="290dp"
+                android:layout_height="248dp"
                 android:background="#5d000000"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -1109,7 +1121,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="158dp">
+                    android:layout_marginTop="58dp">
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1169,7 +1181,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/linear_close_filters"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1204,7 +1216,7 @@
                 android:id="@+id/rv_filters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="150dp"
                 android:layout_marginEnd="203dp"
                 android:layout_marginStart="203dp" />
 
@@ -1213,25 +1225,23 @@
 
     </RelativeLayout>
 
+    <!-- Contenedor de Planes -->
     <LinearLayout
         android:id="@+id/constraint_plans"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="604dp"
         android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="1280dp"
-            android:background="@color/backgroundGray"
-            android:paddingEnd="43dp"
-            android:paddingStart="43dp">
+            android:layout_height="match_parent"
+            android:background="@color/backgroundGray">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/image_banner_plan"
                 android:layout_width="match_parent"
-                android:layout_height="186dp"
-                android:layout_marginTop="111dp" />
+                android:layout_height="200dp"/>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraint_plan_voz"
@@ -1247,12 +1257,14 @@
                     fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="72dp"
+                    android:layout_marginTop="24dp"
                     android:text="Planes"
                     android:textColor="@color/blue"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toTopOf="parent" />
+                    fresco:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="160dp"
+                    android:layout_marginStart="160dp" />
 
                 <TextView
                     android:id="@+id/textView35"
@@ -1277,11 +1289,12 @@
                     android:textColor="@color/dimGray"
                     android:textSize="27sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView35" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView35"
+                    android:layout_marginStart="160dp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_planes_cuenta_controlada"
-                    android:layout_width="0dp"
+                    android:layout_width="994dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
@@ -1293,12 +1306,14 @@
                     fontPath="fonts/DINNextLTPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="10dp"
                     android:text="Planes"
                     android:textColor="@color/blue"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_cuenta_controlada" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_cuenta_controlada"
+                    android:layout_marginLeft="160dp"
+                    android:layout_marginStart="160dp" />
 
                 <TextView
                     android:id="@+id/textView45"
@@ -1322,28 +1337,35 @@
                     android:textColor="@color/dimGray"
                     android:textSize="27sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView45" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView45"
+                    android:layout_marginLeft="160dp"
+                    android:layout_marginStart="160dp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_planes_voz_ilimitado"
-                    android:layout_width="0dp"
+                    android:layout_width="994dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="37dp"
-                    fresco:layout_constraintHorizontal_bias="0.0"
-                    fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView46" />
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView46"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
 
                 <LinearLayout
                     android:id="@+id/linear_condiciones_comerciales_solo_voz"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/bg_condiciones_comerciales"
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_voz_ilimitado">
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_voz_ilimitado"
+                    android:layout_marginRight="160dp"
+                    android:layout_marginEnd="160dp">
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -1375,9 +1397,9 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_planes_smartfun"
-                    android:layout_width="0dp"
+                    android:layout_width="994dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="159dp"
+                    android:layout_marginTop="100dp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintRight_toRightOf="parent"
                     fresco:layout_constraintTop_toTopOf="parent" />
@@ -1386,12 +1408,13 @@
                     android:id="@+id/linear_condiciones_comerciales_smart_fun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
                     android:background="@drawable/bg_condiciones_comerciales"
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_smartfun">
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_smartfun"
+                    android:layout_marginRight="160dp"
+                    android:layout_marginEnd="160dp">
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -1423,7 +1446,7 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_planes_controlfun"
-                    android:layout_width="0dp"
+                    android:layout_width="994dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="159dp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
@@ -1434,12 +1457,13 @@
                     android:id="@+id/linear_condiciones_comerciales_control_fun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
                     android:background="@drawable/bg_condiciones_comerciales"
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_controlfun">
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_controlfun"
+                    android:layout_marginRight="160dp"
+                    android:layout_marginEnd="160dp">
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -1469,103 +1493,131 @@
                 android:layout_below="@id/image_banner_plan"
                 android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/textView299"
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:text="Mi Primer"
-                    android:textColor="@color/blue"
-                    android:textSize="53sp"
-                    fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView355"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginStart="12dp"
-                    android:text="Plan Multimedia_"
-                    android:textColor="@color/orange"
-                    android:textSize="53sp"
-                    fresco:layout_constraintLeft_toRightOf="@+id/textView299"
-                    fresco:layout_constraintTop_toTopOf="@+id/textView299" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_mi_primer_plan_multimedia"
+                <ScrollView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView355" />
-
-                <TextView
-                    android:id="@+id/textView444"
-                    fontPath="fonts/DINNextLTPro-Regular.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Mi Primer"
-                    android:textColor="@color/blue"
-                    android:textSize="53sp"
-                    fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_multimedia" />
-
-                <TextView
-                    android:id="@+id/textView455"
-                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginStart="12dp"
-                    android:text="Plan Voz_"
-                    android:textColor="@color/orange"
-                    android:textSize="53sp"
-                    fresco:layout_constraintLeft_toRightOf="@+id/textView444"
-                    fresco:layout_constraintTop_toTopOf="@+id/textView444" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_mi_primer_plan_voz"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    fresco:layout_constraintHorizontal_bias="0.0"
-                    fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView455" />
-
-                <LinearLayout
-                    android:id="@+id/linear_condiciones_comerciales_primerplan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_condiciones_comerciales"
-                    android:gravity="center"
-                    android:orientation="horizontal"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_voz">
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        fontPath="fonts/DINNextLTPro-Regular.otf"
-                        android:layout_width="wrap_content"
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="2dp"
-                        android:text="Ver "
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Condiciones Comerciales_"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/textView299"
+                            fontPath="fonts/DINNextLTPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="Mi Primer"
+                            android:textColor="@color/blue"
+                            android:textSize="53sp"
+                            fresco:layout_constraintLeft_toLeftOf="parent"
+                            fresco:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginLeft="160dp"
+                            android:layout_marginStart="160dp" />
+
+                        <TextView
+                            android:id="@+id/textView355"
+                            fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            android:text="Plan Multimedia_"
+                            android:textColor="@color/orange"
+                            android:textSize="53sp"
+                            fresco:layout_constraintLeft_toRightOf="@+id/textView299"
+                            fresco:layout_constraintTop_toTopOf="@+id/textView299" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_mi_primer_plan_multimedia"
+                            android:layout_width="994dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            fresco:layout_constraintLeft_toLeftOf="parent"
+                            fresco:layout_constraintRight_toRightOf="parent"
+                            fresco:layout_constraintTop_toBottomOf="@+id/textView355" />
+
+                        <TextView
+                            android:id="@+id/textView444"
+                            fontPath="fonts/DINNextLTPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Mi Primer"
+                            android:textColor="@color/blue"
+                            android:textSize="53sp"
+                            fresco:layout_constraintLeft_toLeftOf="parent"
+                            fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_multimedia"
+                            android:layout_marginLeft="160dp"
+                            android:layout_marginStart="160dp" />
+
+                        <TextView
+                            android:id="@+id/textView455"
+                            fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            android:text="Plan Voz_"
+                            android:textColor="@color/orange"
+                            android:textSize="53sp"
+                            fresco:layout_constraintLeft_toRightOf="@+id/textView444"
+                            fresco:layout_constraintTop_toTopOf="@+id/textView444" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_mi_primer_plan_voz"
+                            android:layout_width="994dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            fresco:layout_constraintHorizontal_bias="0.5"
+                            fresco:layout_constraintLeft_toLeftOf="parent"
+                            fresco:layout_constraintRight_toRightOf="parent"
+                            fresco:layout_constraintTop_toBottomOf="@+id/textView455" />
+
+                        <LinearLayout
+                            android:id="@+id/linear_condiciones_comerciales_primerplan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/bg_condiciones_comerciales"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            app:layout_constraintRight_toRightOf="parent"
+                            fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_voz"
+                            android:layout_marginRight="160dp"
+                            android:layout_marginEnd="160dp">
+
+                            <TextView
+                                fontPath="fonts/DINNextLTPro-Regular.otf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="2dp"
+                                android:text="Ver "
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Condiciones Comerciales_"
+                                android:textColor="@color/white"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            app:layout_constraintTop_toBottomOf="@id/linear_condiciones_comerciales_primerplan"/>
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </ScrollView>
 
 
             </android.support.constraint.ConstraintLayout>
@@ -1576,19 +1628,22 @@
 
     </LinearLayout>
 
+
+    <!-- Contenedor Error de Búsqueda -->
     <LinearLayout
         android:id="@+id/linear_search_error"
         android:layout_width="match_parent"
-        android:layout_height="1280dp"
+        android:layout_height="match_parent"
         android:background="@color/backgroundGray"
         android:gravity="center_horizontal"
+        android:layout_marginStart="604dp"
         android:orientation="vertical"
         android:visibility="gone">
 
         <ImageView
             android:layout_width="223.0dp"
             android:layout_height="224.0dp"
-            android:layout_marginTop="431.0dp"
+            android:layout_marginTop="231.0dp"
             android:src="@drawable/no_search" />
 
         <TextView
@@ -1642,12 +1697,7 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/fragment_accesorio"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
+    <!-- Contenedor Popup (Condiciones Comerciales y Ofertas) -->
     <RelativeLayout
         android:id="@+id/rl_popup"
         android:layout_width="match_parent"
@@ -1663,10 +1713,10 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/image_popup"
             android:layout_width="match_parent"
-            android:layout_height="1400dp"
+            android:layout_height="720dp"
             android:layout_marginEnd="100dp"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="100dp"
             fresco:actualImageScaleType="fitCenter" />
 
         <RelativeLayout
@@ -1674,7 +1724,6 @@
             android:layout_height="115dp"
             android:layout_below="@id/image_popup"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="74dp"
             android:layout_marginTop="80dp"
             android:background="@android:drawable/dialog_holo_dark_frame">
 
@@ -1707,6 +1756,7 @@
 
     </RelativeLayout>
 
+    <!-- Contenedor Equipos Recomendados planes -->
     <RelativeLayout
         android:id="@+id/rl_equipo_destacado_smart_fun"
         android:layout_width="match_parent"
@@ -1722,22 +1772,22 @@
         <RelativeLayout
             android:id="@+id/rl_parent_equipos_destacados"
             android:layout_width="985dp"
-            android:layout_height="1085dp"
+            android:layout_height="865dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="260dp"
+            android:layout_marginTop="40dp"
             android:background="@android:drawable/dialog_holo_dark_frame">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraint_equipo_destacado_sf"
                 android:layout_width="970dp"
-                android:layout_height="1070dp"
+                android:layout_height="850dp"
                 android:background="@color/backgroundGray">
 
                 <LinearLayout
                     android:id="@+id/linearLayout11"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -1796,8 +1846,7 @@
                         android:textSize="48sp"
                         app:layout_constraintLeft_toLeftOf="@+id/textView54"
                         app:layout_constraintRight_toRightOf="@+id/textView54"
-                        app:layout_constraintTop_toBottomOf="parent"
-                        tools:layout_editor_absoluteY="623dp" />
+                        app:layout_constraintTop_toBottomOf="parent" />
 
                     <TextView
                         android:id="@+id/textView54"
@@ -1823,15 +1872,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="61dp"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginRight="0dp"
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.5">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:id="@+id/textView49"
@@ -1889,7 +1935,7 @@
                         android:id="@+id/rv_equipos_destacados_sf"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="45dp"
+                        android:layout_marginTop="5dp"
                         />
                 </LinearLayout>
 
@@ -1904,8 +1950,7 @@
             android:layout_height="115dp"
             android:layout_below="@id/rl_parent_equipos_destacados"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="74dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="20dp"
             android:background="@android:drawable/dialog_holo_dark_frame">
 
             <LinearLayout
@@ -1941,6 +1986,6 @@
         android:id="@+id/image_destacado"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue"
+        android:background="@color/white"
         android:visibility="gone" />
 </RelativeLayout>
