@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DwMinix.iml" filepath="$PROJECT_DIR$/DwMinix.iml" />
       <module fileurl="file://$PROJECT_DIR$/NewDeviceWall.iml" filepath="$PROJECT_DIR$/NewDeviceWall.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
