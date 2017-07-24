@@ -489,6 +489,17 @@ public class FichaEquipo extends AppCompatActivity {
                 CaracteristicasDestacadoAdapter caracteristicasAdapter = new CaracteristicasDestacadoAdapter(caracteristicasList);
                 rvCaracteristicas.setAdapter(caracteristicasAdapter);
 
+                if(producto.getId().equals( "15" ))
+                {
+                    LinearLayout productoDestacado = (LinearLayout) findViewById( R.id.oferta_destacado );
+                    productoDestacado.setVisibility( View.VISIBLE );
+                }
+                else
+                {
+                    LinearLayout productoDestacado = (LinearLayout) findViewById( R.id.oferta_destacado );
+                    productoDestacado.setVisibility( View.GONE );
+                }
+
             }
         }.execute();
     }

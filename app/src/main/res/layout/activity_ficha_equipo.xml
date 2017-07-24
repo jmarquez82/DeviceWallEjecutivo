@@ -748,8 +748,9 @@
     <RelativeLayout
         android:id="@+id/fragment_accesorio_relacionado"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        >
 
         <com.github.mmin18.widget.RealtimeBlurView
             android:id="@+id/blur_content_acc"
@@ -835,7 +836,7 @@
                             >
 
                             <TextView
-                                android:id="@+id/tv_total_a_pagar"
+                                android:id="@+id/tv_total_a_pagar_acc"
                                 fontPath="fonts/DINNextLTPro-Bold.otf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -872,7 +873,7 @@
                                 app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintLeft_toRightOf="@+id/linearLayout4"
                                 app:layout_constraintRight_toLeftOf="@+id/textView25"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_cae"/>
+                                app:layout_constraintTop_toBottomOf="@+id/tv_cae_acc"/>
 
                             <TextView
                                 android:id="@+id/textView25"
@@ -888,7 +889,7 @@
                                 app:layout_constraintTop_toTopOf="@+id/textView23"/>
 
                             <TextView
-                                android:id="@+id/tv_cae"
+                                android:id="@+id/tv_cae_acc"
                                 fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -917,7 +918,7 @@
                                 app:layout_constraintTop_toTopOf="@+id/linearLayout4"/>
 
                             <TextView
-                                android:id="@+id/tv_cuota_mensual"
+                                android:id="@+id/tv_cuota_mensual_acc"
                                 fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -977,7 +978,7 @@
                                 app:layout_constraintVertical_bias="0.49"/>
 
                             <TextView
-                                android:id="@+id/tv_precio_venta"
+                                android:id="@+id/tv_precio_venta_acc"
                                 fontPath="fonts/DINNextLTPro-Bold.otf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -1016,7 +1017,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_precio_venta"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_precio_venta_acc"
                                 app:layout_constraintVertical_bias="0.066"
                                 app:srcCompat="@drawable/doce_cuotas_orange_blue"/>
 
@@ -1112,12 +1113,12 @@
 
                         <LinearLayout
                             android:id="@+id/oferta_destacado"
-                            android:background="@drawable/cuadro_blanco"
+                            android:background="@drawable/cuadro_blancov2"
                             android:layout_width="350dp"
                             android:padding="20dp"
                             android:gravity="center"
                             android:visibility="gone"
-                            android:layout_height="489dp">
+                             android:layout_height="509dp">
                             <ImageView
                                 android:scaleType="fitCenter"
                                 android:background="@drawable/onyx"
