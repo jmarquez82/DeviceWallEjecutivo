@@ -1,8 +1,6 @@
 package cl.rinno.newdevicewall;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,16 +8,13 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.cache.common.CacheKey;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.cache.CacheKeyFactory;
-import com.facebook.imagepipeline.cache.DefaultBitmapMemoryCacheParamsSupplier;
-import com.facebook.imagepipeline.cache.MemoryCacheParams;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.request.ImageRequest;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -50,23 +45,14 @@ import cz.msebera.android.httpclient.Header;
 
 public class SplashActivity extends AppCompatActivity {
 
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-    @BindView(R.id.pb_horizontal)
-    ProgressBar pbHorizontal;
-    @BindView(R.id.textView58)
-    TextView textView58;
-    @BindView(R.id.tv_status)
-    TextView tvStatus;
-    @BindView(R.id.tv_detalle)
-    TextView tvDetalle;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         int currentApiVersion = Build.VERSION.SDK_INT;
         final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -77,7 +63,6 @@ public class SplashActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
         if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
-
             getWindow().getDecorView().setSystemUiVisibility(flags);
             final View decorView = getWindow().getDecorView();
             decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -92,54 +77,69 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         Global.makeDirectories();
-        pbHorizontal.setMax(100);
-        if(Global.mBandera == 0){
+        //pbHorizontal.setMax(100);
+        if (Global.mBandera == 0) {
             Fresco.initialize(this);
             Global.mBandera++;
-            Log.d("FRESCO","INICIALIZADO");
-        }else{
-            Log.d("FRESCO","NO INICIALIZADO");
+            Log.d("FRESCO", "INICIALIZADO");
+        } else {
+            Log.d("FRESCO", "NO INICIALIZADO");
         }
 
         File oldJson = new File(Global.dirJson);
         if (oldJson.exists() && isOnlineNet()) {
+
             Log.d("JSON", "EXISTE");
-            pbHorizontal.setProgress(10);
+            //pbHorizontal.setProgress(10);
             int length = (int) oldJson.length();
             byte[] bytes = new byte[length];
             try (FileInputStream in = new FileInputStream(oldJson)) {
                 in.read(bytes);
                 Global.jsonData2 = new String(bytes);
                 JSONObject data = new JSONObject(Global.jsonData2);
-                tvDetalle.setText("JSON EXISTE");
+                //tvDetalle.setText("JSON EXISTE");
                 serialize(data, 2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        } else if ((!oldJson.exists()) || isOnlineNet()) {
+        } else if (oldJson.exists()) {
+            Log.d("JSON", "OLD EXISTe");
+
+            int length = (int) oldJson.length();
+            byte[] bytes = new byte[length];
+            try (FileInputStream in = new FileInputStream(oldJson)) {
+                in.read(bytes);
+                Global.jsonData2 = new String(bytes);
+                JSONObject data = new JSONObject(Global.jsonData2);
+                //tvDetalle.setText("JSON EXISTE");
+                serialize(data, 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if ((!oldJson.exists()) && isOnlineNet()) {
+         //   txtStatus.setVisibility(View.VISIBLE);
             Log.d("JSON", "NO EXISTE");
-            tvDetalle.setText("JSON NO EXISTE");
             DWApi.get("api/showfruna/1", null, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    JSONObject hello = response;
-                    serialize(hello, 1);
+                    serialize(response, 1);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    super.onFailure(statusCode, headers, throwable,errorResponse);
-                    tvStatus.setText("ERROR");
-                    tvDetalle.setText("Reinicia la App");
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
                 }
             });
+        } else {
+            Log.d("TAG", "EXPLO");
         }
     }
 
     private void serialize(final JSONObject data, final int status) {
-        tvDetalle.setText("SERIALIZANDO NUEVO JSON");
-        pbHorizontal.setProgress(20);
+        /*tvDetalle.setText("SERIALIZANDO NUEVO JSON");
+        pbHorizontal.setProgress(20);*/
+        Log.d("TAG","aaa");
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
@@ -178,9 +178,6 @@ public class SplashActivity extends AppCompatActivity {
                             Runnable myRunnable = new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvStatus.setText("Descargando Recursos de Equipos...");
-                                    tvDetalle.setText("");
-                                    pbHorizontal.setProgress(30);
                                 }
                             };
                             mainHandler.post(myRunnable);
@@ -208,8 +205,8 @@ public class SplashActivity extends AppCompatActivity {
                             Runnable myRunnable2 = new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvStatus.setText("Descargando Recursos de Destacados...");
-                                    pbHorizontal.setProgress(50);
+                                    /*tvStatus.setText("Descargando Recursos de Destacados...");
+                                    pbHorizontal.setProgress(50);*/
                                 }
                             };
                             mainHandler.post(myRunnable2);
@@ -224,8 +221,8 @@ public class SplashActivity extends AppCompatActivity {
                             Runnable m3 = new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvStatus.setText("Descargando Recursos de Ofertas...");
-                                    pbHorizontal.setProgress(55);
+                                    /*tvStatus.setText("Descargando Recursos de Ofertas...");
+                                    pbHorizontal.setProgress(55);*/
                                 }
                             };
                             mainHandler.post(m3);
@@ -237,8 +234,8 @@ public class SplashActivity extends AppCompatActivity {
                             Runnable m4 = new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvStatus.setText("Descargando Recursos de Accesorios...");
-                                    pbHorizontal.setProgress(60);
+                                    /*tvStatus.setText("Descargando Recursos de Accesorios...");
+                                    pbHorizontal.setProgress(60);*/
                                 }
                             };
                             mainHandler.post(m4);
@@ -251,8 +248,8 @@ public class SplashActivity extends AppCompatActivity {
                             Runnable m5 = new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvStatus.setText("Descargando Recursos de Planes...");
-                                    pbHorizontal.setProgress(70);
+                                    /*tvStatus.setText("Descargando Recursos de Planes...");
+                                    pbHorizontal.setProgress(70);*/
                                 }
                             };
                             mainHandler.post(m5);
@@ -264,7 +261,7 @@ public class SplashActivity extends AppCompatActivity {
                                     } else if (i == 2) {
                                         bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getDetalles().get(0).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/");
                                     }
-                                    bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getImagen_oferta(),Global.dirImages, "http://entel.rinno.cl/images/plans/");
+                                    bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getImagen_oferta(), Global.dirImages, "http://entel.rinno.cl/images/plans/");
 
                                 }
                                 bajar(Session.objData.getPlanes().get(i).getCondicionImage(), Global.dirImages, "http://entel.rinno.cl/images/groups/");
@@ -275,8 +272,8 @@ public class SplashActivity extends AppCompatActivity {
                             Runnable m6 = new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvStatus.setText("Descargando Recursos de Proveedores...");
-                                    pbHorizontal.setProgress(80);
+                                    /*tvStatus.setText("Descargando Recursos de Proveedores...");
+                                    pbHorizontal.setProgress(80);*/
                                 }
                             };
                             mainHandler.post(m6);
@@ -292,28 +289,21 @@ public class SplashActivity extends AppCompatActivity {
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            DWApi.get("api/status/1/edeviceswall", null, new AsyncHttpResponseHandler() {
+                            DWApi.get("apii/status/1/edeviceswall", null, new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                     String status = new String(responseBody);
                                     Log.d("STATUS CATALOG", status);
                                     Log.d("OWN STATUS", Session.objData.getCatalog().getStatus());
-                                    pbHorizontal.setProgress(90);
-                                    tvStatus.setText("Comparando estado de catálogo...");
-                                    tvDetalle.setText("ESTADO ACTUAL: " + Session.objData.getCatalog().getStatus()+" NUEVO ESTADO: " + status);
                                     if (!Session.objData.getCatalog().getStatus().equalsIgnoreCase(status)) {
-                                        tvStatus.setText("Descargando nuevo JSON...");
-                                        DWApi.get("api/showfruna/1", null, new JsonHttpResponseHandler() {
-                                            @Override
-                                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                                serialize(response, 1);
-                                            }
-                                        });
+                                        Log.d("SERVICIO", "SE INICIO");
+                                        startService(new Intent(SplashActivity.this, DownloadService.class));
                                     } else {
-                                        cargaLista();
-                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                        finish();
+                                        Log.d("SERVICIO", "NO SE INICIO");
                                     }
+                                    cargaLista();
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    finish();
                                 }
 
                                 @Override
@@ -361,7 +351,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Collections.shuffle(Global.allProducts);
         Collections.shuffle(Global.allAccessories);
-//        Collections.swap(Global.allPlans, 2, 3);
+        //Collections.swap(Global.allPlans, 1, 2);
 
         int j = 1;
         while (j < 11) {
@@ -402,27 +392,24 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
         for (int i = 0; i < Session.objData.getPlanes().get(2).getPlans().size(); i++) {
+            Log.d("VOZ", Session.objData.getPlanes().get(2).getPlans().get(i).getName());
+
             if (i < 2) {
                 Global.planesDeVozCCList.add(Session.objData.getPlanes().get(2).getPlans().get(i));
             } else {
                 Global.planesDeVozIlimitado.add(Session.objData.getPlanes().get(2).getPlans().get(i));
             }
         }
-        for (int i = 0; i < Session.objData.getPlanes().get(0).getPlans().size(); i++) {
-            if (Session.objData.getPlanes().get(0).getPlans().get(i).getName().contains("SIMple")) {
-                Global.planesSmartFunSimple.add(Session.objData.getPlanes().get(0).getPlans().get(i));
-            }
-        }
-        for (int i = 0; i < Session.objData.getPlanes().get(3).getPlans().size(); i++) {
-            if (Session.objData.getPlanes().get(3).getPlans().get(i).getName().contains("Multimedia")) {
-                Global.miPrimerPlanMultimedia.add(Session.objData.getPlanes().get(3).getPlans().get(i));
-            } else {
-                Global.miPrimerPlanVoz.add(Session.objData.getPlanes().get(3).getPlans().get(i));
-            }
-        }
         for (int i = 0; i < Session.objData.getPlanes().get(1).getPlans().size(); i++) {
-            if (Session.objData.getPlanes().get(1).getPlans().get(i).getName().contains("SIMple")) {
-                Global.planesControlFunSimple.add(Session.objData.getPlanes().get(1).getPlans().get(i));
+            if ((Session.objData.getPlanes().get(1).getPlans().get(i).getName().toLowerCase().contains("simple"))) {
+                Global.planesSmartFunSimple.add(Session.objData.getPlanes().get(1).getPlans().get(i));
+
+            }
+        }
+
+        for (int i = 0; i < Session.objData.getPlanes().get(0).getPlans().size(); i++) {
+            if ((Session.objData.getPlanes().get(0).getPlans().get(i).getName().toLowerCase().contains("simple"))) {
+                Global.planesControlFunSimple.add(Session.objData.getPlanes().get(0).getPlans().get(i));
             }
         }
         for (int i = 0; i < Session.objData.getProviders().size(); i++) {
@@ -430,6 +417,7 @@ public class SplashActivity extends AppCompatActivity {
                 Global.providersDevices.add(Session.objData.getProviders().get(i));
             }
         }
+
         Collections.sort(Global.providersDevices, new Comparator<Provider>() {
             @Override
             public int compare(Provider o1, Provider o2) {
@@ -445,9 +433,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void crearJson(final JSONObject jsonObject) {
-        pbHorizontal.setProgress(97);
-        tvStatus.setText("CREANDO JSON...");
-        tvDetalle.setText("");
         Log.d("JSON", "EMPEZANDO A CREAR");
         new AsyncTask<Void, Void, Void>() {
 
@@ -489,14 +474,14 @@ public class SplashActivity extends AppCompatActivity {
 
     private int bajar(final String salida, final String folder, String urlCo) {
 
-        Handler handler = new Handler(getApplicationContext().getMainLooper());
+        /*Handler handler = new Handler(getApplicationContext().getMainLooper());
             Runnable mRun = new Runnable() {
                 @Override
                 public void run() {
                     tvDetalle.setText(salida);
                 }
             };
-        handler.post(mRun);
+        handler.post(mRun);*/
         File file = null;
         try {
             double downloadedSize = 0;
@@ -523,7 +508,6 @@ public class SplashActivity extends AppCompatActivity {
                         downloadedSize += bufferLength;
                         int i = (int) ((downloadedSize / totalSize) * 100);
                         if (i <= 100) {
-
                             switch (i) {
                                 case 25:
                                     Log.d("INFOCODE-SERVICIO", "IMAGEN DESCARGADO AL 25%");

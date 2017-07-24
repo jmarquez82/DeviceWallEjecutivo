@@ -46,6 +46,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:9.2.0'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
