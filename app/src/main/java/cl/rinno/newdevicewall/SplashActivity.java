@@ -361,7 +361,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Collections.shuffle(Global.allProducts);
         Collections.shuffle(Global.allAccessories);
-        Collections.swap(Global.allPlans, 2, 3);
+//        Collections.swap(Global.allPlans, 2, 3);
 
         int j = 1;
         while (j < 11) {

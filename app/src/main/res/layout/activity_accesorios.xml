@@ -279,34 +279,6 @@
 
                 </android.support.constraint.ConstraintLayout>
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/image_accented_accessory"
-                    android:layout_width="328dp"
-                    android:layout_height="328dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="32dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_provider_name"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_name_accessory"
-                    app:layout_constraintVertical_bias="0.0"
-                    fresco:actualImageScaleType="fitCenter" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_caracteristicas"
-                    android:layout_width="368dp"
-                    android:layout_height="216dp"
-                    android:layout_marginTop="50dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="@+id/image_accented_accessory"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_accented_accessory"
-                    app:layout_constraintVertical_bias="0.0" />
-
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/content_descuento"
                     android:layout_width="500dp"
@@ -391,6 +363,37 @@
                         app:layout_constraintVertical_bias="0.0" />
                 </android.support.constraint.ConstraintLayout>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/image_accented_accessory"
+                    android:layout_width="328dp"
+                    android:layout_height="328dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_provider_name"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name_accessory"
+                    app:layout_constraintVertical_bias="0.0"
+                    fresco:actualImageScaleType="fitCenter" />
+
                 <TextView
                     android:id="@+id/textView13"
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -407,6 +410,20 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/content_descuento"
                     app:layout_constraintVertical_bias="0.13" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_caracteristicas"
+                    android:layout_width="368dp"
+                    android:layout_height="216dp"
+                    android:layout_marginTop="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="@+id/image_accented_accessory"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_accented_accessory"
+                    app:layout_constraintVertical_bias="0.0" />
+
+
 
                 <me.crosswall.lib.coverflow.core.PagerContainer
                     android:id="@+id/pager_container"

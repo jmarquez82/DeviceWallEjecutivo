@@ -210,6 +210,12 @@ public class AccesoriosActivity extends AppCompatActivity {
 
             }
         });
+
+        if(Global.accesorio.getId().equals( "15" ))
+        {
+            LinearLayout ofertaDestacada = (LinearLayout) findViewById( R.id.oferta_destacado );
+            ofertaDestacada.setVisibility( View.VISIBLE );
+        }
     }
 
     @OnClick({R.id.blur_content, R.id.button_close_fragment, R.id.content_precios, R.id.content_descuento, R.id.content_main, R.id.lineat_next_accesory, R.id.lineat_back_accesory})
