@@ -344,7 +344,7 @@
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Smart Fun_"
+                    android:text="Libres"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
                     android:textSize="25sp" />
@@ -739,7 +739,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:text="Smart Fun"
+                            android:text="Libres"
                             android:textColor="@color/white"
                             android:textSize="26sp" />
 
@@ -769,7 +769,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="7dp"
-                            android:text="Control Fun"
+                            android:text="Controlado"
                             android:textColor="@color/white"
                             android:textSize="26sp" />
 
@@ -1231,7 +1231,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="604dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -1241,7 +1242,7 @@
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/image_banner_plan"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="250dp"/>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraint_plan_voz"
@@ -1260,7 +1261,7 @@
                     android:layout_marginTop="24dp"
                     android:text="Planes"
                     android:textColor="@color/blue"
-                    android:textSize="53sp"
+                    android:textSize="43sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="160dp"
@@ -1275,7 +1276,7 @@
                     android:layout_marginStart="12dp"
                     android:text="Cuenta Controlada_"
                     android:textColor="@color/orange"
-                    android:textSize="53sp"
+                    android:textSize="43sp"
                     fresco:layout_constraintLeft_toRightOf="@+id/textView29"
                     fresco:layout_constraintTop_toTopOf="@+id/textView29" />
 
@@ -1287,7 +1288,7 @@
                     android:layout_marginTop="5dp"
                     android:text="Si se consumen tus minutos, SMS y/o GB puedes recargar para seguir usándolos."
                     android:textColor="@color/dimGray"
-                    android:textSize="27sp"
+                    android:textSize="20sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintTop_toBottomOf="@+id/textView35"
                     android:layout_marginStart="160dp" />
@@ -1309,7 +1310,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Planes"
                     android:textColor="@color/blue"
-                    android:textSize="53sp"
+                    android:textSize="43sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_cuenta_controlada"
                     android:layout_marginLeft="160dp"
@@ -1324,7 +1325,7 @@
                     android:layout_marginStart="12dp"
                     android:text="Suscripción_"
                     android:textColor="@color/orange"
-                    android:textSize="53sp"
+                    android:textSize="43sp"
                     fresco:layout_constraintLeft_toRightOf="@+id/textView44"
                     fresco:layout_constraintTop_toTopOf="@+id/textView44" />
 
@@ -1335,7 +1336,7 @@
                     android:layout_marginTop="5dp"
                     android:text="Si se consumen tus minutos y/o SMS se te cobrará por el consumo adicional."
                     android:textColor="@color/dimGray"
-                    android:textSize="27sp"
+                    android:textSize="20sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintTop_toBottomOf="@+id/textView45"
                     android:layout_marginLeft="160dp"

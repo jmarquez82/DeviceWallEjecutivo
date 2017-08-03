@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/backgroundGray"
-    tools:context="cl.rinno.newdevicewall.MainActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/backgroundGray"
+                tools:context="cl.rinno.newdevicewall.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 <GridLayout
                     android:id="@+id/grid_container"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
 
             </HorizontalScrollView>
 
@@ -58,7 +58,7 @@
                     android:text="¿Qué "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -67,7 +67,7 @@
                     android:text="buscas_"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -76,7 +76,7 @@
                     android:text="\?"
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -93,7 +93,7 @@
                     android:text="Selecciona un "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -102,7 +102,7 @@
                     android:text="filtro para "
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     android:id="@+id/tv_filter_product_type"
@@ -112,7 +112,7 @@
                     android:text="accesorios-equipos"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -129,7 +129,7 @@
                     android:text="Selecciona un "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -138,7 +138,7 @@
                     android:text="plan_"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -155,7 +155,7 @@
                     android:text="Filtro: "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     android:id="@+id/tv_filter_name"
@@ -165,7 +165,7 @@
                     android:text="Marca"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -183,7 +183,7 @@
                     android:text="Marca"
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -192,7 +192,7 @@
                     android:text=":"
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     android:id="@+id/tv_filter_name_device"
@@ -204,7 +204,7 @@
                     android:text="Apple"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -213,7 +213,7 @@
                     android:text="Resultado:"
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     android:id="@+id/tv_filter_result_device"
@@ -225,7 +225,7 @@
                     android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -242,7 +242,7 @@
                     android:text="Planes "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     android:id="@+id/tv_plan_type"
@@ -252,7 +252,7 @@
                     android:text="Smart Fun_"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -269,7 +269,7 @@
                     android:text="Selecciona una "
                     android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -278,7 +278,7 @@
                     android:text="marca para equipo compatible_"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="35sp" />
+                    android:textSize="35sp"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -307,7 +307,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:src="@drawable/img_equipos" />
+                        android:src="@drawable/img_equipos"/>
 
 
                     <TextView
@@ -317,7 +317,7 @@
                         android:text="@string/equipos"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="26sp" />
+                        android:textSize="26sp"/>
 
                 </LinearLayout>
 
@@ -334,7 +334,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:src="@drawable/img_accesorios" />
+                        android:src="@drawable/img_accesorios"/>
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-Medium.otf"
@@ -343,7 +343,7 @@
                         android:text="@string/accesorios"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="26sp" />
+                        android:textSize="26sp"/>
 
                 </LinearLayout>
 
@@ -360,7 +360,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:src="@drawable/img_planes" />
+                        android:src="@drawable/img_planes"/>
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-Medium.otf"
@@ -369,7 +369,7 @@
                         android:text="@string/planes"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="26sp" />
+                        android:textSize="26sp"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -397,7 +397,7 @@
                     android:layout_height="300dp"
                     android:layout_marginStart="72dp"
                     android:background="@drawable/triangule_blue"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -425,7 +425,7 @@
                             android:id="@+id/icn_filtro_marca"
                             android:layout_width="45.0dp"
                             android:layout_height="45.0dp"
-                            android:src="@drawable/filtro_marca" />
+                            android:src="@drawable/filtro_marca"/>
 
                         <TextView
                             android:id="@+id/text_filtro_marca"
@@ -435,7 +435,7 @@
                             android:layout_marginStart="15dp"
                             android:text="@string/marca"
                             android:textColor="@color/white"
-                            android:textSize="26sp" />
+                            android:textSize="26sp"/>
 
                     </LinearLayout>
 
@@ -457,7 +457,7 @@
                             android:id="@+id/icn_filtro_pantalla"
                             android:layout_width="45.0dp"
                             android:layout_height="45.0dp"
-                            android:src="@drawable/filtro_pantalla" />
+                            android:src="@drawable/filtro_pantalla"/>
 
                         <TextView
                             android:id="@+id/text_filtro_pantalla"
@@ -467,7 +467,7 @@
                             android:layout_marginStart="15dp"
                             android:text="@string/tamaopantalla"
                             android:textColor="@color/white"
-                            android:textSize="26sp" />
+                            android:textSize="26sp"/>
 
                     </LinearLayout>
 
@@ -488,7 +488,7 @@
                             android:id="@+id/icn_filtro_camara_trasera"
                             android:layout_width="45.0dp"
                             android:layout_height="45.0dp"
-                            android:src="@drawable/filtro_camara_trasera" />
+                            android:src="@drawable/filtro_camara_trasera"/>
 
                         <TextView
                             android:id="@+id/text_filtro_camara_trasera"
@@ -498,7 +498,7 @@
                             android:layout_marginStart="15dp"
                             android:text="@string/cmaratrasera"
                             android:textColor="@color/white"
-                            android:textSize="26sp" />
+                            android:textSize="26sp"/>
 
                     </LinearLayout>
 
@@ -519,7 +519,7 @@
                             android:id="@+id/icn_filtro_camara_frontal"
                             android:layout_width="45.0dp"
                             android:layout_height="45.0dp"
-                            android:src="@drawable/filtro_camara_frontal" />
+                            android:src="@drawable/filtro_camara_frontal"/>
 
                         <TextView
                             android:id="@+id/text_filtro_camara_frontal"
@@ -529,7 +529,7 @@
                             android:layout_marginStart="15dp"
                             android:text="@string/cmaradelantera"
                             android:textColor="@color/white"
-                            android:textSize="26sp" />
+                            android:textSize="26sp"/>
 
                     </LinearLayout>
 
@@ -552,7 +552,7 @@
                     android:layout_height="300dp"
                     android:layout_marginStart="393dp"
                     android:background="@drawable/triangule_green"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal"/>
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -584,7 +584,7 @@
                                 android:id="@+id/icn_filtro_multimedia"
                                 android:layout_width="45dp"
                                 android:layout_height="45dp"
-                                android:src="@drawable/icn_multimedia" />
+                                android:src="@drawable/icn_multimedia"/>
 
                             <TextView
                                 android:id="@+id/text_filtro_multimedia"
@@ -594,7 +594,7 @@
                                 android:layout_marginStart="15dp"
                                 android:text="Multimedia"
                                 android:textColor="@color/white"
-                                android:textSize="26sp" />
+                                android:textSize="26sp"/>
 
                         </LinearLayout>
 
@@ -615,7 +615,7 @@
                                 android:id="@+id/icn_filtro_proteccion"
                                 android:layout_width="45dp"
                                 android:layout_height="45dp"
-                                android:src="@drawable/icn_proteccion" />
+                                android:src="@drawable/icn_proteccion"/>
 
                             <TextView
                                 android:id="@+id/text_filtro_proteccion"
@@ -625,7 +625,7 @@
                                 android:layout_marginStart="5dp"
                                 android:text="Protección"
                                 android:textColor="@color/white"
-                                android:textSize="26sp" />
+                                android:textSize="26sp"/>
 
                         </LinearLayout>
 
@@ -648,7 +648,7 @@
                                 android:id="@+id/icn_filtro_energia"
                                 android:layout_width="45dp"
                                 android:layout_height="45dp"
-                                android:src="@drawable/icn_energia" />
+                                android:src="@drawable/icn_energia"/>
 
                             <TextView
                                 android:id="@+id/text_filtro_energia"
@@ -658,7 +658,7 @@
                                 android:layout_marginStart="10dp"
                                 android:text="Energía"
                                 android:textColor="@color/white"
-                                android:textSize="26sp" />
+                                android:textSize="26sp"/>
 
                         </LinearLayout>
 
@@ -679,7 +679,7 @@
                                 android:id="@+id/icn_filtro_por_equipo"
                                 android:layout_width="45dp"
                                 android:layout_height="45dp"
-                                android:src="@drawable/icn_por_equipo" />
+                                android:src="@drawable/icn_por_equipo"/>
 
                             <TextView
                                 android:id="@+id/text_filtro_por_equipo"
@@ -689,7 +689,7 @@
                                 android:layout_marginStart="10dp"
                                 android:text="Equipo\nCompatible"
                                 android:textColor="@color/white"
-                                android:textSize="26sp" />
+                                android:textSize="26sp"/>
 
                         </LinearLayout>
 
@@ -713,7 +713,7 @@
                     android:layout_height="300dp"
                     android:layout_marginStart="715dp"
                     android:background="@drawable/triangule_yellow"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -738,7 +738,7 @@
                             android:id="@+id/icn_plan_smartfun"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/icn_smartfun" />
+                            android:src="@drawable/icn_smartfun"/>
 
                         <TextView
                             android:id="@+id/text_plan_smartfun"
@@ -746,9 +746,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:text="Smart Fun"
+                            android:text="Libres"
                             android:textColor="@color/white"
-                            android:textSize="26sp" />
+                            android:textSize="26sp"/>
 
                     </LinearLayout>
 
@@ -768,7 +768,7 @@
                             android:id="@+id/icn_plan_controlfun"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/icn_controlfun" />
+                            android:src="@drawable/icn_controlfun"/>
 
                         <TextView
                             android:id="@+id/text_plan_controlfun"
@@ -776,9 +776,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="7dp"
-                            android:text="Control Fun"
+                            android:text="Controlados"
                             android:textColor="@color/white"
-                            android:textSize="26sp" />
+                            android:textSize="26sp"/>
 
                     </LinearLayout>
 
@@ -800,7 +800,7 @@
                             android:id="@+id/icn_plan_voz"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/icn_planvoz" />
+                            android:src="@drawable/icn_planvoz"/>
 
                         <TextView
                             android:id="@+id/text_plan_voz"
@@ -810,7 +810,7 @@
                             android:layout_marginStart="15dp"
                             android:text="Sólo Voz"
                             android:textColor="@color/white"
-                            android:textSize="26sp" />
+                            android:textSize="26sp"/>
 
                     </LinearLayout>
 
@@ -826,13 +826,14 @@
                         android:paddingEnd="20dp"
                         android:paddingStart="20dp"
                         android:scaleX="0"
-                        android:scaleY="0">
+                        android:scaleY="0"
+                        android:visibility="gone">
 
                         <ImageView
                             android:id="@+id/icn_primer_plan"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:src="@drawable/icn_mi_primer_plan" />
+                            android:src="@drawable/icn_mi_primer_plan"/>
 
                         <TextView
                             android:id="@+id/text_primer_plan"
@@ -842,7 +843,7 @@
                             android:layout_marginStart="15dp"
                             android:text="Mi primer\nplan"
                             android:textColor="@color/white"
-                            android:textSize="26sp" />
+                            android:textSize="26sp"/>
 
                     </LinearLayout>
 
@@ -878,7 +879,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="850dp"
             android:animateLayoutChanges="true"
-            fresco:placeholderImage="@drawable/orange_right_arrow" />
+            fresco:placeholderImage="@drawable/orange_right_arrow"/>
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
 
@@ -903,7 +904,7 @@
             android:layout_centerInParent="true"
             android:animateLayoutChanges="true"
             android:visibility="gone"
-            fresco:placeholderImage="@drawable/orange_left_arrow" />
+            fresco:placeholderImage="@drawable/orange_left_arrow"/>
 
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
@@ -918,7 +919,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:realtimeBlurRadius="10dp"
-            app:realtimeOverlayColor="#c8000000" />
+            app:realtimeOverlayColor="#c8000000"/>
 
 
         <LinearLayout
@@ -938,13 +939,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cerrar"
                 android:textColor="@color/white"
-                android:textSize="41sp" />
+                android:textSize="41sp"/>
 
             <ImageView
                 android:layout_width="29.29dp"
                 android:layout_height="29.32dp"
                 android:layout_marginStart="30dp"
-                android:src="@drawable/close_blur" />
+                android:src="@drawable/close_blur"/>
 
         </LinearLayout>
 
@@ -980,7 +981,7 @@
                             android:id="@+id/image_provider_selected"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            fresco:actualImageScaleType="fitCenter" />
+                            fresco:actualImageScaleType="fitCenter"/>
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -992,7 +993,7 @@
                     android:layout_marginStart="30dp"
                     android:text="Marca Seleccionada_ "
                     android:textColor="@color/white"
-                    android:textSize="50sp" />
+                    android:textSize="50sp"/>
 
                 <TextView
                     android:id="@+id/tv_provider_selected"
@@ -1001,7 +1002,7 @@
                     android:layout_height="wrap_content"
                     android:text="Samsung"
                     android:textColor="@color/orange"
-                    android:textSize="50sp" />
+                    android:textSize="50sp"/>
 
             </LinearLayout>
 
@@ -1018,7 +1019,7 @@
                     android:layout_marginTop="61dp"
                     android:text="Elige el equipo"
                     android:textColor="@color/white"
-                    android:textSize="40sp" />
+                    android:textSize="40sp"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_equipos_compatibles"
@@ -1026,7 +1027,7 @@
                     android:layout_height="584dp"
                     android:layout_marginEnd="72dp"
                     android:layout_marginStart="72dp"
-                    android:layout_marginTop="59dp" />
+                    android:layout_marginTop="59dp"/>
 
             </LinearLayout>
 
@@ -1054,7 +1055,7 @@
                     android:layout_height="87.0dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="141dp"
-                    android:src="@drawable/asterisco_azul" />
+                    android:src="@drawable/asterisco_azul"/>
 
                 <TextView
                     fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1064,13 +1065,13 @@
                     android:includeFontPadding="false"
                     android:text="Has elegido\nel equipo"
                     android:textColor="@color/white"
-                    android:textSize="41.0sp" />
+                    android:textSize="41.0sp"/>
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/img_device_selected"
                     android:layout_width="80dp"
                     android:layout_height="159dp"
-                    fresco:actualImageScaleType="fitCenter" />
+                    fresco:actualImageScaleType="fitCenter"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -1086,7 +1087,7 @@
                         android:text="Samsung"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="21sp" />
+                        android:textSize="21sp"/>
 
                     <TextView
                         android:id="@+id/tv_nombre_equipo_compatible_seleccionado"
@@ -1095,7 +1096,7 @@
                         android:layout_height="wrap_content"
                         android:text="Galaxy S6"
                         android:textColor="@color/orange"
-                        android:textSize="32sp" />
+                        android:textSize="32sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -1117,7 +1118,7 @@
                         android:layout_height="wrap_content"
                         android:text="Éstos son los "
                         android:textColor="@color/white"
-                        android:textSize="40sp" />
+                        android:textSize="40sp"/>
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1125,7 +1126,7 @@
                         android:layout_height="wrap_content"
                         android:text="Accesorios compatibles_"
                         android:textColor="@color/yellow"
-                        android:textSize="40sp" />
+                        android:textSize="40sp"/>
 
                 </LinearLayout>
 
@@ -1138,7 +1139,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_accesorios"
                         android:layout_width="match_parent"
-                        android:layout_height="410dp" />
+                        android:layout_height="410dp"/>
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/button_arrow_left_filter"
@@ -1147,7 +1148,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="27dp"
                         android:visibility="visible"
-                        fresco:placeholderImage="@drawable/orange_left_arrow" />
+                        fresco:placeholderImage="@drawable/orange_left_arrow"/>
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/button_arrow_right_filter"
@@ -1157,7 +1158,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="27dp"
                         android:visibility="visible"
-                        fresco:placeholderImage="@drawable/orange_right_arrow" />
+                        fresco:placeholderImage="@drawable/orange_right_arrow"/>
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
@@ -1186,7 +1187,7 @@
                     android:layout_height="wrap_content"
                     android:text="Selecciona la"
                     android:textColor="@color/white"
-                    android:textSize="50sp" />
+                    android:textSize="50sp"/>
 
                 <TextView
                     android:id="@+id/text_filter_name"
@@ -1196,7 +1197,7 @@
                     android:layout_marginStart="15dp"
                     android:text="Marca_"
                     android:textColor="@color/orange"
-                    android:textSize="50sp" />
+                    android:textSize="50sp"/>
 
             </LinearLayout>
 
@@ -1206,7 +1207,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
                 android:layout_marginEnd="203dp"
-                android:layout_marginStart="203dp" />
+                android:layout_marginStart="203dp"/>
 
         </LinearLayout>
 
@@ -1217,21 +1218,20 @@
         android:id="@+id/constraint_plans"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="1280dp"
+            android:layout_height="1420dp"
             android:background="@color/backgroundGray"
-            android:paddingEnd="43dp"
-            android:paddingStart="43dp">
+            >
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/image_banner_plan"
                 android:layout_width="match_parent"
-                android:layout_height="186dp"
-                android:layout_marginTop="111dp" />
+                android:layout_height="300dp"
+                />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraint_plan_voz"
@@ -1239,6 +1239,8 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/image_banner_plan"
                 android:layout_marginEnd="31dp"
+                android:layout_marginLeft="43dp"
+                android:layout_marginRight="43dp"
                 android:layout_marginStart="31dp"
                 android:visibility="gone">
 
@@ -1252,7 +1254,7 @@
                     android:textColor="@color/blue"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toTopOf="parent" />
+                    fresco:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/textView35"
@@ -1265,7 +1267,7 @@
                     android:textColor="@color/orange"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toRightOf="@+id/textView29"
-                    fresco:layout_constraintTop_toTopOf="@+id/textView29" />
+                    fresco:layout_constraintTop_toTopOf="@+id/textView29"/>
 
                 <TextView
                     android:id="@+id/textView38"
@@ -1277,7 +1279,7 @@
                     android:textColor="@color/dimGray"
                     android:textSize="27sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView35" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView35"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_planes_cuenta_controlada"
@@ -1286,7 +1288,7 @@
                     android:layout_marginTop="24dp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView38" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView38"/>
 
                 <TextView
                     android:id="@+id/textView44"
@@ -1298,7 +1300,7 @@
                     android:textColor="@color/blue"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_cuenta_controlada" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_cuenta_controlada"/>
 
                 <TextView
                     android:id="@+id/textView45"
@@ -1311,7 +1313,7 @@
                     android:textColor="@color/orange"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toRightOf="@+id/textView44"
-                    fresco:layout_constraintTop_toTopOf="@+id/textView44" />
+                    fresco:layout_constraintTop_toTopOf="@+id/textView44"/>
 
                 <TextView
                     android:id="@+id/textView46"
@@ -1322,7 +1324,7 @@
                     android:textColor="@color/dimGray"
                     android:textSize="27sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView45" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView45"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_planes_voz_ilimitado"
@@ -1332,7 +1334,7 @@
                     fresco:layout_constraintHorizontal_bias="0.0"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView46" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView46"/>
 
                 <LinearLayout
                     android:id="@+id/linear_condiciones_comerciales_solo_voz"
@@ -1352,7 +1354,7 @@
                         android:paddingBottom="2dp"
                         android:text="Ver "
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1360,7 +1362,7 @@
                         android:layout_height="wrap_content"
                         android:text="Condiciones Comerciales_"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
 
@@ -1371,6 +1373,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/image_banner_plan"
+                android:layout_marginLeft="43dp"
+                android:layout_marginRight="43dp"
                 android:visibility="gone">
 
                 <android.support.v7.widget.RecyclerView
@@ -1380,7 +1384,7 @@
                     android:layout_marginTop="159dp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toTopOf="parent" />
+                    fresco:layout_constraintTop_toTopOf="parent"/>
 
                 <LinearLayout
                     android:id="@+id/linear_condiciones_comerciales_smart_fun"
@@ -1400,7 +1404,7 @@
                         android:paddingBottom="2dp"
                         android:text="Ver "
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1408,7 +1412,7 @@
                         android:layout_height="wrap_content"
                         android:text="Condiciones Comerciales_"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
 
@@ -1419,6 +1423,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/image_banner_plan"
+                android:layout_marginLeft="43dp"
+                android:layout_marginRight="43dp"
                 android:visibility="gone">
 
                 <android.support.v7.widget.RecyclerView
@@ -1428,7 +1434,7 @@
                     android:layout_marginTop="159dp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toTopOf="parent" />
+                    fresco:layout_constraintTop_toTopOf="parent"/>
 
                 <LinearLayout
                     android:id="@+id/linear_condiciones_comerciales_control_fun"
@@ -1448,7 +1454,7 @@
                         android:paddingBottom="2dp"
                         android:text="Ver "
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1456,7 +1462,7 @@
                         android:layout_height="wrap_content"
                         android:text="Condiciones Comerciales_"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
 
@@ -1479,7 +1485,7 @@
                     android:textColor="@color/blue"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toTopOf="parent" />
+                    fresco:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/textView355"
@@ -1492,7 +1498,7 @@
                     android:textColor="@color/orange"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toRightOf="@+id/textView299"
-                    fresco:layout_constraintTop_toTopOf="@+id/textView299" />
+                    fresco:layout_constraintTop_toTopOf="@+id/textView299"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_mi_primer_plan_multimedia"
@@ -1501,7 +1507,7 @@
                     android:layout_marginTop="16dp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView355" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView355"/>
 
                 <TextView
                     android:id="@+id/textView444"
@@ -1513,7 +1519,7 @@
                     android:textColor="@color/blue"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toLeftOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_multimedia" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_multimedia"/>
 
                 <TextView
                     android:id="@+id/textView455"
@@ -1526,7 +1532,7 @@
                     android:textColor="@color/orange"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toRightOf="@+id/textView444"
-                    fresco:layout_constraintTop_toTopOf="@+id/textView444" />
+                    fresco:layout_constraintTop_toTopOf="@+id/textView444"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_mi_primer_plan_voz"
@@ -1536,7 +1542,7 @@
                     fresco:layout_constraintHorizontal_bias="0.0"
                     fresco:layout_constraintLeft_toLeftOf="parent"
                     fresco:layout_constraintRight_toRightOf="parent"
-                    fresco:layout_constraintTop_toBottomOf="@+id/textView455" />
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView455"/>
 
                 <LinearLayout
                     android:id="@+id/linear_condiciones_comerciales_primerplan"
@@ -1556,7 +1562,7 @@
                         android:paddingBottom="2dp"
                         android:text="Ver "
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1564,7 +1570,7 @@
                         android:layout_height="wrap_content"
                         android:text="Condiciones Comerciales_"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
 
@@ -1589,7 +1595,7 @@
             android:layout_width="223.0dp"
             android:layout_height="224.0dp"
             android:layout_marginTop="431.0dp"
-            android:src="@drawable/no_search" />
+            android:src="@drawable/no_search"/>
 
         <TextView
             fontPath="fonts/DINNextLTPro-Light.otf"
@@ -1601,7 +1607,7 @@
             android:text="@string/lo_sentimos"
             android:textAlignment="center"
             android:textColor="@color/dimGray"
-            android:textSize="45.0sp" />
+            android:textSize="45.0sp"/>
 
         <TextView
             fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -1611,7 +1617,7 @@
             android:text="@string/deseas_intentarlo_de_nuevo"
             android:textAlignment="center"
             android:textColor="@color/blue"
-            android:textSize="45.0sp" />
+            android:textSize="45.0sp"/>
 
         <LinearLayout
             android:id="@+id/linear_close_nosearch"
@@ -1629,13 +1635,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/cerrar"
                 android:textColor="@color/white"
-                android:textSize="41sp" />
+                android:textSize="41sp"/>
 
             <ImageView
                 android:layout_width="29.29dp"
                 android:layout_height="29.32dp"
                 android:layout_marginStart="30dp"
-                android:src="@drawable/close_blur" />
+                android:src="@drawable/close_blur"/>
 
         </LinearLayout>
 
@@ -1646,7 +1652,7 @@
         android:id="@+id/fragment_accesorio"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/rl_popup"
@@ -1658,7 +1664,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:realtimeBlurRadius="10dp"
-            app:realtimeOverlayColor="#c8000000" />
+            app:realtimeOverlayColor="#c8000000"/>
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/image_popup"
@@ -1667,7 +1673,7 @@
             android:layout_marginEnd="100dp"
             android:layout_marginStart="100dp"
             android:layout_marginTop="200dp"
-            fresco:actualImageScaleType="fitCenter" />
+            fresco:actualImageScaleType="fitCenter"/>
 
         <RelativeLayout
             android:layout_width="305dp"
@@ -1693,13 +1699,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cerrar"
                     android:textColor="@color/white"
-                    android:textSize="41sp" />
+                    android:textSize="41sp"/>
 
                 <ImageView
                     android:layout_width="29.29dp"
                     android:layout_height="29.32dp"
                     android:layout_marginStart="30dp"
-                    android:src="@drawable/close_blur" />
+                    android:src="@drawable/close_blur"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -1717,7 +1723,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:realtimeBlurRadius="10dp"
-            app:realtimeOverlayColor="#c8000000" />
+            app:realtimeOverlayColor="#c8000000"/>
 
         <RelativeLayout
             android:id="@+id/rl_parent_equipos_destacados"
@@ -1751,7 +1757,7 @@
                         android:layout_height="wrap_content"
                         android:text="{ Equipos"
                         android:textColor="@color/blue"
-                        android:textSize="47sp" />
+                        android:textSize="47sp"/>
 
                     <TextView
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -1759,7 +1765,7 @@
                         android:layout_height="wrap_content"
                         android:text=" Recomendados_"
                         android:textColor="@color/orange"
-                        android:textSize="47sp" />
+                        android:textSize="47sp"/>
                 </LinearLayout>
 
                 <android.support.constraint.ConstraintLayout
@@ -1783,7 +1789,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/tv_precio_equipo_destacado_sf"
                         app:layout_constraintRight_toLeftOf="@+id/tv_precio_equipo_destacado_sf"
                         app:layout_constraintTop_toTopOf="@+id/tv_precio_equipo_destacado_sf"
-                        app:layout_constraintVertical_bias="0.733" />
+                        app:layout_constraintVertical_bias="0.733"/>
 
                     <TextView
                         android:id="@+id/tv_precio_equipo_destacado_sf"
@@ -1797,7 +1803,7 @@
                         app:layout_constraintLeft_toLeftOf="@+id/textView54"
                         app:layout_constraintRight_toRightOf="@+id/textView54"
                         app:layout_constraintTop_toBottomOf="parent"
-                        tools:layout_editor_absoluteY="623dp" />
+                        tools:layout_editor_absoluteY="623dp"/>
 
                     <TextView
                         android:id="@+id/textView54"
@@ -1816,7 +1822,7 @@
                         app:layout_constraintLeft_toLeftOf="@+id/linear_text"
                         app:layout_constraintRight_toRightOf="@+id/linear_text"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.59000003" />
+                        app:layout_constraintVertical_bias="0.59000003"/>
 
                     <LinearLayout
                         android:id="@+id/linear_text"
@@ -1840,7 +1846,7 @@
                             android:layout_height="wrap_content"
                             android:text="Plan "
                             android:textColor="@color/white"
-                            android:textSize="37sp" />
+                            android:textSize="37sp"/>
 
                         <TextView
                             android:id="@+id/textView51"
@@ -1849,7 +1855,7 @@
                             android:layout_height="wrap_content"
                             android:text="Smart Fun SIMple "
                             android:textColor="@color/white"
-                            android:textSize="37sp" />
+                            android:textSize="37sp"/>
 
                         <TextView
                             android:id="@+id/tv_gb_plan_sf"
@@ -1860,7 +1866,7 @@
                             android:textColor="@color/white"
                             android:textSize="37sp"
                             app:layout_constraintLeft_toRightOf="@+id/textView51"
-                            app:layout_constraintTop_toTopOf="@+id/textView51" />
+                            app:layout_constraintTop_toTopOf="@+id/textView51"/>
 
                         <TextView
                             android:id="@+id/textView53"
@@ -1871,7 +1877,7 @@
                             android:textColor="@color/white"
                             android:textSize="37sp"
                             app:layout_constraintLeft_toRightOf="@+id/tv_gb_plan_sf"
-                            app:layout_constraintTop_toTopOf="@+id/tv_gb_plan_sf" />
+                            app:layout_constraintTop_toTopOf="@+id/tv_gb_plan_sf"/>
 
                     </LinearLayout>
                 </android.support.constraint.ConstraintLayout>
@@ -1923,13 +1929,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cerrar"
                     android:textColor="@color/white"
-                    android:textSize="41sp" />
+                    android:textSize="41sp"/>
 
                 <ImageView
                     android:layout_width="29.29dp"
                     android:layout_height="29.32dp"
                     android:layout_marginStart="30dp"
-                    android:src="@drawable/close_blur" />
+                    android:src="@drawable/close_blur"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -1942,5 +1948,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/blue"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 </RelativeLayout>

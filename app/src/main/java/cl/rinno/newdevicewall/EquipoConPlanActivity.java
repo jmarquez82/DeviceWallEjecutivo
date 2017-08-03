@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
@@ -97,6 +98,35 @@ public class EquipoConPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+        int currentApiVersion = Build.VERSION.SDK_INT;
+        final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+        if ( currentApiVersion >= Build.VERSION_CODES.KITKAT )
+        {
+
+            getWindow().getDecorView().setSystemUiVisibility( flags );
+            final View decorView = getWindow().getDecorView();
+            decorView.setOnSystemUiVisibilityChangeListener( new View.OnSystemUiVisibilityChangeListener()
+            {
+                @Override
+                public void onSystemUiVisibilityChange( int visibility )
+                {
+                    if ( (visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0 )
+                    {
+                        decorView.setSystemUiVisibility( flags );
+                    }
+                }
+            } );
+        }
+
+
         setContentView(R.layout.activity_equipo_con_plan);
         ButterKnife.bind(this);
         imgDevice.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.producto.getDetalles().get(0).getValue())));
@@ -147,6 +177,8 @@ public class EquipoConPlanActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+
+                Log.i( "TAG", smartFunList.size()+"" );
                 smartFunAdapter = new PlanesSmartFunAdapter(smartFunList, EquipoConPlanActivity.this);
                 controlFunAdapter = new PlanesControlFunAdapter(controlFunList, EquipoConPlanActivity.this);
 
