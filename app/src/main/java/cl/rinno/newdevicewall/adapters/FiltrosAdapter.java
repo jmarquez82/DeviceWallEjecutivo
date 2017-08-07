@@ -3,6 +3,7 @@ package cl.rinno.newdevicewall.adapters;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,10 +73,11 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
     public void onBindViewHolder(final FiltrosViewHolder holder, final int position) {
         if(type == 0){
             holder.imgProvider.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.providersDevices.get(position).getProvider_image())));
+            Log.i( "TAG", Global.dirImages + Global.providersDevices.get(position).getProvider_image());
             holder.txtFilter.setVisibility(View.GONE);
             holder.imgProvider.setVisibility(View.VISIBLE);
             if(Global.providersDevices.get(position).getId().equalsIgnoreCase("7") || Global.providersDevices.get(position).getId().equalsIgnoreCase("15") || Global.providersDevices.get(position).getId().equalsIgnoreCase("9")){
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(105,105);
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(30,30);
                 layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
                 holder.rlParentImage.setLayoutParams(layoutParams);
             }

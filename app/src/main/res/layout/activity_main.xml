@@ -1263,7 +1263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginStart="12dp"
-                    android:text="Cuenta Controlada_"
+                    android:text="Controlado"
                     android:textColor="@color/orange"
                     android:textSize="53sp"
                     fresco:layout_constraintLeft_toRightOf="@+id/textView29"

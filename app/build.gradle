@@ -6,7 +6,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "cl.rinno.newdevicewall"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 25
         versionCode 2
         versionName "1.2"

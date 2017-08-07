@@ -365,7 +365,7 @@ public class DownloadService extends IntentService {
                     for (int j = 0; j < Session.objData.getPlanes().get(i).getPlans().size(); j++) {
                         if (i < 2) {
                             bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getDetalles().get(0).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/");
-                            bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getDetalles().get(1).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/");
+//                            bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getDetalles().get(1).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/");
                         } else if (i == 2) {
                             bajar(Session.objData.getPlanes().get(i).getPlans().get(j).getDetalles().get(0).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/");
                         }

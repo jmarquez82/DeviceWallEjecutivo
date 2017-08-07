@@ -1605,6 +1605,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.linear_condiciones_comerciales_smart_fun:
                 rlPopup.setVisibility( View.VISIBLE );
+                imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getCondicionImage() ) ) );
                 if ( getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE )
                 {
                     imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getCondicionImage() ) ) );

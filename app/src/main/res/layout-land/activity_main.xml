@@ -925,7 +925,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="604dp"
-        android:visibility="gone">
+>
 
         <com.github.mmin18.widget.RealtimeBlurView
             android:layout_width="match_parent"
@@ -967,7 +967,7 @@
             android:layout_above="@id/linear_close_filters"
             android:layout_marginBottom="50dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
