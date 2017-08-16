@@ -1,0 +1,2073 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/backgroundGray"
+                tools:context="cl.rinno.newdevicewall.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@+id/pulsator_right"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_buttons_parent"
+            android:layout_width="302dp"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linear_que_buscas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="84dp"
+                    android:gravity="center"
+                    android:visibility="visible">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¿Qué "
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="35sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="buscas_"
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        android:textSize="35sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="\?"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="35sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_selecciona_filtro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="97dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona un "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="filtro para "
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_filter_product_type"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="accesorios_"
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        android:textSize="25sp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/button_devices"
+                    android:layout_width="238dp"
+                    android:layout_height="90dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_button_blue"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/img_equipos"/>
+
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Medium.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/equipos"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="26sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_accessories"
+                    android:layout_width="238dp"
+                    android:layout_height="90dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_button_green"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/img_accesorios"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Medium.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/accesorios"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="26sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_plans"
+                    android:layout_width="238dp"
+                    android:layout_height="90dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_button_yellow"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/img_planes"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Medium.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/planes"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="26sp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_selecciona_plan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="97dp"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona un "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="plan_"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_nombre_filtro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="97dp"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filtro: "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    android:id="@+id/tv_filter_name"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Marca"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_filter_results_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="97dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_filter_type"
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Marca"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="25sp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_filter_name_device"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apple"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Resultado: "
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_filter_result_device"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:text="0"
+                        android:textAlignment="center"
+                        android:textColor="@color/orange"
+                        android:textSize="25sp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_plan_elegido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="97dp"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Planes "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    android:id="@+id/tv_plan_type"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Libres"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_selecciona_una_marca_equipo_comp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="97dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona una "
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="marca para\nequipo compatible_"
+                    android:textAlignment="center"
+                    android:textColor="@color/orange"
+                    android:textSize="25sp"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/linear_content_filters"
+            android:layout_width="302dp"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/relative_content_devices"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:background="@color/blue"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="220dp"
+                    android:background="@drawable/triangule_blue_land"
+                    android:orientation="horizontal"
+                    android:rotation="-90"
+                    android:visibility="visible"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/button_marca_filter"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_devices"
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_marca"
+                            android:layout_width="45.0dp"
+                            android:layout_height="45.0dp"
+                            android:src="@drawable/filtro_marca"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_marca"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/marca"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_pantalla_filter"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_devices"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_pantalla"
+                            android:layout_width="45.0dp"
+                            android:layout_height="45.0dp"
+                            android:src="@drawable/filtro_pantalla"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_pantalla"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/tamaopantalla"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_camara_trasera_filter"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_devices"
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_camara_trasera"
+                            android:layout_width="45.0dp"
+                            android:layout_height="45.0dp"
+                            android:src="@drawable/filtro_camara_trasera"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_camara_trasera"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/cmaratrasera"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_camara_frontal_filter"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_devices"
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_camara_frontal"
+                            android:layout_width="45.0dp"
+                            android:layout_height="45.0dp"
+                            android:src="@drawable/filtro_camara_frontal"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_camara_frontal"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="@string/cmaradelantera"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_content_accessory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:background="@color/greenMint"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/triangule_green_land"
+                    android:orientation="horizontal"
+                    android:rotation="-90"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/button_multimedia_filter"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_accessory"
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_multimedia"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_multimedia"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_multimedia"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Multimedia"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_proteccion_filter"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_accessory"
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_proteccion"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_proteccion"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_proteccion"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Protección"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_energia_filter"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_accessory"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_energia"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_energia"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_energia"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Energía"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_por_equipo_filter"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_accessory"
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/icn_filtro_por_equipo"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:src="@drawable/icn_por_equipo"/>
+
+                        <TextView
+                            android:id="@+id/text_filtro_por_equipo"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Equipo\nCompatible"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_content_plans"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:background="@color/yellow"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="220dp"
+                    android:background="@drawable/triangule_yellow_land"
+                    android:orientation="horizontal"
+                    android:rotation="-90"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/button_smartfun"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_plans"
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0">
+
+                        <ImageView
+                            android:id="@+id/icn_plan_smartfun"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/icn_smartfun"/>
+
+                        <TextView
+                            android:id="@+id/text_plan_smartfun"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Libres"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_controlfun"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_plans"
+                        android:gravity="center"
+                        android:scaleX="0"
+                        android:scaleY="0">
+
+                        <ImageView
+                            android:id="@+id/icn_plan_controlfun"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/icn_controlfun"/>
+
+                        <TextView
+                            android:id="@+id/text_plan_controlfun"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:text="Cuenta\nControlada"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_planvoz"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_plans"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:scaleX="0"
+                        android:scaleY="0">
+
+                        <ImageView
+                            android:id="@+id/icn_plan_voz"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/icn_planvoz"/>
+
+                        <TextView
+                            android:id="@+id/text_plan_voz"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Sólo Voz"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_miprimerplan"
+                        android:layout_width="220.0dp"
+                        android:layout_height="84.0dp"
+                        android:layout_marginTop="25dp"
+                        android:alpha="0"
+                        android:background="@drawable/bg_filter_plans"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:scaleX="0"
+                        android:scaleY="0">
+
+                        <ImageView
+                            android:id="@+id/icn_primer_plan"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/icn_mi_primer_plan"/>
+
+                        <TextView
+                            android:id="@+id/text_primer_plan"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:text="Mi primer\nplan"
+                            android:textColor="@color/white"
+                            android:textSize="26sp"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <HorizontalScrollView
+                android:id="@+id/horizontal_scroll_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:scrollbars="none"
+                android:visibility="visible">
+
+                <GridLayout
+                    android:id="@+id/grid_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+
+            </HorizontalScrollView>
+
+            <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                android:id="@+id/pulsator_left"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                app:pulse_color="@color/orange"
+                app:pulse_count="6"
+                app:pulse_duration="4500"
+                app:pulse_interpolator="Linear"
+                app:pulse_repeat="0"
+                app:pulse_startFromScratch="false">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/button_arrow_left"
+                    android:layout_width="101dp"
+                    android:layout_height="101dp"
+                    android:layout_centerInParent="true"
+                    android:animateLayoutChanges="true"
+                    android:visibility="gone"
+                    fresco:placeholderImage="@drawable/orange_left_arrow"/>
+
+            </pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <pl.bclogic.pulsator4droid.library.PulsatorLayout
+        android:id="@+id/pulsator_right"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        app:pulse_color="@color/orange"
+        app:pulse_count="6"
+        app:pulse_duration="4500"
+        app:pulse_interpolator="Linear"
+        app:pulse_repeat="0"
+        app:pulse_startFromScratch="false">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/button_arrow_right"
+            android:layout_width="101dp"
+            android:layout_height="101dp"
+            android:layout_centerInParent="true"
+            android:animateLayoutChanges="true"
+            fresco:placeholderImage="@drawable/orange_right_arrow"/>
+    </pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+    <!-- Contenedor Blur y todo su contenido -->
+    <RelativeLayout
+        android:id="@+id/blur_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="604dp"
+        android:visibility="gone"
+        >
+
+        <com.github.mmin18.widget.RealtimeBlurView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:realtimeBlurRadius="10dp"
+            app:realtimeOverlayColor="#c8000000"/>
+
+        <LinearLayout
+            android:id="@+id/linear_close_filters"
+            android:layout_width="218dp"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="94dp"
+            android:background="@drawable/bg_button_close_filter"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cerrar"
+                android:textColor="@color/white"
+                android:textSize="31sp"/>
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/close_blur"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_elegir_equipo_compatible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/linear_close_filters"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                android:background="#5d000000"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:background="@drawable/bg_type_filters_accessory">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_parent_image"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerInParent="true">
+
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/image_provider_selected"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            fresco:actualImageScaleType="fitCenter"/>
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="Marca Seleccionada_ "
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/tv_provider_selected"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Samsung"
+                    android:textColor="@color/orange"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="44dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Elige el equipo"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_equipos_compatibles"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_marginTop="17dp"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_resultado_equipo_compatible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/linear_close_filters"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="248dp"
+                android:background="#5d000000"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="42.0dp"
+                    android:layout_height="47.0dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="141dp"
+                    android:src="@drawable/asterisco_azul"/>
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="99dp"
+                    android:includeFontPadding="false"
+                    android:text="Has elegido\nel equipo"
+                    android:textColor="@color/white"
+                    android:textSize="21.0sp"/>
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/img_device_selected"
+                    android:layout_width="80dp"
+                    android:layout_height="159dp"
+                    fresco:actualImageScaleType="fitCenter"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_proveedor_equipo_compatible_seleccionado"
+                        fontPath="fonts/DINNextLTPro-Bold.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Samsung"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="21sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_nombre_equipo_compatible_seleccionado"
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Galaxy S6"
+                        android:textColor="@color/orange"
+                        android:textSize="32sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="58dp">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Éstos son los "
+                        android:textColor="@color/white"
+                        android:textSize="20sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Accesorios compatibles_"
+                        android:textColor="@color/yellow"
+                        android:textSize="20sp"/>
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="33dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_accesorios"
+                        android:layout_width="match_parent"
+                        android:layout_height="410dp"/>
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/button_arrow_left_filter"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="27dp"
+                        android:visibility="visible"
+                        fresco:placeholderImage="@drawable/orange_left_arrow"/>
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/button_arrow_right_filter"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="27dp"
+                        android:visibility="visible"
+                        fresco:placeholderImage="@drawable/orange_right_arrow"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linear_selecciona_filtro_blur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/linear_close_filters"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:gravity="center"
+                android:paddingEnd="100dp"
+                android:paddingStart="100dp">
+
+                <TextView
+                    android:id="@+id/text_selecciona"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecciona la"
+                    android:textColor="@color/white"
+                    android:textSize="38sp"/>
+
+                <TextView
+                    android:id="@+id/text_filter_name"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Marca_"
+                    android:textColor="@color/orange"
+                    android:textSize="38sp"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_filters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <!-- Contenedor de Planes -->
+    <LinearLayout
+        android:id="@+id/constraint_plans"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="604dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundGray"
+            >
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/image_banner_plan"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="25dp"/>
+
+            <android.support.constraint.ConstraintLayout
+
+                android:id="@+id/constraint_plan_voz"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_banner_plan"
+                android:layout_marginEnd="31dp"
+                android:layout_marginLeft="43dp"
+                android:layout_marginRight="43dp"
+                android:layout_marginStart="31dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView29"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="72dp"
+                    android:text="Planes"
+                    android:textColor="@color/blue"
+                    android:textSize="53sp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/textView35"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:text="Controlado"
+                    android:textColor="@color/orange"
+                    android:textSize="53sp"
+                    fresco:layout_constraintLeft_toRightOf="@+id/textView29"
+                    fresco:layout_constraintTop_toTopOf="@+id/textView29"/>
+
+                <TextView
+                    android:id="@+id/textView38"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Si se consumen tus minutos, SMS y/o GB puedes recargar para seguir usándolos."
+                    android:textColor="@color/dimGray"
+                    android:textSize="27sp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView35"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_planes_cuenta_controlada"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView38"/>
+
+                <TextView
+                    android:id="@+id/textView44"
+                    fontPath="fonts/DINNextLTPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Planes"
+                    android:textColor="@color/blue"
+                    android:textSize="53sp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_cuenta_controlada"/>
+
+                <TextView
+                    android:id="@+id/textView45"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:text="Suscripción_"
+                    android:textColor="@color/orange"
+                    android:textSize="53sp"
+                    fresco:layout_constraintLeft_toRightOf="@+id/textView44"
+                    fresco:layout_constraintTop_toTopOf="@+id/textView44"/>
+
+                <TextView
+                    android:id="@+id/textView46"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Si se consumen tus minutos y/o SMS se te cobrará por el consumo adicional."
+                    android:textColor="@color/dimGray"
+                    android:textSize="27sp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView45"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_planes_voz_ilimitado"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="37dp"
+                    fresco:layout_constraintHorizontal_bias="0.0"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/textView46"/>
+
+                <LinearLayout
+                    android:id="@+id/linear_condiciones_comerciales_solo_voz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/bg_condiciones_comerciales"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_voz_ilimitado">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="2dp"
+                        android:text="Ver "
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Condiciones Comerciales_"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/planesVoz"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_banner_plan"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                fresco:actualImageScaleType="centerInside"/>
+
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_plan_smartfun"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_banner_plan"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_planes_smartfun"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="59dp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toTopOf="parent"/>
+
+                <LinearLayout
+                    android:id="@+id/linear_condiciones_comerciales_smart_fun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="160dp"
+                    android:layout_marginRight="160dp"
+                    android:background="@drawable/bg_condiciones_comerciales"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_smartfun">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="2dp"
+                        android:text="Ver "
+                        android:textColor="@color/white"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Condiciones Comerciales_"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_plan_controlfun"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_banner_plan"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_planes_controlfun"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="59dp"
+                    fresco:layout_constraintLeft_toLeftOf="parent"
+                    fresco:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toTopOf="parent"/>
+
+                <LinearLayout
+                    android:id="@+id/linear_condiciones_comerciales_control_fun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="160dp"
+                    android:layout_marginRight="160dp"
+                    android:background="@drawable/bg_condiciones_comerciales"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    fresco:layout_constraintTop_toBottomOf="@+id/rv_planes_controlfun">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="2dp"
+                        android:text="Ver "
+                        android:textColor="@color/white"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Condiciones Comerciales_"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_mi_primer_plan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_banner_plan"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp">
+
+                <ScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView299"
+                            fontPath="fonts/DINNextLTPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="160dp"
+                            android:layout_marginStart="160dp"
+                            android:layout_marginTop="24dp"
+                            android:text="Mi Primer"
+                            android:textColor="@color/blue"
+                            android:textSize="53sp"
+                            fresco:layout_constraintLeft_toLeftOf="parent"
+                            fresco:layout_constraintTop_toTopOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/textView355"
+                            fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            android:text="Plan Multimedia_"
+                            android:textColor="@color/orange"
+                            android:textSize="53sp"
+                            fresco:layout_constraintLeft_toRightOf="@+id/textView299"
+                            fresco:layout_constraintTop_toTopOf="@+id/textView299"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_mi_primer_plan_multimedia"
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            fresco:layout_constraintLeft_toLeftOf="parent"
+                            fresco:layout_constraintRight_toRightOf="parent"
+                            fresco:layout_constraintTop_toBottomOf="@+id/textView355"/>
+
+                        <TextView
+                            android:id="@+id/textView444"
+                            fontPath="fonts/DINNextLTPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="160dp"
+                            android:layout_marginStart="160dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Mi Primer"
+                            android:textColor="@color/blue"
+                            android:textSize="53sp"
+                            fresco:layout_constraintLeft_toLeftOf="parent"
+                            fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_multimedia"/>
+
+                        <TextView
+                            android:id="@+id/textView455"
+                            fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginStart="12dp"
+                            android:text="Plan Voz_"
+                            android:textColor="@color/orange"
+                            android:textSize="53sp"
+                            fresco:layout_constraintLeft_toRightOf="@+id/textView444"
+                            fresco:layout_constraintTop_toTopOf="@+id/textView444"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_mi_primer_plan_voz"
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            fresco:layout_constraintHorizontal_bias="0.5"
+                            fresco:layout_constraintLeft_toLeftOf="parent"
+                            fresco:layout_constraintRight_toRightOf="parent"
+                            fresco:layout_constraintTop_toBottomOf="@+id/textView455"/>
+
+                        <LinearLayout
+                            android:id="@+id/linear_condiciones_comerciales_primerplan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="160dp"
+                            android:layout_marginRight="160dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/bg_condiciones_comerciales"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            app:layout_constraintRight_toRightOf="parent"
+                            fresco:layout_constraintTop_toBottomOf="@+id/rv_mi_primer_plan_voz">
+
+                            <TextView
+                                fontPath="fonts/DINNextLTPro-Regular.otf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="2dp"
+                                android:text="Ver "
+                                android:textColor="@color/white"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Condiciones Comerciales_"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </ScrollView>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- Contenedor Error de Búsqueda -->
+    <LinearLayout
+        android:id="@+id/linear_search_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="604dp"
+        android:background="@color/backgroundGray"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="223.0dp"
+            android:layout_height="224.0dp"
+            android:layout_marginTop="231.0dp"
+            android:src="@drawable/no_search"/>
+
+        <TextView
+            fontPath="fonts/DINNextLTPro-Light.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="120dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="80dp"
+            android:text="@string/lo_sentimos"
+            android:textAlignment="center"
+            android:textColor="@color/dimGray"
+            android:textSize="45.0sp"/>
+
+        <TextView
+            fontPath="fonts/DINNextLTPro-Regular.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/deseas_intentarlo_de_nuevo"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="45.0sp"/>
+
+        <LinearLayout
+            android:id="@+id/linear_close_nosearch"
+            android:layout_width="291dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="74dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/bg_button_close_filter"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cerrar"
+                android:textColor="@color/white"
+                android:textSize="41sp"/>
+
+            <ImageView
+                android:layout_width="29.29dp"
+                android:layout_height="29.32dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/close_blur"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- Contenedor Popup (Condiciones Comerciales y Ofertas) -->
+    <RelativeLayout
+        android:id="@+id/rl_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+
+        <com.github.mmin18.widget.RealtimeBlurView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:realtimeBlurRadius="10dp"
+            app:realtimeOverlayColor="#c8000000"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/image_popup"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="100dp"
+            fresco:actualImageScaleType="fitCenter"/>
+
+        <RelativeLayout
+            android:layout_width="305dp"
+            android:layout_height="115dp"
+            android:layout_below="@id/image_popup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@android:drawable/dialog_holo_dark_frame">
+
+            <LinearLayout
+                android:id="@+id/linear_close_popup"
+                android:layout_width="291dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/bg_button_close_filter"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView30"
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cerrar"
+                    android:textColor="@color/white"
+                    android:textSize="41sp"/>
+
+                <ImageView
+                    android:layout_width="29.29dp"
+                    android:layout_height="29.32dp"
+                    android:layout_marginStart="30dp"
+                    android:src="@drawable/close_blur"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <!-- Contenedor Equipos Recomendados planes -->
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_equipo_destacado_smart_fun"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <com.github.mmin18.widget.RealtimeBlurView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:realtimeBlurRadius="10dp"
+            app:realtimeOverlayColor="#c8000000"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_parent_equipos_destacados"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_equipo_destacado_sf"
+                android:layout_width="970dp"
+                android:layout_height="790dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:background="@color/backgroundGray">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout11"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Bold.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="{ Pórtate y súmale un"
+                        android:textColor="@color/blue"
+                        android:textSize="27sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" _equipo"
+                        android:textColor="@color/orange"
+                        android:textSize="27sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Bold.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" a tu plan"
+                        android:textColor="@color/blue"
+                        android:textSize="27sp"/>
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraintLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/blue"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView56"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_precio_equipo_destacado_sf"
+                        app:layout_constraintRight_toLeftOf="@+id/tv_precio_equipo_destacado_sf"
+                        app:layout_constraintTop_toTopOf="@+id/tv_precio_equipo_destacado_sf"
+                        app:layout_constraintVertical_bias="0.733"/>
+
+                    <TextView
+                        android:id="@+id/tv_precio_equipo_destacado_sf"
+                        fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="95dp"
+                        android:text="24.990"
+                        android:textColor="@color/white"
+                        android:textSize="48sp"
+                        app:layout_constraintLeft_toLeftOf="@+id/textView54"
+                        app:layout_constraintRight_toRightOf="@+id/textView54"
+                        app:layout_constraintTop_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/textView54"
+                        fontPath="fonts/DINNextLTPro-Medium.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="10dp"
+                        android:text="CARGO FIJO MENSUAL"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="@+id/linear_text"
+                        app:layout_constraintRight_toRightOf="@+id/linear_text"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.59000003"/>
+
+                    <LinearLayout
+                        android:id="@+id/linear_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="61dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textView49"
+                            fontPath="fonts/DINNextLTPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Plan "
+                            android:textColor="@color/white"
+                            android:textSize="37sp"/>
+
+                        <TextView
+                            android:id="@+id/textView51"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Smart Fun SIMple "
+                            android:textColor="@color/white"
+                            android:textSize="37sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_gb_plan_sf"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4.5"
+                            android:textColor="@color/white"
+                            android:textSize="37sp"
+                            app:layout_constraintLeft_toRightOf="@+id/textView51"
+                            app:layout_constraintTop_toTopOf="@+id/textView51"/>
+
+                        <TextView
+                            android:id="@+id/textView53"
+                            fontPath="fonts/DINNextLTPro-Bold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" GB"
+                            android:textColor="@color/white"
+                            android:textSize="37sp"
+                            app:layout_constraintLeft_toRightOf="@+id/tv_gb_plan_sf"
+                            app:layout_constraintTop_toTopOf="@+id/tv_gb_plan_sf"/>
+
+                    </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout11">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_equipos_destacados_sf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        />
+                </LinearLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="305dp"
+            android:layout_height="115dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:background="@android:drawable/dialog_holo_dark_frame">
+
+            <LinearLayout
+                android:id="@+id/linear_close_equipo_destacado_sf"
+                android:layout_width="291dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/bg_button_close_filter"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cerrar"
+                    android:textColor="@color/white"
+                    android:textSize="41sp"/>
+
+                <ImageView
+                    android:layout_width="29.29dp"
+                    android:layout_height="29.32dp"
+                    android:layout_marginStart="30dp"
+                    android:src="@drawable/close_blur"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/image_destacado"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/listarPlanes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="604dp"
+        android:background="#dcdcdc"
+        android:elevation="100dp"
+        android:visibility="gone"
+        android:orientation="vertical"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="40dp"
+             android:layout_marginTop="40dp"
+            >
+
+            <ImageView
+                android:id="@+id/primerPlan"
+                android:layout_width="730dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/caluga_uno"
+                android:padding="20dp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="470dp"
+            android:layout_marginLeft="40dp">
+
+
+            <ImageView
+                android:id="@+id/tercerPlan"
+                android:layout_width="350dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/caluga_tres"
+                />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/segundoPlan"
+                android:layout_width="350dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/caluga_dos"
+                />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

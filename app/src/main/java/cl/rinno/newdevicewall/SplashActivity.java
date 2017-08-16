@@ -4,35 +4,29 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import butterknife.ButterKnife;
 import cl.rinno.newdevicewall.models.DWAMpi;
-import cl.rinno.newdevicewall.models.DWApi;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.OutData;
 import cl.rinno.newdevicewall.models.Producto;
@@ -44,6 +38,7 @@ public class SplashActivity extends AppCompatActivity
 {
 
     private static final String TAG = "SplashActivity";
+
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
@@ -100,28 +95,10 @@ public class SplashActivity extends AppCompatActivity
 
         File oldJson = new File( Global.dirJson );
 
-        //EXISTE EL ARCHIVO, SE BUSCARA UNA ACTUALIZACION
-        if ( oldJson.exists() && isOnlineNet() )
+        if ( oldJson.exists() )
         {
-            int length = (int) oldJson.length();
-            byte[] bytes = new byte[ length ];
-            try (FileInputStream in = new FileInputStream( oldJson ))
-            {
-                in.read( bytes );
-                Global.jsonData2 = new String( bytes );
-                JSONObject data = new JSONObject( Global.jsonData2 );
-                serialize( data, 2 );
-            } catch ( Exception e )
-            {
-                e.printStackTrace();
-            }
-
-
-
-        }
-        //SE ENCONTRO EL ARCHIVO - EJECUCION LOCAL
-        else if ( oldJson.exists() )
-        {
+            Log.i( TAG, "Archivos existe & serializando modo online " );
+            //<editor-fold desc="Archivo existe serializando">
             int length = (int) oldJson.length();
             byte[] bytes = new byte[ length ];
             try (FileInputStream in = new FileInputStream( oldJson ))
@@ -134,11 +111,13 @@ public class SplashActivity extends AppCompatActivity
             {
                 e.printStackTrace();
             }
-        }
-        //NO EXISTE EL ARCHIVO, SE DESCARGARA
-        else if ( (!oldJson.exists()) && isOnlineNet() )
+            //</editor-fold>
+
+        } else if ( (!oldJson.exists()) && isOnlineNet() )
         {
-            DWAMpi.get( "labheru/data.json", null, new JsonHttpResponseHandler()
+            Log.i( TAG, "Obteniendo contenido por primera vez" );
+            //<editor-fold desc="Ingreso por primera vez">
+            DWAMpi.get( "bodega/imagenes/document.json", null, new JsonHttpResponseHandler()
             {
                 @Override
                 public void onSuccess( int statusCode, Header[] headers, JSONObject response )
@@ -152,12 +131,15 @@ public class SplashActivity extends AppCompatActivity
                     super.onFailure( statusCode, headers, throwable, errorResponse );
                 }
             } );
+            //</editor-fold>
+
         } else
         {
-            Log.d( "TAG", "EXPLO" );
+            Toast.makeText( this, "Contactar desarrollador, Gracias", Toast.LENGTH_SHORT ).show();
         }
     }
 
+    ////////////////////////////
     private void serialize( final JSONObject data, final int status )
     {
 
@@ -166,6 +148,7 @@ public class SplashActivity extends AppCompatActivity
             @Override
             protected Void doInBackground( Void... params )
             {
+                //<editor-fold desc="Codigo serializacion">
                 GsonBuilder gsonb = new GsonBuilder();
                 Gson gson = gsonb.create();
                 JSONObject j;
@@ -182,10 +165,8 @@ public class SplashActivity extends AppCompatActivity
                 if ( gig2 != null )
                 {
                     Session.objData = gig2;
-                } else
-                {
-                    Log.d( "GIG", "null" );
                 }
+                //</editor-fold>
                 return null;
             }
 
@@ -196,7 +177,12 @@ public class SplashActivity extends AppCompatActivity
                 if ( status == 0 )
                 {
                     cargaLista();
+
+                    Log.i( TAG, "Cargando servicio" );
+                    startService( new Intent( SplashActivity.this, DownloadService.class ) );
+
                     startActivity( new Intent( getApplicationContext(), MainActivity.class ) );
+
                     finish();
                 } else if ( status == 1 )
                 {
@@ -205,291 +191,200 @@ public class SplashActivity extends AppCompatActivity
                         @Override
                         protected Void doInBackground( Void... params )
                         {
-                            cargaLista();
 
-                            for ( int i = 0; i < Session.objData.getDevices().size(); i++ )
-                            {
-                                for ( int j = 0; j < Session.objData.getDevices().get( i ).getDetalles().size(); j++ )
-                                {
-                                    if ( Session.objData.getDevices().get( i ).getDetalles().get( j ).getKey().equalsIgnoreCase( "ST" ) )
-                                    {
-                                        bajar( Session.objData.getDevices().get( i ).getDetalles().get( j ).getValue(), Global.dirImages, "http://entel.rinno.cl/images/devices/" );
-                                        bajar( Session.objData.getDevices().get( i ).getDetalles().get( 0 ).getValue(), Global.dirImages, "http://entel.rinno.cl/images/devices/" );
-                                        bajar( Session.objData.getDevices().get( i ).getImageHigh(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-
-                                    }
-                                }
-                                if ( Session.objData.getDevices().get( i ).getHijos() != null )
-                                {
-                                    for ( int k = 0; k < Session.objData.getDevices().get( i ).getHijos().size(); k++ )
-                                    {
-                                        for ( int m = 0; m < Session.objData.getDevices().get( i ).getHijos().get( k ).getDetalles().size(); m++ )
-                                        {
-                                            if ( Session.objData.getDevices().get( i ).getHijos().get( k ).getDetalles().get( m ).getKey().equalsIgnoreCase( "ST" ) )
-                                            {
-                                                bajar( Session.objData.getDevices().get( i ).getHijos().get( k ).getDetalles().get( 0 ).getValue(), Global.dirImages, "http://entel.rinno.cl/images/devices/" );
-                                                bajar( Session.objData.getDevices().get( i ).getHijos().get( k ).getDetalles().get( m ).getValue(), Global.dirImages, "http://entel.rinno.cl/images/devices/" );
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-
-                            bajar( Session.objData.getCatalog().getScreenTwoImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                            bajar( Session.objData.getCatalog().getScreenOneImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                            bajar( Session.objData.getCatalog().getScreenThreeImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                            bajar( Session.objData.getCatalog().getScreenFourImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                            bajar( Session.objData.getCatalog().getScreenTwoImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                            bajar( Session.objData.getCatalog().getScreenOneImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                            bajar( Session.objData.getCatalog().getScreenThreeImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                            bajar( Session.objData.getCatalog().getScreenFourImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-
-                            for ( int i = 0; i < Session.objData.getCatalog().getOfertas().size(); i++ )
-                            {
-                                bajar( Session.objData.getCatalog().getOfertas().get( i ).getBannerImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                                bajar( Session.objData.getCatalog().getOfertas().get( i ).getPrimaryImage(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                                bajar( Session.objData.getCatalog().getOfertas().get( i ).getPrimaryImage_h(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                            }
-
-
-                            for ( int i = 0; i < Session.objData.getAccessories().size(); i++ )
-                            {
-                                bajar( Session.objData.getAccessories().get( i ).getDetalles().get( 0 ).getValue(), Global.dirImages, "http://entel.rinno.cl/images/accessories/" );
-                                if ( !Session.objData.getAccessories().get( i ).getImageHigh().equalsIgnoreCase( "1" ) )
-                                {
-                                    bajar( Session.objData.getAccessories().get( i ).getImageHigh(), Global.dirImages, "http://entel.rinno.cl/images/details/high/" );
-                                }
-                            }
-
-                            for ( int i = 0; i < Session.objData.getPlanes().size(); i++ )
-                            {
-                                Log.i( TAG, "doInBackground: "+Session.objData.getPlanes().get( i ).getPlans().size() );
-                                for ( int j = 0; j < Session.objData.getPlanes().get( i ).getPlans().size(); j++ )
-                                {
-                                    if ( i < 2 )
-                                    {
-                                        bajar( Session.objData.getPlanes().get( i ).getPlans().get( j ).getDetalles().get( 0 ).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/" );
-//                                        bajar( Session.objData.getPlanes().get( i ).getPlans().get( j ).getDetalles().get( 1 ).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/" );
-                                    } else if ( i == 2 )
-                                    {
-                                        bajar( Session.objData.getPlanes().get( i ).getPlans().get( j ).getDetalles().get( 0 ).getValue(), Global.dirImages, "http://entel.rinno.cl/images/plans/" );
-                                    }
-                                    bajar( Session.objData.getPlanes().get( i ).getPlans().get( j ).getImagen_oferta(), Global.dirImages, "http://entel.rinno.cl/images/plans/" );
-
-                                }
-                                bajar( Session.objData.getPlanes().get( i ).getCondicionImage(), Global.dirImages, "http://entel.rinno.cl/images/groups/" );
-                                bajar( Session.objData.getPlanes().get( i ).getCondicionImageHorizontal(), Global.dirImages, "http://entel.rinno.cl/images/groups/" );
-                                bajar( Session.objData.getPlanes().get( i ).getPrimaryImage(), Global.dirImages, "http://entel.rinno.cl/images/groups/" );
-                                bajar( Session.objData.getPlanes().get( i ).getBannerImage(), Global.dirImages, "http://entel.rinno.cl/images/groups/" );
-                            }
-
-                            for ( int i = 0; i < Session.objData.getProviders().size(); i++ )
-                            {
-                                bajar( Session.objData.getProviders().get( i ).getProvider_image(), Global.dirImages, "http://entel.rinno.cl/images/details/providers/" );
-                            }
+                            // for ( String imagen : Session.objData.getImagenes() )
+                            // {
+                            //   Log.i( TAG, "doInBackground: " + imagen );
+                            // downloadFile( imagen );
+                            //}
                             return null;
                         }
-                    }.execute();
-                    crearJson( data );
-                } else if ( status == 2 )
-                {
-                    Handler mainHandler = new Handler( getApplicationContext().getMainLooper() );
-                    Runnable runnable = new Runnable()
-                    {
+
                         @Override
-                        public void run()
+                        protected void onPostExecute( Void aVoid )
                         {
-                            DWApi.get( "apii/status/1/edeviceswall", null, new AsyncHttpResponseHandler()
-                            {
-                                @Override
-                                public void onSuccess( int statusCode, Header[] headers, byte[] responseBody )
-                                {
-                                    String status = new String( responseBody );
-                                    Log.d( "STATUS CATALOG", status );
-                                    Log.d( "OWN STATUS", Session.objData.getCatalog().getStatus() );
-                                    if ( !Session.objData.getCatalog().getStatus().equalsIgnoreCase( status ) )
-                                    {
-                                        Log.d( "SERVICIO", "SE INICIO" );
-                                        startService( new Intent( SplashActivity.this, DownloadService.class ) );
-                                    } else
-                                    {
-                                        Log.d( "SERVICIO", "NO SE INICIO" );
-                                    }
-                                    cargaLista();
-                                    startActivity( new Intent( getApplicationContext(), MainActivity.class ) );
-                                    finish();
-                                }
+                            super.onPostExecute( aVoid );
+                            entregarDatos();
+                            crearJson( data );
 
-                                @Override
-                                public void onFailure( int statusCode, Header[] headers, byte[] responseBody, Throwable error )
-                                {
-
-                                }
-                            } );
                         }
-                    };
-                    mainHandler.post( runnable );
+                    }.execute();
                 }
             }
-
         }.execute();
     }
+
+    public void entregarDatos()
+    {
+        new AsyncTask<Void,Void,Void>()
+        {
+            @Override
+            protected Void doInBackground( Void... params )
+            {
+                cargaLista();
+                return null;
+            }
+        }.execute();
+    }
+
 
     private void cargaLista()
     {
         Global.allProducts.clear();
         Global.allAccessories.clear();
         Global.allDevices.clear();
+
+
         Global.planesControlFunSimple.clear();
+
         Global.planesSmartFunSimple.clear();
+
         Global.planesDeVozCCList.clear();
         Global.planesDeVozIlimitado.clear();
         Global.providersDevices.clear();
+
         Global.allPlans.clear();
         Global.miPrimerPlanVoz.clear();
         Global.miPrimerPlanMultimedia.clear();
 
-        for ( int i = 0; i < Session.objData.getDevices().size(); i++ )
-        {
-            Global.allProducts.add( Session.objData.getDevices().get( i ) );
-            Global.allDevices.add( Session.objData.getDevices().get( i ) );
-        }
-        for ( int i = 0; i < Session.objData.getAccessories().size(); i++ )
-        {
-            Global.allProducts.add( Session.objData.getAccessories().get( i ) );
-            Global.allAccessories.add( Session.objData.getAccessories().get( i ) );
-        }
-        for ( int i = 0; i < Session.objData.getCatalog().getOfertas().size(); i++ )
-        {
-            Global.allProducts.add( Session.objData.getCatalog().getOfertas().get( i ) );
-        }
 
-        for ( int i = 0; i < Session.objData.getPlanes().size(); i++ )
-        {
-            Global.allPlans.add( i, Session.objData.getPlanes().get( i ) );
-        }
+        Global.allDevices = (ArrayList<Producto>) Session.objData.getProductos();
+        Global.allAccessories = (ArrayList<Producto>) Session.objData.getAccesorios();
 
-        Collections.shuffle( Global.allProducts );
-        Collections.shuffle( Global.allAccessories );
-        Collections.swap( Global.allPlans, 1, 2 );
 
-        int j = 1;
-        while ( j < 11 )
+        ArrayList<String> proveedores = new ArrayList<>();
+        ArrayList<Provider> listaProvedores = new ArrayList<>();
+
+        ArrayList<String> idHijos = new ArrayList<>();
+
+
+        for ( Producto producto : Session.objData.getAccesorios() )
         {
-            for ( int i = 0; i < Session.objData.getPlanes().size(); i++ )
+
+            for ( Provider proveedor : Session.objData.getProveedores() )
             {
-                switch ( j )
+                if ( proveedor.getId().equals( producto.getProvider_id() ) )
                 {
-                    case 1:
-                        Global.allProducts.add( 1, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 2:
-                        Global.allProducts.add( 11, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 3:
-                        Global.allProducts.add( 21, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 4:
-                        Global.allProducts.add( 28, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 5:
-                        Global.allProducts.add( 35, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 6:
-                        Global.allProducts.add( 42, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 7:
-                        Global.allProducts.add( 50, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 8:
-                        Global.allProducts.add( 56, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 9:
-                        Global.allProducts.add( 64, Session.objData.getPlanes().get( i ) );
-                        break;
-                    case 10:
-                        Global.allProducts.add( 71, Session.objData.getPlanes().get( i ) );
-                        break;
+                    Log.i( TAG, proveedor.getName() );
+                    producto.setProvider_name( proveedor.getName() );
+                    break;
                 }
-                j++;
             }
-        }
-        for ( int i = 0; i < Session.objData.getPlanes().get( 2 ).getPlans().size(); i++ )
-        {
-            Log.d( "VOZ", Session.objData.getPlanes().get( 2 ).getPlans().get( i ).getName() );
 
-            if ( i < 2 )
-            {
-                Global.planesDeVozCCList.add( Session.objData.getPlanes().get( 2 ).getPlans().get( i ) );
-            } else
-            {
-                Global.planesDeVozIlimitado.add( Session.objData.getPlanes().get( 2 ).getPlans().get( i ) );
-            }
-        }
-        for ( int i = 0; i < Session.objData.getPlanes().get( 0 ).getPlans().size(); i++ )
-        {
-            Log.i( "TAG", Session.objData.getPlanes().get( 0 ).getPlans().get( i ).getName() );
-            if ( (Session.objData.getPlanes().get( 0 ).getPlans().get( i ).getName().toLowerCase().contains( "libre" )) )
-            {
-                Global.planesSmartFunSimple.add( Session.objData.getPlanes().get( 0 ).getPlans().get( i ) );
-
-            }
+            Log.i( TAG, producto.getImagenPrimaria() );
+            Global.allProducts.add( producto );
         }
 
-        for ( int i = 0; i < Session.objData.getPlanes().get( 1 ).getPlans().size(); i++ )
+        for ( Producto producto : Session.objData.getProductos() )
         {
-            if ( (Session.objData.getPlanes().get( 1 ).getPlans().get( i ).getName().toLowerCase().contains( "control" )) )
+            for ( Provider proveedor : Session.objData.getProveedores() )
             {
-                Global.planesControlFunSimple.add( Session.objData.getPlanes().get( 1 ).getPlans().get( i ) );
+                if ( proveedor.getId().equals( producto.getProvider_id() ) )
+                {
+                    Log.i( TAG, proveedor.getName() );
+                    producto.setProvider_name( proveedor.getName() );
+                    break;
+                }
             }
-        }
-        for ( int i = 0; i < Session.objData.getProviders().size(); i++ )
-        {
-            if ( (Session.objData.getProviders().get( i ).getProduct_type().equalsIgnoreCase( "2" ) || Session.objData.getProviders().get( i ).getProduct_type().equalsIgnoreCase( "3" )) && (Session.objData.getProviders().get( i ).getStatus().equalsIgnoreCase( "1" )) )
+
+
+            for ( Producto hijos : producto.getHijos() )
             {
-                Global.providersDevices.add( Session.objData.getProviders().get( i ) );
+                if ( !hijos.getId().equals( producto.getId() ) )
+                {
+                    idHijos.add( hijos.getId() );
+                }
+            }
+
+            proveedores.add( producto.getProvider_id() );
+            Global.allProducts.add( producto );
+        }
+
+        for ( Producto producto : Global.allProducts )
+        {
+            for ( String id : idHijos )
+            {
+                if ( id.equals( producto.getId() ) )
+                {
+                    producto.setEstado( 0 );
+                }
             }
         }
 
-        Collections.sort( Global.providersDevices, new Comparator<Provider>()
+        HashSet<String> hs = new HashSet<>();
+        hs.addAll( proveedores );
+        proveedores.clear();
+        proveedores.addAll( hs );
+
+        for ( String id : proveedores )
         {
-            @Override
-            public int compare( Provider o1, Provider o2 )
+            for ( Provider proveedor : Session.objData.getProveedores() )
             {
-                return o1.getName().compareTo( o2.getName() );
+                if ( proveedor.getId().equals( id ) )
+                {
+                    listaProvedores.add( proveedor );
+                    break;
+                }
             }
-        } );
-        Collections.sort( Global.allDevices, new Comparator<Producto>()
+        }
+
+
+        Global.providersDevices = listaProvedores;
+
+
+        for ( int i = 0; i < Session.objData.getGrupos().size(); i++ )
         {
-            @Override
-            public int compare( Producto o1, Producto o2 )
+            switch ( i )
             {
-                return o1.getProvider_name().compareTo( o2.getProvider_name() );
+                case 0:
+                    for ( Producto producto : Session.objData.getGrupos().get( i ).getPlanes() )
+                    {
+
+                        Global.planesSmartFunSimple.add( producto );
+                    }
+
+                    break;
+
+                case 1:
+                    for ( Producto producto : Session.objData.getGrupos().get( i ).getPlanes() )
+                    {
+                        Global.planesControlFunSimple.add( producto );
+
+                    }
+
+                    break;
             }
-        } );
+
+            Session.objData.getGrupos().get( i ).setProduct_type_id( "3" );
+            Global.allProducts.add( Session.objData.getGrupos().get( i ) );
+            Global.allProducts.add( Session.objData.getGrupos().get( i ) );
+            Global.allProducts.add( Session.objData.getGrupos().get( i ) );
+
+        }
+
+
     }
 
     private void crearJson( final JSONObject jsonObject )
     {
-        Log.d( "JSON", "EMPEZANDO A CREAR" );
+        Log.i( TAG, "Creando Json" );
         new AsyncTask<Void,Void,Void>()
         {
 
             @Override
             protected Void doInBackground( Void... params )
             {
-                Log.d( "JSON", "EMPEZANDO A CREAR" );
+                Log.i( TAG, "Iniciando proceso" );
                 File f = new File( Global.dirJson );
                 if ( f.exists() )
                 {
-                    Log.d( "JSON", "SI EXISTE" );
+                    Log.i( TAG, "Archivo existe" );
                     if ( f.delete() )
                     {
-                        Log.d( "JSON", "BORRADO" );
+                        Log.i( TAG, "Archivo borrado" );
                     } else
                     {
-                        Log.d( "JSON", "NO BORRADO" );
+                        Log.i( TAG, "El Archivo no fue borrado" );
                     }
 
                 }
@@ -500,7 +395,7 @@ public class SplashActivity extends AppCompatActivity
                     file.write( jsonObject.toString() );
                     file.flush();
                     file.close();
-                    Log.d( "JSON", "CREADO" );
+                    Log.i( TAG, "El Archivo creado" );
                 } catch ( IOException e )
                 {
                     e.printStackTrace();
@@ -516,121 +411,10 @@ public class SplashActivity extends AppCompatActivity
                 finish();
             }
         }.execute();
-
-    }
-
-    private int bajar( final String salida, final String folder, String urlCo )
-    {
-
-        /*Handler handler = new Handler(getApplicationContext().getMainLooper());
-            Runnable mRun = new Runnable() {
-                @Override
-                public void run() {
-                    tvDetalle.setText(salida);
-                }
-            };
-        handler.post(mRun);*/
-        File file = null;
-        try
-        {
-            double downloadedSize = 0;
-            double totalSize;
-            URL url = new URL( urlCo + salida );
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod( "GET" );
-            urlConnection.connect();
-            totalSize = urlConnection.getContentLength();
-            file = new File( folder, salida );
-            if ( !file.exists() )
-            {
-
-                FileOutputStream fileOutput = new FileOutputStream( file );
-
-                InputStream inputStream = urlConnection.getInputStream();
-
-                byte[] buffer = new byte[ 1024 ];
-                int bufferLength;
-
-                Log.d( "INFOCODE-SERVICIO", "INICIANDO PROCESO DE DESCARGAR DE IMAGEN: " + salida );
-                try
-                {
-                    while ( (bufferLength = inputStream.read( buffer )) > 0 )
-                    {
-                        fileOutput.write( buffer, 0, bufferLength );
-                        downloadedSize += bufferLength;
-                        int i = (int) ((downloadedSize / totalSize) * 100);
-                        if ( i <= 100 )
-                        {
-                            switch ( i )
-                            {
-                                case 25:
-                                    Log.d( "INFOCODE-SERVICIO", "IMAGEN DESCARGADO AL 25%" );
-                                    break;
-                                case 50:
-                                    Log.d( "INFOCODE-SERVICIO", "IMAGEN DESCARGADO AL 50%" );
-
-                                    break;
-                                case 75:
-                                    Log.d( "INFOCODE-SERVICIO", "IMAGEN DESCARGADO AL 75%" );
-
-                                    break;
-                                case 100:
-                                    Log.d( "INFOCODE-SERVICIO", "IMAGEN DESCARGADO AL 100%" );
-                                    break;
-                            }
-
-                        }
-                    }
-                    fileOutput.close();
-                } catch ( Exception e )
-                {
-                    Log.d( "INFOCODE-SERVICIO", "INTENTANDO DESCARGAR DE NUEVO" );
-                    bajar( salida, folder, urlCo );
-                }
-                if ( downloadedSize != urlConnection.getContentLength() )
-                {
-                    Log.d( "DOWNLOAD SIZE", downloadedSize + "" );
-                    File videoShow = new File( folder, salida );
-                    boolean d = videoShow.delete();
-                    if ( d )
-                    {
-                        Log.d( "INFOCODE-SERVICIO", "ARCHIVO DAÑADO - ELIMINANDO EL VIDEO" );
-                    }
-                } else
-                {
-                    Log.d( "INFOCODE-SERVICIO", "VIDEO DESCARGADO EXITOSAMENTE" );
-
-                }
-                return 1;
-
-            } else
-            {
-                return 1;
-            }
-
-
-        } catch ( IOException e )
-        {
-            e.printStackTrace();
-            assert file != null;
-            try
-            {
-                file.delete();
-
-            } catch ( Exception es )
-            {
-                return 0;
-
-            }
-        }
-        return 1;
-
-
     }
 
     public Boolean isOnlineNet()
     {
-
         try
         {
             Process p = Runtime.getRuntime().exec( "ping -c 1 www.google.cl" );
@@ -640,7 +424,6 @@ public class SplashActivity extends AppCompatActivity
 
         } catch ( Exception e )
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return false;

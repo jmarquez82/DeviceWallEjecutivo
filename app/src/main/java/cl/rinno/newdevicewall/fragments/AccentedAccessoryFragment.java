@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,6 +113,7 @@ public class AccentedAccessoryFragment extends Fragment {
     ViewPagerCarruselAdapter viewPagerCarruselAdapter;
     ArrayList<Producto> equiposCompatibles;
 
+    private static final String TAG = "AccentedAccessoryFragme";
     public AccentedAccessoryFragment() {
         // Required empty public constructor
     }
@@ -139,28 +141,22 @@ public class AccentedAccessoryFragment extends Fragment {
         linearLayoutManagerCaract.setOrientation(LinearLayoutManager.VERTICAL);
         tvNameAccessory.setText(producto.getName());
         tvProviderName.setText(producto.getProvider_name());
-        imageAccentedAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + producto.getDetalles().get(0).getValue())));
-        tvPrecioVenta.setText(getString(R.string.precio_venta, producto.getPrecios().get(0).getValue()));
+        Log.i( TAG, "AQUIIIIIIIIIIIIIIIII" );
+        imageAccentedAccessory.setImageURI(  Uri.fromFile( new File( Global.dirImages + producto.getImagenPrimaria() )) );
+
+        tvPrecioVenta.setText(getString(R.string.precio_venta, producto.getPrecioVenta()));
         rvCaracteristicas.setHasFixedSize(true);
         rvCaracteristicas.setLayoutManager(linearLayoutManagerCaract);
-        tvCuotaMensual.setText(getString(R.string.precio_venta, producto.getCae().get(1).getValue()));
-        tvCae.setText(getString(R.string.precio_cae, producto.getCae().get(0).getValue()));
-        tvTotalAPagar.setText(getString(R.string.precio_venta, producto.getCae().get(2).getValue()));
+
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                for (int i = 0; i < producto.getDetalles().size(); i++) {
-                    switch (producto.getDetalles().get(i).getKey()) {
-                        case "ATONE":
-                        case "ATTWO":
-                        case "ATTHREE":
-                        case "ATFOUR":
-                        case "ATFIVE":
-                            caracteristicasList.add(producto.getDetalles().get(i).getValue());
-                            break;
-                    }
-                }
-                if(mainActivity != null){
+
+                caracteristicasList.add( producto.getAtributoUno() );
+                caracteristicasList.add( producto.getAtributoDos() );
+                caracteristicasList.add( producto.getAtributoTres() );
+
+              /*  if(mainActivity != null){
                     for (int r = 0; r < producto.getDevices().size(); r++) {
                         for (int i = 0; i < Session.objData.getDevices().size(); i++) {
                             if (producto.getDevices().get(r).getId().equals(Session.objData.getDevices().get(i).getId())) {
@@ -171,7 +167,7 @@ public class AccentedAccessoryFragment extends Fragment {
 
                         }
                     }
-                }
+                }*/
                 return null;
             }
 

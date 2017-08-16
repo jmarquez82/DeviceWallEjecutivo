@@ -1,87 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="740dp"
-    android:orientation="vertical"
-    android:layout_marginStart="25dp"
-    android:layout_marginEnd="25dp"
-    android:background="@drawable/bg_equipo_destacado">
-    
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="300dp"
+              android:layout_height="810dp"
+              android:layout_marginEnd="12.5dp"
+              android:layout_marginStart="12.5dp"
+              android:background="@drawable/bg_equipo_destacado"
+              android:orientation="vertical">
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image_equipo_destacado"
-        android:layout_width="128dp"
-        android:layout_height="255dp"
+        android:layout_width="238dp"
+        android:layout_height="355dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="32dp"
+        fresco:actualImageScaleType="centerInside"/>
 
 
     <TextView
-        android:layout_marginTop="35dp"
-        fontPath="fonts/DINNextLTPro-Regular.otf"
         android:id="@+id/tv_provider_equipo_destacado"
+        fontPath="fonts/DINNextLTPro-Regular.otf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         android:text="Sony"
-        android:textAllCaps="true"
         android:textAlignment="center"
+        android:textAllCaps="true"
         android:textColor="@color/dimGray"
         android:textSize="21sp"
         />
 
     <TextView
         android:id="@+id/tv_nombre_equipo_destacado"
+        fontPath="fonts/DINNextLTPro-Regular.otf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Xperia XA Ultra"
-        android:textColor="@color/orange"
-        fontPath="fonts/DINNextLTPro-Regular.otf"
         android:textAlignment="center"
+        android:textColor="@color/orange"
         android:textSize="29sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/backgroundGray"
-        android:layout_marginTop="13dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"/>
+        android:layout_marginTop="13dp"
+        android:background="@color/backgroundGray"/>
+
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Pago mínimo inicial desde"
+            android:textSize="18dp"
+            />
+
+        <TextView
+            android:id="@+id/pagoMinimoDestacado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="#19.990"
+            android:textColor="#0154a0"
+            android:textSize="32sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="+18 cuotas de"
+            android:textColor="@color/orange"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/pagoCuotaDestacado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="#19.990"
+            android:textColor="#0154a0"
+            android:textSize="32sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="con cargo a la\nboleta mensual"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/back_destacado_plan"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Plan + Equipo mensual"
+                android:textColor="#FFF"/>
+            <TextView
+                android:id="@+id/valorTotal"
+                android:textColor="#FFF"
+                android:textStyle="bold"
+                android:layout_marginTop="6dp"
+                android:textSize="25sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$valorFinal"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
         android:gravity="center"
-        android:layout_marginTop="22dp">
+        android:orientation="horizontal"
+        android:visibility="gone">
+
         <TextView
+            fontPath="fonts/DINNextLTPro-Regular.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/precio_venta_tv"
             android:textColor="@color/dimGray"
             android:textSize="18sp"
-            fontPath="fonts/DINNextLTPro-Regular.otf"
             />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_precio_venta"
+
+        fontPath="fonts/DINNextLTPro-Bold.otf"
         android:layout_width="match_parent"
-        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="$489.990"
         android:textColor="@color/blue"
         android:textSize="32sp"
-        fontPath="fonts/DINNextLTPro-Bold.otf"/>
+        android:visibility="gone"/>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
-        android:src="@drawable/doce_cuotas"/>
+        android:layout_marginStart="35dp"
+        android:src="@drawable/doce_cuotas"
+        android:visibility="gone"/>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/linearLayout9"
@@ -98,21 +186,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:gravity="center"
+            android:id="@+id/linearLayout8"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="0dp"
-            app:layout_constraintRight_toLeftOf="@+id/linearLayout9"
             android:layout_marginLeft="0dp"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="0dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.5"
-            android:id="@+id/linearLayout8">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/linearLayout9"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -120,7 +210,8 @@
                 android:layout_height="wrap_content"
                 android:text="Cuota "
                 android:textColor="@color/blue"
-                android:textSize="17sp" />
+                android:textSize="17sp"/>
+
             <TextView
                 android:id="@+id/textView47"
                 fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -130,51 +221,57 @@
                 android:textColor="@color/blue"
                 android:textSize="20sp"
                 tools:layout_editor_absoluteX="46dp"
-                tools:layout_editor_absoluteY="0dp" />
+                tools:layout_editor_absoluteY="0dp"/>
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_cuota_mensual"
+
+            fontPath="fonts/DINNextLTPro-BoldItalic.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
             android:text="$-"
             android:textColor="@color/orange"
             android:textSize="30sp"
-            fontPath="fonts/DINNextLTPro-BoldItalic.otf"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="@+id/linearLayout8"
-            android:layout_marginLeft="8dp"
+            app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintLeft_toLeftOf="@+id/linearLayout8"
+            app:layout_constraintRight_toRightOf="@+id/linearLayout8"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="0dp"
-            app:layout_constraintVertical_bias="0.55"
-            app:layout_constraintHorizontal_bias="0.488" />
+            app:layout_constraintVertical_bias="0.55"/>
 
         <LinearLayout
+            android:id="@+id/linearLayout10"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/linearLayout9"
             android:layout_marginLeft="8dp"
-            android:id="@+id/linearLayout10">
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toRightOf="@+id/linearLayout9"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <TextView
+                fontPath="fonts/DINNextLTPro-Bold.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CAE"
                 android:textColor="@color/blue"
-                android:textSize="20sp"
-                fontPath="fonts/DINNextLTPro-Bold.otf"/>
+                android:textSize="20sp"/>
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_cae_equipo_destacado"
+
             fontPath="fonts/DINNextLTPro-BoldItalic.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -185,24 +282,25 @@
             android:text="-%"
             android:textColor="@color/orange"
             android:textSize="30sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintLeft_toLeftOf="@+id/linearLayout10"
             app:layout_constraintRight_toRightOf="@+id/linearLayout10"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintVertical_bias="0.3"/>
 
 
         <LinearLayout
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cae_equipo_destacado"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/linearLayout9"
-            android:layout_marginLeft="0dp">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cae_equipo_destacado">
 
             <TextView
                 fontPath="fonts/DINNextLTPro-Regular.otf"
@@ -210,7 +308,7 @@
                 android:layout_height="wrap_content"
                 android:text="Total a "
                 android:textColor="@color/blue"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 fontPath="fonts/DINNextLTPro-BoldItalic.otf"
@@ -218,7 +316,7 @@
                 android:layout_height="wrap_content"
                 android:text="pagar_"
                 android:textColor="@color/blue"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
         </LinearLayout>
 
         <TextView
@@ -238,7 +336,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/textView17"
             app:layout_constraintRight_toRightOf="@+id/textView17"
             app:layout_constraintTop_toBottomOf="@+id/tv_cae_equipo_destacado"
-            app:layout_constraintVertical_bias="0.57" />
+            app:layout_constraintVertical_bias="0.57"/>
 
     </android.support.constraint.ConstraintLayout>
 

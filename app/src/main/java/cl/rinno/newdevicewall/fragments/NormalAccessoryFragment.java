@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.mmin18.widget.RealtimeBlurView;
@@ -93,25 +94,20 @@ public class NormalAccessoryFragment extends Fragment {
         linearLayoutManagerCaract.setOrientation(LinearLayoutManager.VERTICAL);
         tvNameNormalAccessory.setText(Global.producto.getName());
         tvProviderNormalAccessory.setText(Global.producto.getProvider_name());
-        imageNormalAccessory.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.producto.getDetalles().get(0).getValue())));
-        tvPrecioVentaAccessory.setText(getString(R.string.precio_venta, producto.getPrecios().get(0).getValue()));
+
+
+        imageNormalAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + producto.getImagenPrimaria() )));
+        tvPrecioVentaAccessory.setText(getString(R.string.precio_venta, producto.getPrecioVenta()));
         rvCaracteristicas.setHasFixedSize(true);
         rvCaracteristicas.setLayoutManager(linearLayoutManagerCaract);
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                for (int i = 0; i < producto.getDetalles().size(); i++) {
-                    switch (producto.getDetalles().get(i).getKey()) {
-                        case "ATONE":
-                        case "ATTWO":
-                        case "ATTHREE":
-                        case "ATFOUR":
-                        case "ATFIVE":
-                            caracteristicasList.add(producto.getDetalles().get(i).getValue());
-                            break;
-                    }
-                }
+                caracteristicasList.add( producto.getAtributoUno() );
+                caracteristicasList.add( producto.getAtributoDos() );
+                caracteristicasList.add( producto.getAtributoTres() );
+
 
                 return null;
             }
@@ -124,16 +120,6 @@ public class NormalAccessoryFragment extends Fragment {
             }
         }.execute();
 
-        for (int r = 0; r < producto.getDevices().size(); r++) {
-            for (int i = 0; i < Session.objData.getDevices().size(); i++) {
-                if (producto.getDevices().get(r).getId().equals(Session.objData.getDevices().get(i).getId())) {
-                    producto.getDevices().get(r).setDetalles(Session.objData.getDevices().get(i).getDetalles());
-                    equiposCompatibles.add(producto.getDevices().get(r));
-                    break;
-                }
-
-            }
-        }
 
         if(equiposCompatibles.size() > 2){
             btnBackAccesory.setVisibility(View.VISIBLE);

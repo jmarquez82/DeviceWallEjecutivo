@@ -32,10 +32,10 @@ public class MiPrimerPlanVozAdapter extends RecyclerView.Adapter<MiPrimerPlanVoz
 
     @Override
     public void onBindViewHolder(MiPrimerPlanVozViewHolder holder, int position) {
-        holder.txtPrecioNombre.setText(plansList.get(position).getDetalles().get(9).getValue());
-        holder.txtValorPlan.setText(plansList.get(position).getDetalles().get(9).getValue());
-        holder.txtSMS.setText(plansList.get(position).getDetalles().get(5).getValue());
-        holder.txtMin.setText(plansList.get(position).getDetalles().get(1).getValue()+" Min.");
+      //  holder.txtPrecioNombre.setText(plansList.get(position).getDetalles().get(9).getValue());
+    //    holder.txtValorPlan.setText(plansList.get(position).getDetalles().get(9).getValue());
+     //   holder.txtSMS.setText(plansList.get(position).getDetalles().get(5).getValue());
+     //   holder.txtMin.setText(plansList.get(position).getDetalles().get(1).getValue()+" Min.");
     }
 
     @Override

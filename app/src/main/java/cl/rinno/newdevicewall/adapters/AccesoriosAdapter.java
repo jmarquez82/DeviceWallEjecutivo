@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,13 @@ import java.util.Random;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
-
-/**
- * Created by chinodoge on 27-03-2017.
- */
+ 
 
 public class AccesoriosAdapter extends RecyclerView.Adapter<AccesoriosAdapter.AccesoriosViewHolder>{
     ArrayList<Producto> accesoriosList;
     Context context;
+
+    private static final String TAG = "AccesoriosAdapter";
 
     public AccesoriosAdapter(ArrayList<Producto> accesoriosList, Context context) {
         this.accesoriosList = accesoriosList;
@@ -41,16 +41,19 @@ public class AccesoriosAdapter extends RecyclerView.Adapter<AccesoriosAdapter.Ac
 
     @Override
     public void onBindViewHolder(AccesoriosViewHolder holder, int position) {
+        //TODO CAMBIAR PROVEEDOR ID
         holder.txtProviderName.setText(accesoriosList.get(position).getProvider_name());
         holder.txtName.setText(accesoriosList.get(position).getName());
-        holder.imgAccesorio.setImageURI(Uri.fromFile(new File(Global.dirImages+accesoriosList.get(position).getDetalles().get(0).getValue())));
+        holder.imgAccesorio.setImageURI(         Uri.fromFile( new File( Global.dirImages +accesoriosList.get(position).getImagenPrimaria() ) )
+        );
+
 
         Random rand = new Random();
         int numberColorRandom = rand.nextInt(6);
         String Colors[][] = Global.getBackgroundColorsCard();
 
-
-        if(accesoriosList.get(position).getSizes().equalsIgnoreCase("1")){
+        Log.i( TAG, accesoriosList.get(position).getTam() );
+        if(accesoriosList.get(position).getTam().equalsIgnoreCase("1")){
             holder.txtProviderName.setTextColor(context.getResources().getColor(R.color.dimGray));
             holder.txtName.setTextColor(context.getResources().getColor(R.color.orange));
             holder.itemContainer.setBackgroundColor(context.getResources().getColor(R.color.white));

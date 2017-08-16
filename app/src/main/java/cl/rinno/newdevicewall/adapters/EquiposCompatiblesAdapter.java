@@ -17,9 +17,6 @@ import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
 
-/**
- * Created by chinodoge on 27-03-2017.
- */
 
 public class EquiposCompatiblesAdapter extends RecyclerView.Adapter<EquiposCompatiblesAdapter.EquiposCompatiblesViewHolder>{
 
@@ -39,7 +36,9 @@ public class EquiposCompatiblesAdapter extends RecyclerView.Adapter<EquiposCompa
 
     @Override
     public void onBindViewHolder(EquiposCompatiblesViewHolder holder, final int position) {
-        holder.imgEquipoCompatible.setImageURI(Uri.fromFile(new File(Global.dirImages+equiposList.get(position).getDetalles().get(0).getValue())));
+        holder.imgEquipoCompatible.setImageURI( Uri.fromFile( new File( Global.dirImages +equiposList.get( position ).getImagenPrimaria() )) );
+
+
         holder.txtNombreEquipoCompatible.setText(equiposList.get(position).getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +53,7 @@ public class EquiposCompatiblesAdapter extends RecyclerView.Adapter<EquiposCompa
         return equiposList.size();
     }
 
-    class EquiposCompatiblesViewHolder extends RecyclerView.ViewHolder {
+    public class EquiposCompatiblesViewHolder extends RecyclerView.ViewHolder {
 
         SimpleDraweeView imgEquipoCompatible;
         TextView txtNombreEquipoCompatible;

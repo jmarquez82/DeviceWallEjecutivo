@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/item_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+
+            android:id="@+id/item_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            >
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/image_product"
+                android:layout_width="206dp"
+                android:layout_height="206dp"
+                android:layout_marginBottom="15dp"
+                fresco:actualImageScaleType="fitCenter"/>
+
+            <TextView
+                android:id="@+id/provider_name"
+                fontPath="fonts/DINNextLTPro-Bold.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="provider"
+                android:textAllCaps="true"
+                android:textColor="#4a4a4a"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/product_name"
+                fontPath="fonts/DINNextLTPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:text="name"
+                android:textAlignment="center"
+                android:textColor="@color/orange"
+                android:textSize="21sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/image_complete_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            fresco:actualImageScaleType="centerInside"/>
+
+
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

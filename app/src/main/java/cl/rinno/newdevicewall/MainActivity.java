@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -16,11 +16,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -31,8 +35,6 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity
 
     ArrayList<String> caracteristicasList;
 
+
     ArrayList<Producto> equiposCompatiblesList;
     @BindView(R.id.horizontal_scroll_grid)
     HorizontalScrollView horizontalScrollGrid;
@@ -117,8 +120,16 @@ public class MainActivity extends AppCompatActivity
     RecyclerView rvPlanesVozIlimitado;
     @BindView(R.id.constraint_plan_voz)
     ConstraintLayout constraintPlanVoz;
+
+    @BindView(R.id.planesVoz)
+    SimpleDraweeView planesVoz;
+
     @BindView(R.id.constraint_plans)
     LinearLayout constraintPlans;
+
+    @BindView(R.id.listarPlanes)
+    LinearLayout listarPlanes;
+
     @BindView(R.id.icn_plan_smartfun)
     ImageView icnPlanSmartfun;
     @BindView(R.id.text_plan_smartfun)
@@ -149,6 +160,7 @@ public class MainActivity extends AppCompatActivity
     LinearLayout btnCondicionesComercialesSmartFun;
     @BindView(R.id.constraint_plan_smartfun)
     ConstraintLayout constraintPlanSmartfun;
+
     @BindView(R.id.rv_planes_controlfun)
     RecyclerView rvPlanesControlfun;
     @BindView(R.id.linear_condiciones_comerciales_control_fun)
@@ -342,6 +354,18 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.text_filter_name)
     TextView textFilterName;
 
+    @BindView(R.id.primerPlan)
+    ImageView primerPlan;
+
+    @BindView(R.id.segundoPlan)
+    ImageView segundoPlan;
+
+    @BindView(R.id.tercerPlan)
+    ImageView tercerPlan;
+
+
+    private static final String TAG = "f";
+
     private SharedPreferences configuracionFile;
 
     LinearLayoutManager linearLayoutManagerVCC, linearLayoutManagerVI, linearLayoutManagerSF, linearLayoutManagerCF, llmEquiposDestacados, linearLayoutManagerMPM, linearLayoutManagerMPV;
@@ -362,7 +386,6 @@ public class MainActivity extends AppCompatActivity
 
     TimerDestacado timerDestacado;
 
-    Tracker mTracker;
 
     @Override
     protected void onPause()
@@ -392,8 +415,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature( Window.FEATURE_NO_TITLE );
+        this.getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN );
 
         int currentApiVersion = Build.VERSION.SDK_INT;
         final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -421,8 +444,21 @@ public class MainActivity extends AppCompatActivity
             } );
         }
 
+        Point size = new Point();
+        Display display = ((WindowManager) getSystemService( Context.WINDOW_SERVICE )).getDefaultDisplay();
+        display.getSize( size );
+        int width = size.x;
 
-        setContentView( R.layout.activity_main );
+        Log.i( TAG, "onCreate: " + width );
+        if ( width > 1300 )
+        {
+
+            setContentView( R.layout.activity_main_mx );
+        } else
+        {
+            setContentView( R.layout.activity_main );
+        }
+
         ButterKnife.bind( this );
         mGridLayout = (GridLayout) findViewById( R.id.grid_container );
 
@@ -465,7 +501,7 @@ public class MainActivity extends AppCompatActivity
         linearLayoutManagerMPV = new LinearLayoutManager( this );
         linearLayoutManagerMPV.setOrientation( LinearLayoutManager.VERTICAL );
 
-        llmEquiposDestacados = new GridLayoutManager( this, 2, LinearLayoutManager.VERTICAL, false );
+        llmEquiposDestacados = new GridLayoutManager( this, 3, LinearLayoutManager.VERTICAL, false );
 
         rvPlanesVozIlimitado.setLayoutManager( linearLayoutManagerVI );
         rvPlanesCuentaControlada.setLayoutManager( linearLayoutManagerVCC );
@@ -483,8 +519,6 @@ public class MainActivity extends AppCompatActivity
         rvMiPrimerPlanMultimedia.setHasFixedSize( true );
         rvMiPrimerPlanVoz.setHasFixedSize( true );
 
-        AnalyticsApplication application = (AnalyticsApplication) getApplication();
-        mTracker = application.getDefaultTracker();
 
         /*
         type = 0: sin filtros.
@@ -561,8 +595,11 @@ public class MainActivity extends AppCompatActivity
                         } else if ( planState )
                         {
                             closePlans();
-                            filterDevices( Global.allPlans, 3 );
-                            linearSeleccionaPlan.setVisibility( View.VISIBLE );
+                            //  filterDevices( Global.allPlans, 3 );
+                            listarPlanes.setVisibility( View.VISIBLE );
+                            horizontalScrollGrid.setVisibility( View.GONE );
+
+                            linearSeleccionaPlan.setVisibility( View.GONE );
                         }
                     }
 
@@ -576,6 +613,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         } );
+
 
         horizontalScrollGrid.getViewTreeObserver().addOnScrollChangedListener( new ViewTreeObserver.OnScrollChangedListener()
         {
@@ -712,6 +750,7 @@ public class MainActivity extends AppCompatActivity
 
         timerDestacado.start();
 
+        Collections.shuffle( Global.allProducts );
         filterDevices( Global.allProducts, 0 );
     }
 
@@ -778,6 +817,9 @@ public class MainActivity extends AppCompatActivity
         }
         linearSeleccionaFiltro.setVisibility( View.GONE );
         linearSeleccionaPlan.setVisibility( View.GONE );
+        listarPlanes.setVisibility( View.GONE );
+        horizontalScrollGrid.setVisibility( View.VISIBLE );
+
         linearNombreFiltro.setVisibility( View.GONE );
         linearFilterResultsDevices.setVisibility( View.GONE );
         linearPlanElegido.setVisibility( View.GONE );
@@ -833,15 +875,45 @@ public class MainActivity extends AppCompatActivity
         btnPlanvoz.setAlpha( 0.0f );
         btnPlanvoz.setScaleX( 0.0f );
         btnPlanvoz.setScaleY( 0.0f );
-        //btnMiprimerplan.setAlpha(0.0f);
-        //btnMiprimerplan.setScaleX(0.0f);
-        //  btnMiprimerplan.setScaleY(0.0f);
+
+
+        primerPlan.setOnClickListener( new View.OnClickListener()
+        {
+            @Override
+            public void onClick( View v )
+            {
+                btnSmartfun.performClick();
+
+            }
+        } );
+
+        segundoPlan.setOnClickListener( new View.OnClickListener()
+        {
+            @Override
+            public void onClick( View v )
+            {
+                btnControlfun.performClick();
+
+            }
+        } );
+
+        tercerPlan.setOnClickListener( new View.OnClickListener()
+        {
+            @Override
+            public void onClick( View v )
+            {
+                btnPlanvoz.performClick();
+
+            }
+        } );
+
     }
 
     private void closePlans()
     {
         constraintPlans.setVisibility( View.GONE );
         constraintPlanVoz.setVisibility( View.GONE );
+        planesVoz.setVisibility( View.GONE );
         constraintPlanControlfun.setVisibility( View.GONE );
         constraintPlanSmartfun.setVisibility( View.GONE );
         constraintMiPrimerPlan.setVisibility( View.GONE );
@@ -858,7 +930,6 @@ public class MainActivity extends AppCompatActivity
 
     private void setDefuaultColors()
     {
-        //   btnMiprimerplan.setBackground(getResources().getDrawable(R.drawable.bg_filter_plans));
         btnSmartfun.setBackground( getResources().getDrawable( R.drawable.bg_filter_plans ) );
         btnPlanvoz.setBackground( getResources().getDrawable( R.drawable.bg_filter_plans ) );
         btnControlfun.setBackground( getResources().getDrawable( R.drawable.bg_filter_plans ) );
@@ -972,34 +1043,7 @@ public class MainActivity extends AppCompatActivity
                 horizontalScrollGrid.smoothScrollBy( horizontalScrollGrid.getLeft() + move, horizontalScrollGrid.getTop() );
             }
         }
-        switch ( configuracionFile.getString( "pantalla_id_index", "5" ) )
-        {
-            case "1":
-                if ( contMoveGrid == 1 )
-                {
-                    openImageHigh( configuracionFile.getString( "pantalla_id_index", "1" ) );
-                }
-                break;
-            case "2":
-                if ( contMoveGrid == 2 )
-                {
-                    openImageHigh( configuracionFile.getString( "pantalla_id_index", "2" ) );
-                }
-                break;
-            case "3":
-                if ( contMoveGrid == 3 )
-                {
-                    openImageHigh( configuracionFile.getString( "pantalla_id_index", "3" ) );
-                }
-                break;
-            case "4":
-                if ( contMoveGrid == 4 )
-                {
-                    openImageHigh( configuracionFile.getString( "pantalla_id_index", "4" ) );
-                    contMoveGrid = 0;
-                }
-                break;
-        }
+
     }
 
 
@@ -1111,11 +1155,7 @@ public class MainActivity extends AppCompatActivity
                     linearSeleccionaFiltro.setVisibility( View.VISIBLE );
                     tvFilterProductType.setText( "equipos_" );
                     filterDevices( Global.allDevices, 1 );
-                    mTracker.send( new HitBuilders.EventBuilder()
-                            .setCategory( "Catálogo" )
-                            .setAction( "Filtros" )
-                            .setLabel( "Equipos" )
-                            .build() );
+
                     deviceState = true;
                 } else
                 {
@@ -1230,11 +1270,7 @@ public class MainActivity extends AppCompatActivity
                     tvFilterProductType.setText( "accesorios_" );
                     accessoryState = true;
                     filterDevices( Global.allAccessories, 2 );
-                    mTracker.send( new HitBuilders.EventBuilder()
-                            .setCategory( "Catálogo" )
-                            .setAction( "Filtros" )
-                            .setLabel( "Accesorios" )
-                            .build() );
+
                 } else
                 {
                     linearQueBuscas.setVisibility( View.VISIBLE );
@@ -1322,14 +1358,13 @@ public class MainActivity extends AppCompatActivity
                             } );
                         }
                     } );
-                    linearSeleccionaPlan.setVisibility( View.VISIBLE );
-                    filterDevices( Global.allPlans, 3 );
+                    linearSeleccionaPlan.setVisibility( View.GONE );
+                    listarPlanes.setVisibility( View.VISIBLE );
+                    horizontalScrollGrid.setVisibility( View.GONE );
+
+                    //filterDevices( Global.allPlans, 3 );
                     planState = true;
-                    mTracker.send( new HitBuilders.EventBuilder()
-                            .setCategory( "Catálogo" )
-                            .setAction( "Filtros" )
-                            .setLabel( "Planes" )
-                            .build() );
+
                 } else
                 {
                     linearQueBuscas.setVisibility( View.VISIBLE );
@@ -1365,11 +1400,7 @@ public class MainActivity extends AppCompatActivity
                 filtro = "Marca";
                 tvFilterName.setText( filtro );
                 linearNombreFiltro.setVisibility( View.VISIBLE );
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Equipo" )
-                        .setAction( "Filtros" )
-                        .setLabel( filtro )
-                        .build() );
+
                 openBlur( filtro );
                 break;
             case R.id.button_pantalla_filter:
@@ -1383,11 +1414,7 @@ public class MainActivity extends AppCompatActivity
                 filtro = "Pantalla";
                 tvFilterName.setText( filtro );
                 linearNombreFiltro.setVisibility( View.VISIBLE );
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Equipo" )
-                        .setAction( "Filtros" )
-                        .setLabel( filtro )
-                        .build() );
+
                 openBlur( filtro );
                 break;
             case R.id.button_camara_trasera_filter:
@@ -1401,11 +1428,7 @@ public class MainActivity extends AppCompatActivity
                 filtro = "Cámara Trasera";
                 tvFilterName.setText( filtro );
                 linearNombreFiltro.setVisibility( View.VISIBLE );
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Equipo" )
-                        .setAction( "Filtros" )
-                        .setLabel( filtro )
-                        .build() );
+
                 openBlur( filtro );
                 break;
             case R.id.button_camara_frontal_filter:
@@ -1419,11 +1442,7 @@ public class MainActivity extends AppCompatActivity
                 filtro = "Cámara Frontal";
                 tvFilterName.setText( filtro );
                 linearNombreFiltro.setVisibility( View.VISIBLE );
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Equipo" )
-                        .setAction( "Filtros" )
-                        .setLabel( filtro )
-                        .build() );
+
                 openBlur( filtro );
                 break;
             case R.id.button_multimedia_filter:
@@ -1440,29 +1459,19 @@ public class MainActivity extends AppCompatActivity
                 filtro = "Multimedia";
                 tvFilterName.setText( filtro );
                 linearNombreFiltro.setVisibility( View.VISIBLE );
-                for ( int i = 0; i < Session.objData.getAccessories().size(); i++ )
+                for ( int i = 0; i < Session.objData.getAccesorios().size(); i++ )
                 {
-                    for ( int j = 0; j < Session.objData.getAccessories().get( i ).getDetalles().size(); j++ )
+                    Log.i( TAG, Session.objData.getAccesorios().get( i ).getCaid() );
+
+
+                    if ( Session.objData.getAccesorios().get( i ).getCaid().equalsIgnoreCase( "1" ) )
                     {
-                        if ( Session.objData.getAccessories().get( i ).getDetalles().get( j ).getValue().equalsIgnoreCase( "1" ) )
-                        {
-                            filterProductList.add( Session.objData.getAccessories().get( i ) );
-                        }
+                        filterProductList.add( Session.objData.getAccesorios().get( i ) );
                     }
+
                 }
-                Collections.sort( filterProductList, new Comparator<Producto>()
-                {
-                    @Override
-                    public int compare( Producto o1, Producto o2 )
-                    {
-                        return o1.getProvider_name().compareTo( o2.getProvider_name() );
-                    }
-                } );
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Accesorio" )
-                        .setAction( "Filtros" )
-                        .setLabel( filtro )
-                        .build() );
+
+
                 filterDevices( filterProductList, 5 );
                 break;
             case R.id.button_proteccion_filter:
@@ -1479,29 +1488,18 @@ public class MainActivity extends AppCompatActivity
                 filtro = "Protección";
                 tvFilterName.setText( filtro );
                 linearNombreFiltro.setVisibility( View.VISIBLE );
-                for ( int i = 0; i < Session.objData.getAccessories().size(); i++ )
+                for ( int i = 0; i < Session.objData.getAccesorios().size(); i++ )
                 {
-                    for ( int j = 0; j < Session.objData.getAccessories().get( i ).getDetalles().size(); j++ )
+
+                    Log.i( TAG, Session.objData.getAccesorios().get( i ).getCaid() );
+
+                    if ( Session.objData.getAccesorios().get( i ).getCaid().equalsIgnoreCase( "2" ) )
                     {
-                        if ( Session.objData.getAccessories().get( i ).getDetalles().get( j ).getValue().equalsIgnoreCase( "3" ) )
-                        {
-                            filterProductList.add( Session.objData.getAccessories().get( i ) );
-                        }
+                        filterProductList.add( Session.objData.getAccesorios().get( i ) );
                     }
                 }
-                Collections.sort( filterProductList, new Comparator<Producto>()
-                {
-                    @Override
-                    public int compare( Producto o1, Producto o2 )
-                    {
-                        return o1.getProvider_name().compareTo( o2.getProvider_name() );
-                    }
-                } );
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Accesorio" )
-                        .setAction( "Filtros" )
-                        .setLabel( filtro )
-                        .build() );
+
+
                 filterDevices( filterProductList, 5 );
                 break;
             case R.id.button_energia_filter:
@@ -1518,29 +1516,19 @@ public class MainActivity extends AppCompatActivity
                 filtro = "Energía";
                 tvFilterName.setText( filtro );
                 linearNombreFiltro.setVisibility( View.VISIBLE );
-                for ( int i = 0; i < Session.objData.getAccessories().size(); i++ )
+                for ( int i = 0; i < Session.objData.getAccesorios().size(); i++ )
                 {
-                    for ( int j = 0; j < Session.objData.getAccessories().get( i ).getDetalles().size(); j++ )
+
+                    Log.i( TAG, Session.objData.getAccesorios().get( i ).getCaid() );
+
+                    if ( Session.objData.getAccesorios().get( i ).getCaid().equalsIgnoreCase( "3" ) )
                     {
-                        if ( Session.objData.getAccessories().get( i ).getDetalles().get( j ).getValue().equalsIgnoreCase( "2" ) )
-                        {
-                            filterProductList.add( Session.objData.getAccessories().get( i ) );
-                        }
+                        filterProductList.add( Session.objData.getAccesorios().get( i ) );
                     }
+
                 }
-                Collections.sort( filterProductList, new Comparator<Producto>()
-                {
-                    @Override
-                    public int compare( Producto o1, Producto o2 )
-                    {
-                        return o1.getProvider_name().compareTo( o2.getProvider_name() );
-                    }
-                } );
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Accesorio" )
-                        .setAction( "Filtros" )
-                        .setLabel( filtro )
-                        .build() );
+
+
                 filterDevices( filterProductList, 5 );
                 break;
             case R.id.button_por_equipo_filter:
@@ -1554,81 +1542,58 @@ public class MainActivity extends AppCompatActivity
                 textFiltroPorEquipo.setTextColor( getResources().getColor( R.color.greenMint ) );
                 icnFiltroPorEquipo.setImageResource( R.drawable.icn_por_equipo_selected );
                 filtro = "EquiposCompatibles";
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Accesorio" )
-                        .setAction( "Filtros" )
-                        .setLabel( filtro )
-                        .build() );
+
                 openBlur( filtro );
                 break;
             case R.id.button_smartfun:
                 selectPlanSmartFun();
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Planes" )
-                        .setAction( "Filtros" )
-                        .setLabel( "Smart Fun" )
-                        .build() );
+
                 break;
             case R.id.button_controlfun:
                 selectPlanControlFun();
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Planes" )
-                        .setAction( "Filtros" )
-                        .setLabel( "Control Fun" )
-                        .build() );
+
                 break;
             case R.id.button_planvoz:
                 selectPlanVoz();
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Planes" )
-                        .setAction( "Filtros" )
-                        .setLabel( "Plan de Voz" )
-                        .build() );
+
                 break;
-            case R.id.button_miprimerplan:
-                //selectMiPrimerPlan();
-                mTracker.send( new HitBuilders.EventBuilder()
-                        .setCategory( "Planes" )
-                        .setAction( "Filtros" )
-                        .setLabel( "Mi Primer Plan" )
-                        .build() );
-                break;
+
             case R.id.linear_condiciones_comerciales_solo_voz:
                 rlPopup.setVisibility( View.VISIBLE );
                 if ( getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE )
                 {
-                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 2 ).getCondicionImage() ) ) );
+                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 0 ).getCcv() ) ) );
                 } else
                 {
-                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 2 ).getCondicionImageHorizontal() ) ) );
+                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 0 ).getCch() ) ) );
                 }
                 break;
             case R.id.linear_condiciones_comerciales_smart_fun:
                 rlPopup.setVisibility( View.VISIBLE );
-                imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getCondicionImage() ) ) );
+                //   imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getCondicionImage() ) ) );
                 if ( getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE )
                 {
-                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getCondicionImage() ) ) );
+                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 0 ).getCcv() ) ) );
                 } else
                 {
-                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getCondicionImageHorizontal() ) ) );
+                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 0 ).getCch() ) ) );
                 }
-                Log.d( "IMG SF", Session.objData.getPlanes().get( 0 ).getCondicionImageHorizontal() );
-                File f = new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getCondicionImageHorizontal() );
-                if ( f.exists() ) Log.d( "IMF SF", "Si Existe" );
+                //  Log.d( "IMG SF", Session.objData.getPlanes().get( 0 ).getCondicionImageHorizontal() );
+                //   File f = new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getCondicionImageHorizontal() );
+                // if ( f.exists() ) Log.d( "IMF SF", "Si Existe" );
                 break;
             case R.id.linear_condiciones_comerciales_control_fun:
                 rlPopup.setVisibility( View.VISIBLE );
                 if ( getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE )
                 {
-                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 1 ).getCondicionImage() ) ) );
+                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 1 ).getCcv() ) ) );
                 } else
                 {
-                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 1 ).getCondicionImageHorizontal() ) ) );
+                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 1 ).getCch() ) ) );
                 }
-                Log.d( "IMG CF", Session.objData.getPlanes().get( 1 ).getCondicionImageHorizontal() );
-                File fs = new File( Global.dirImages + Session.objData.getPlanes().get( 1 ).getCondicionImageHorizontal() );
-                if ( fs.exists() ) Log.d( "IMF CF", "Si Existe" );
+                //  Log.d( "IMG CF", Session.objData.getPlanes().get( 1 ).getCondicionImageHorizontal() );
+                //  File fs = new File( Global.dirImages + Session.objData.getPlanes().get( 1 ).getCondicionImageHorizontal() );
+                //  if ( fs.exists() ) Log.d( "IMF CF", "Si Existe" );
                 break;
             case R.id.linear_close_nosearch:
                 linearSearchError.setVisibility( View.GONE );
@@ -1734,8 +1699,12 @@ public class MainActivity extends AppCompatActivity
         constraintPlanControlfun.setVisibility( View.VISIBLE );
         planesControlFunSimpleAdapter = new PlanesControlFunSimpleAdapter( Global.planesControlFunSimple, MainActivity.this );
         rvPlanesControlfun.setAdapter( planesControlFunSimpleAdapter );
+
+        Log.i( TAG, planesControlFunSimpleAdapter.getItemCount() + "" );
         setAnimationRecycler( rvPlanesControlfun );
-        imgBannerPlan.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 1 ).getBannerImage() ) ) );
+        imgBannerPlan.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 1 ).getBdg() ) ) );
+
+
     }
 
     private void selectPlanVoz()
@@ -1813,7 +1782,8 @@ public class MainActivity extends AppCompatActivity
         icnPlanVoz.setImageResource( R.drawable.icn_planvoz_selected );
         textPlanVoz.setTextColor( getResources().getColor( R.color.yellow ) );
         constraintPlans.setVisibility( View.VISIBLE );
-        constraintPlanVoz.setVisibility( View.VISIBLE );
+        constraintPlanVoz.setVisibility( View.GONE );
+        planesVoz.setVisibility( View.VISIBLE );
         planVozIlimitadoAdapter = new PlanDeVozAdapter( Global.planesDeVozIlimitado, 2 );
         planCuentraControladaAdapter = new PlanDeVozAdapter( Global.planesDeVozCCList, 1 );
         rvPlanesCuentaControlada.setAdapter( planCuentraControladaAdapter );
@@ -1822,7 +1792,8 @@ public class MainActivity extends AppCompatActivity
         setAnimationRecycler( rvPlanesCuentaControlada );
         linearPlanElegido.setVisibility( View.VISIBLE );
         tvPlanType.setText( "Sólo Voz_ " );
-        imgBannerPlan.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 2 ).getBannerImage() ) ) );
+        planesVoz.setImageURI( Uri.parse( "res:///" + R.drawable.grupo_voice ) );
+        imgBannerPlan.setImageURI( Uri.parse( "res:///" + R.drawable.banner_planvoz ) );
     }
 
     private void selectPlanSmartFun()
@@ -1905,7 +1876,8 @@ public class MainActivity extends AppCompatActivity
         planesSmartFunSimpleAdapter = new PlanesSmartFunSimpleAdapter( Global.planesSmartFunSimple, MainActivity.this );
         rvPlanesSmartfun.setAdapter( planesSmartFunSimpleAdapter );
         setAnimationRecycler( rvPlanesSmartfun );
-        imgBannerPlan.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 0 ).getBannerImage() ) ) );
+        //TODO AQUI VA EL BANNER
+        imgBannerPlan.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 0 ).getBdg() ) ) );
     }
 
 
@@ -2020,6 +1992,7 @@ public class MainActivity extends AppCompatActivity
         switch ( filtro )
         {
             case "Marca":
+
                 filterProductList.clear();
                 closeTextFilters();
                 linearFilterResultsDevices.setVisibility( View.VISIBLE );
@@ -2031,11 +2004,11 @@ public class MainActivity extends AppCompatActivity
                 btnFiltroMarca.setBackground( getResources().getDrawable( R.drawable.bg_filter_selected ) );
                 icnFiltroMarca.setImageResource( R.drawable.icn_marca_selected );
                 textFiltroMarca.setTextColor( getResources().getColor( R.color.blue ) );
-                for ( int i = 0; i < Session.objData.getDevices().size(); i++ )
+                for ( int i = 0; i < Session.objData.getProductos().size(); i++ )
                 {
-                    if ( Session.objData.getDevices().get( i ).getProvider_id().equalsIgnoreCase( valueTwo ) )
+                    if ( Session.objData.getProductos().get( i ).getProvider_id().equalsIgnoreCase( valueTwo ) )
                     {
-                        filterProductList.add( Session.objData.getDevices().get( i ) );
+                        filterProductList.add( Session.objData.getProductos().get( i ) );
                     }
                 }
                 Collections.sort( filterProductList, new Comparator<Producto>()
@@ -2048,6 +2021,7 @@ public class MainActivity extends AppCompatActivity
                 } );
                 filterDevices( filterProductList, 4 );
                 break;
+
             case "Pantalla":
                 filterProductList.clear();
                 closeTextFilters();
@@ -2062,12 +2036,12 @@ public class MainActivity extends AppCompatActivity
                 icnFiltroPantalla.setImageResource( R.drawable.icn_pantalla_selected );
                 valor1 = Double.parseDouble( value.split( "\"" )[ 0 ] );
                 valor2 = Double.parseDouble( valueTwo.split( "\"" )[ 0 ] );
-                for ( int i = 0; i < Session.objData.getDevices().size(); i++ )
+                for ( int i = 0; i < Session.objData.getProductos().size(); i++ )
                 {
-                    va = Double.parseDouble( Session.objData.getDevices().get( i ).getDetalles().get( 1 ).getValue().split( "\"" )[ 0 ] );
+                    va = Double.parseDouble( Session.objData.getProductos().get( i ).getPantalla().split( "\"" )[ 0 ] );
                     if ( va <= valor1 && va > valor2 )
                     {
-                        filterProductList.add( Session.objData.getDevices().get( i ) );
+                        filterProductList.add( Session.objData.getProductos().get( i ) );
                     }
                 }
                 Collections.sort( filterProductList, new Comparator<Producto>()
@@ -2095,32 +2069,32 @@ public class MainActivity extends AppCompatActivity
                 filterProductList.clear();
                 valor1 = Double.parseDouble( value.split( "M" )[ 0 ] );
                 valor2 = Double.parseDouble( valueTwo.split( "M" )[ 0 ] );
-                for ( int i = 0; i < Session.objData.getDevices().size(); i++ )
+                for ( int i = 0; i < Session.objData.getProductos().size(); i++ )
                 {
                     try
                     {
-                        String valor = Session.objData.getDevices().get( i ).getDetalles().get( 3 ).getValue().split( " " )[ 0 ];
+                        String valor = Session.objData.getProductos().get( i ).getCamaraTrasera().split( " " )[ 0 ];
                         Log.d( "VALOR " + i, valor );
                         if ( valor.equals( "Dual" ) )
                         {
-                            va = Double.parseDouble( Session.objData.getDevices().get( i ).getDetalles().get( 3 ).getValue().split( " " )[ 1 ] );
+                            va = Double.parseDouble( Session.objData.getProductos().get( i ).getCamaraTrasera().split( " " )[ 1 ] );
                             Log.d( "VALOR " + i, "si " + va );
                         } else
                         {
-                            va = Double.parseDouble( Session.objData.getDevices().get( i ).getDetalles().get( 3 ).getValue().split( " " )[ 0 ] );
+                            va = Double.parseDouble( Session.objData.getProductos().get( i ).getCamaraTrasera().split( " " )[ 0 ] );
                             Log.d( "VALOR " + i, "no" );
                         }
                         if ( va <= valor1 && va > valor2 )
                         {
-                            filterProductList.add( Session.objData.getDevices().get( i ) );
+                            filterProductList.add( Session.objData.getProductos().get( i ) );
                         }
                         if ( value.equals( "20 MP+" ) && va >= valor1 )
                         {
-                            filterProductList.add( Session.objData.getDevices().get( i ) );
+                            filterProductList.add( Session.objData.getProductos().get( i ) );
                         }
                     } catch ( NumberFormatException ex )
                     {
-                        Log.d( "NUMBER (ERROR)" + i, Session.objData.getDevices().get( i ).getDetalles().get( 3 ).getValue().split( " " )[ 0 ] );
+                        Log.d( "NUMBER (ERROR)" + i, Session.objData.getProductos().get( i ).getCamaraTrasera().split( " " )[ 0 ] );
                     }
                 }
                 Collections.sort( filterProductList, new Comparator<Producto>()
@@ -2147,13 +2121,29 @@ public class MainActivity extends AppCompatActivity
                 icnFiltroCamaraFrontal.setImageResource( R.drawable.icn_camara_frontal_selected );
                 valor1 = Double.parseDouble( value.split( "M" )[ 0 ] );
                 valor2 = Double.parseDouble( valueTwo.split( "M" )[ 0 ] );
-                for ( int i = 0; i < Session.objData.getDevices().size(); i++ )
+                for ( int i = 0; i < Session.objData.getProductos().size(); i++ )
                 {
-                    va = Double.parseDouble( Session.objData.getDevices().get( i ).getDetalles().get( 4 ).getValue().split( " " )[ 0 ] );
+                    String valor = Session.objData.getProductos().get( i ).getCamaraFrontal().split( " " )[ 0 ];
+                    Log.i( TAG, Session.objData.getProductos().get( i ).getCamaraFrontal().split( " " )[ 0 ] );
+                    Log.i( TAG, Session.objData.getProductos().get( i ).getCamaraFrontal().split( " " )[ 1 ] );
+                    Log.i( TAG, Session.objData.getProductos().get( i ).getCamaraFrontal() );
+
+                    if ( valor.equals( "Dual" ) )
+                    {
+                        va = Double.parseDouble( Session.objData.getProductos().get( i ).getCamaraFrontal().split( " " )[ 1 ] );
+                        Log.d( "VALOR " + i, "si " + va );
+                    } else
+                    {
+                        va = Double.parseDouble( Session.objData.getProductos().get( i ).getCamaraFrontal().split( " " )[ 0 ] );
+
+
+                    }
+
                     if ( va <= valor1 && va > valor2 )
                     {
-                        filterProductList.add( Session.objData.getDevices().get( i ) );
+                        filterProductList.add( Session.objData.getProductos().get( i ) );
                     }
+
                 }
 
                 Collections.sort( filterProductList, new Comparator<Producto>()
@@ -2198,10 +2188,11 @@ public class MainActivity extends AppCompatActivity
                 }
                 for ( int i = 0; i < Global.allDevices.size(); i++ )
                 {
-                    if ( Global.allDevices.get( i ).getProvider_id().equalsIgnoreCase( valueTwo ) )
+                    if ( Global.allDevices.get( i ).getProvider_id().equalsIgnoreCase( valueTwo ) && (Global.allDevices.get( i ).getEstado() == 1) )
                     {
                         equiposCompatiblesList.add( Global.allDevices.get( i ) );
                     }
+
                 }
                 linearElegirEquipoCompatible.setVisibility( View.VISIBLE );
                 linearSeleccionaFiltroBlur.setVisibility( View.GONE );
@@ -2210,21 +2201,43 @@ public class MainActivity extends AppCompatActivity
 
                 EquiposCompatiblesAdapter equiposCompatiblesAdapter = new EquiposCompatiblesAdapter( equiposCompatiblesList, MainActivity.this );
                 rvEquiposCompatibles.setHasFixedSize( true );
-                if ( equiposCompatiblesList.size() > 10 )
+
+                if ( getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE )
                 {
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager( this, 2 );
-                    gridLayoutManager.setOrientation( LinearLayoutManager.HORIZONTAL );
-                    rvEquiposCompatibles.setLayoutManager( gridLayoutManager );
+                    if ( equiposCompatiblesList.size() > 10 )
+                    {
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager( this, 2 );
+                        gridLayoutManager.setOrientation( LinearLayoutManager.HORIZONTAL );
+                        rvEquiposCompatibles.setLayoutManager( gridLayoutManager );
+                    } else
+                    {
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager( this, 1 );
+                        gridLayoutManager.setOrientation( LinearLayoutManager.HORIZONTAL );
+                        rvEquiposCompatibles.setLayoutManager( gridLayoutManager );
+                    }
+                    tvFilterResultDevice.setText( equiposCompatiblesList.size() + " equipos_" );
+                    rvEquiposCompatibles.setAdapter( equiposCompatiblesAdapter );
+                    setAnimationRecycler( rvEquiposCompatibles );
+                    break;
                 } else
                 {
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager( this, 5 );
-                    gridLayoutManager.setOrientation( LinearLayoutManager.VERTICAL );
-                    rvEquiposCompatibles.setLayoutManager( gridLayoutManager );
+                    if ( equiposCompatiblesList.size() > 10 )
+                    {
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager( this, 2 );
+                        gridLayoutManager.setOrientation( LinearLayoutManager.HORIZONTAL );
+                        rvEquiposCompatibles.setLayoutManager( gridLayoutManager );
+                    } else
+                    {
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager( this, 5 );
+                        gridLayoutManager.setOrientation( LinearLayoutManager.VERTICAL );
+                        rvEquiposCompatibles.setLayoutManager( gridLayoutManager );
+                    }
+                    tvFilterResultDevice.setText( equiposCompatiblesList.size() + " equipos_" );
+                    rvEquiposCompatibles.setAdapter( equiposCompatiblesAdapter );
+                    setAnimationRecycler( rvEquiposCompatibles );
+                    break;
                 }
-                tvFilterResultDevice.setText( equiposCompatiblesList.size() + " equipos_" );
-                rvEquiposCompatibles.setAdapter( equiposCompatiblesAdapter );
-                setAnimationRecycler( rvEquiposCompatibles );
-                break;
+
         }
     }
 
@@ -2233,14 +2246,12 @@ public class MainActivity extends AppCompatActivity
         linearResultadoEquipoCompatible.setVisibility( View.VISIBLE );
         linearElegirEquipoCompatible.setVisibility( View.GONE );
         accesoriosList = new ArrayList<>();
-        mTracker.send( new HitBuilders.EventBuilder()
-                .setCategory( "Accesorio" )
-                .setAction( "Filtro Equipo Compatible - Marca: " + device.getProvider_name() )
-                .setLabel( device.getName() )
-                .build() );
+
         tvNombreEquipoCompatibleSeleccionado.setText( device.getName() );
         tvProveedorEquipoCompatibleSeleccionado.setText( device.getProvider_name() );
-        imgDeviceSelected.setImageURI( Uri.fromFile( new File( Global.dirImages + device.getDetalles().get( 0 ).getValue() ) ) );
+        imgDeviceSelected.setImageURI( Uri.fromFile( new File( Global.dirImages + device.getImagenPrimaria() ) ) );
+
+
         linearLayoutManagerACC = new LinearLayoutManager( this );
         linearLayoutManagerACC.setOrientation( LinearLayoutManager.HORIZONTAL );
 
@@ -2249,17 +2260,18 @@ public class MainActivity extends AppCompatActivity
 
         for ( int i = 0; i < device.getAccesorios().size(); i++ )
         {
-            for ( int k = 0; k < Session.objData.getAccessories().size(); k++ )
+            for ( int k = 0; k < Session.objData.getAccesorios().size(); k++ )
             {
-                if ( Session.objData.getAccessories().get( k ).getId().equals( device.getAccesorios().get( i ).getId() ) )
+                if ( Session.objData.getAccesorios().get( k ).getId().equals( device.getAccesorios().get( i ).getId() ) )
                 {
-                    device.getAccesorios().get( i ).setDetalles( Session.objData.getAccessories().get( k ).getDetalles() );
-                    device.getAccesorios().get( i ).setProvider_name( Session.objData.getAccessories().get( k ).getProvider_name() );
-                    device.getAccesorios().get( i ).setSizes( Session.objData.getAccessories().get( k ).getSizes() );
+                    // device = Session.objData.getAccesorios().get( k );
+                    accesoriosList.add( Session.objData.getAccesorios().get( k ) );
+
+                    Log.i( TAG, device.getTam() );
                     break;
                 }
             }
-            accesoriosList.add( device.getAccesorios().get( i ) );
+
         }
         Collections.shuffle( accesoriosList );
         AccesoriosAdapter accesoriosAdapter = new AccesoriosAdapter( accesoriosList, this );
@@ -2306,24 +2318,68 @@ public class MainActivity extends AppCompatActivity
 
             final List<GridItem> gridItemList = new ArrayList<>();
 
+            Collections.shuffle( filterProductList );
+
             for ( int i = 0; i < filterProductList.size(); i++ )
             {
-                GridItem gridItem = new GridItem()
-                {
-                };
 
-                switch ( filterProductList.get( i ).getProduct_type_id() )
+                if ( filterProductList.get( i ).getEstado() == 1 )
                 {
-                    case "1":
-                        if ( sizeState )
-                        {
-                            gridItem.setRowSpec( 1 );
-                            gridItem.setColumnSpec( 1 );
-                            gridItem.setProducto( filterProductList.get( i ) );
-                            gridItemList.add( gridItem );
-                        } else
-                        {
-                            switch ( filterProductList.get( i ).getSizes() )
+
+
+                    GridItem gridItem = new GridItem()
+                    {
+                    };
+                    Log.i( TAG, filterProductList.get( i ).getName() );
+                    switch ( filterProductList.get( i ).getProduct_type_id() )
+                    {
+
+                        case "1":
+                            if ( sizeState )
+                            {
+                                Log.i( TAG, "in sizeSate" );
+
+                                gridItem.setRowSpec( 1 );
+                                gridItem.setColumnSpec( 1 );
+                                gridItem.setProducto( filterProductList.get( i ) );
+                                gridItemList.add( gridItem );
+                            } else
+                            {
+                                Log.i( TAG, "out sizeSate" );
+                                Log.i( TAG, "Tamaño :" + filterProductList.get( i ).getTam() );
+                                switch ( filterProductList.get( i ).getTam() )
+                                {
+                                    case "1":
+                                    case "2":
+                                        gridItem.setRowSpec( 1 );
+                                        gridItem.setColumnSpec( 1 );
+                                        gridItem.setProducto( filterProductList.get( i ) );
+                                        gridItemList.add( gridItem );
+                                        break;
+                                    case "3":
+                                        gridItem.setRowSpec( 2 );
+                                        gridItem.setColumnSpec( 1 );
+                                        gridItem.setProducto( filterProductList.get( i ) );
+                                        gridItemList.add( gridItem );
+                                        break;
+                                    case "4":
+                                        gridItem.setRowSpec( 1 );
+                                        gridItem.setColumnSpec( 2 );
+                                        gridItem.setProducto( filterProductList.get( i ) );
+                                        gridItemList.add( gridItem );
+                                        break;
+
+                                    default:
+                                        gridItem.setRowSpec( 1 );
+                                        gridItem.setColumnSpec( 1 );
+                                        gridItem.setProducto( filterProductList.get( i ) );
+                                        gridItemList.add( gridItem );
+                                        break;
+                                }
+                            }
+                            break;
+                        case "2":
+                            switch ( filterProductList.get( i ).getTam() )
                             {
                                 case "1":
                                 case "2":
@@ -2344,131 +2400,452 @@ public class MainActivity extends AppCompatActivity
                                     gridItem.setProducto( filterProductList.get( i ) );
                                     gridItemList.add( gridItem );
                                     break;
+
+                                default:
+                                    gridItem.setRowSpec( 1 );
+                                    gridItem.setColumnSpec( 1 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
+                                    gridItemList.add( gridItem );
+                                    break;
                             }
-                        }
-                        break;
-                    case "2":
-                        switch ( filterProductList.get( i ).getSizes() )
-                        {
-                            case "1":
-                            case "2":
-                                gridItem.setRowSpec( 1 );
-                                gridItem.setColumnSpec( 1 );
-                                gridItem.setProducto( filterProductList.get( i ) );
-                                gridItemList.add( gridItem );
-                                break;
-                            case "3":
-                                gridItem.setRowSpec( 2 );
-                                gridItem.setColumnSpec( 1 );
-                                gridItem.setProducto( filterProductList.get( i ) );
-                                gridItemList.add( gridItem );
-                                break;
-                            case "4":
-                                gridItem.setRowSpec( 1 );
-                                gridItem.setColumnSpec( 2 );
-                                gridItem.setProducto( filterProductList.get( i ) );
-                                gridItemList.add( gridItem );
-                                break;
-                        }
-                        break;
-                    case "3":
+                            break;
+                        case "3":
 
-                        switch ( filterProductList.get( i ).getSizes() )
-                        {
+                            switch ( filterProductList.get( i ).getTam() )
+                            {
 
-                            case "12":
-                            case "4":
+                                case "12":
+                                case "4":
 
-                                gridItem.setRowSpec( 1 );
-                                gridItem.setColumnSpec( 2 );
-                                gridItem.setProducto( filterProductList.get( i ) );
+                                    gridItem.setRowSpec( 1 );
+                                    gridItem.setColumnSpec( 2 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
 
-                                if ( type == 3 )
-                                {
-
-                                    gridItemList.add( gridItem );
-
-                                } else
-                                {
-                                    gridItemList.add( gridItem );
-                                }
-                                break;
-
-                            case "11":
-                            case "1":
-                            case "2":
-
-                                gridItem.setRowSpec( 1 );
-                                gridItem.setColumnSpec( 1 );
-                                gridItem.setProducto( filterProductList.get( i ) );
-                                if ( type == 3 )
-                                {
-                                    Log.i( "TAG", "filterDevices: "+gridItem.getProducto().getName().toLowerCase() );
-                                    if ( gridItem.getProducto().getName().toLowerCase().contains( "control" ) )
+                                    if ( type == 3 )
                                     {
-                                        gridItem.setRowSpec( 1  );
-                                        gridItem.setColumnSpec( 1 );
-                                        gridItemList.add(1,gridItem );
 
-                                    } else if ( gridItem.getProducto().getName().toLowerCase().contains( "control" ) )
-                                    {
-                                        gridItem.setRowSpec( 1  );
-                                        gridItem.setColumnSpec( 1 );
-                                        gridItemList.add(1,gridItem );
+                                        gridItemList.add( gridItem );
 
                                     } else
                                     {
                                         gridItemList.add( gridItem );
-
                                     }
-                                } else
-                                {
+                                    break;
+
+                                case "21":
+                                case "1":
+                                case "2":
+
+                                    gridItem.setRowSpec( 1 );
+                                    gridItem.setColumnSpec( 1 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
                                     gridItemList.add( gridItem );
-                                }
-                                break;
-                            case "3":
 
-                                gridItem.setRowSpec( 2 );
-                                gridItem.setColumnSpec( 1 );
-                                gridItem.setProducto( filterProductList.get( i ) );
-                                gridItemList.add( gridItem );
-                                break;
+                                    break;
+                                case "3":
 
-                        }
-                        break;
-                    case "4":
-                        switch ( filterProductList.get( i ).getSizes() )
-                        {
-                            case "1":
-                            case "2":
-                                gridItem.setRowSpec( 1 );
-                                gridItem.setColumnSpec( 1 );
-                                gridItem.setProducto( filterProductList.get( i ) );
-                                gridItemList.add( gridItem );
-                                break;
-                            case "3":
-                                gridItem.setRowSpec( 2 );
-                                gridItem.setColumnSpec( 1 );
-                                gridItem.setProducto( filterProductList.get( i ) );
-                                gridItemList.add( gridItem );
-                                break;
-                            case "4":
-                                gridItem.setRowSpec( 1 );
-                                gridItem.setColumnSpec( 2 );
-                                gridItem.setProducto( filterProductList.get( i ) );
-                                gridItemList.add( gridItem );
-                                break;
-                        }
-                        break;
+                                    gridItem.setRowSpec( 1 );
+                                    gridItem.setColumnSpec( 2 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
+                                    gridItemList.add( gridItem );
+                                    break;
+
+
+                                default:
+                                    gridItem.setRowSpec( 1 );
+                                    gridItem.setColumnSpec( 1 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
+                                    gridItemList.add( gridItem );
+                                    break;
+
+                            }
+                            break;
+                        case "4":
+                            switch ( filterProductList.get( i ).getTam() )
+                            {
+                                case "1":
+                                case "2":
+                                    gridItem.setRowSpec( 1 );
+                                    gridItem.setColumnSpec( 1 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
+                                    gridItemList.add( gridItem );
+                                    break;
+                                case "3":
+                                    gridItem.setRowSpec( 2 );
+                                    gridItem.setColumnSpec( 1 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
+                                    gridItemList.add( gridItem );
+                                    break;
+                                case "4":
+                                    gridItem.setRowSpec( 1 );
+                                    gridItem.setColumnSpec( 2 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
+                                    gridItemList.add( gridItem );
+                                    break;
+
+
+                                default:
+                                    gridItem.setRowSpec( 1 );
+                                    gridItem.setColumnSpec( 1 );
+                                    gridItem.setProducto( filterProductList.get( i ) );
+                                    gridItemList.add( gridItem );
+                                    break;
+                            }
+                            break;
+                    }
+
                 }
             }
 
+            final GridViewHolder holder = new GridViewHolder( mGridLayout );
+
             if ( getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE )
+
             {
-                final GridViewHolder holder = new GridViewHolder( mGridLayout );
+                int screenLayout = getResources().getConfiguration().screenLayout;
+                screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+
+                Point size = new Point();
+                Display display = ((WindowManager) getSystemService( Context.WINDOW_SERVICE )).getDefaultDisplay();
+                display.getSize( size );
+                int width = size.x;
+                DisplayMetrics metrics = new DisplayMetrics();
+
+                getWindowManager().getDefaultDisplay().getMetrics( metrics );
+                int density = metrics.densityDpi;
+                Log.i( "Tamano", width + "" );
+                if ( width > 1300 )
+                {
+                    //<editor-fold desc="CODIGO Horizontal">
+                    GridBuilder.newInstance( this, mGridLayout )
+                            .setScaleAnimationDuration( 0 )
+                            .setPositionCalculator( new HorizontalPositionCalculator( 2 ) )
+                            .setBaseSize( 350, 540 )
+                            .setMargin( 20 )
+                            .setOutMargin( 0, 0, 20, 20 )
+                            .setGridItemList( gridItemList )
+                            .setViewHolder( holder )
+                            .setOnCreateViewCallBack( new OnViewCreateCallBack()
+                            {
+                                @Override
+                                public View onViewCreate( LayoutInflater inflater, View convertView, final GridItem gridItem )
+                                {
+                                    View view = inflater.inflate( R.layout.masonry_item_mx, null );
+
+                                    RelativeLayout itemParent = (RelativeLayout) view.findViewById( R.id.item_parent );
+                                    final LinearLayout itemContainer = (LinearLayout) view.findViewById( R.id.item_container );
+                                    final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById( R.id.image_product );
+                                    SimpleDraweeView imgComplete = (SimpleDraweeView) view.findViewById( R.id.image_complete_product );
+                                    TextView providerName = (TextView) view.findViewById( R.id.provider_name );
+                                    final TextView accessoryName = (TextView) view.findViewById( R.id.product_name );
+
+
+                                    switch ( gridItem.getProducto().getProduct_type_id() )
+                                    {
+                                        case "1":
+                                            switch ( gridItem.getProducto().getTam() )
+                                            {
+                                                default:
+                                                case "1":
+                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() ) ) );
+
+
+                                                    itemContainer.setVisibility( View.VISIBLE );
+                                                    imgComplete.setVisibility( View.GONE );
+
+
+                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
+
+
+                                                    if ( gridItem.getProducto().getName().length() > 30 )
+                                                    {
+                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
+                                                    } else
+                                                    {
+                                                        accessoryName.setText( gridItem.getProducto().getName() );
+                                                    }
+                                                    break;
+
+                                            }
+                                            break;
+                                        case "2":
+                                            Log.i( TAG, "Existen Accesorios en la lista" );
+                                            switch ( gridItem.getProducto().getTam() )
+                                            {
+                                                default:
+                                                case "1":
+                                                    Log.i( TAG, gridItem.getProducto().getImagenPrimaria() );
+                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() ) ) );
+
+                                                    File f = new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() );
+                                                    Log.i( TAG, f.exists() + "" );
+
+                                                    itemContainer.setVisibility( View.VISIBLE );
+                                                    imgComplete.setVisibility( View.GONE );
+
+
+                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
+
+                                                    if ( gridItem.getProducto().getName().length() > 30 )
+                                                    {
+                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
+                                                    } else
+                                                    {
+                                                        accessoryName.setText( gridItem.getProducto().getName() );
+                                                    }
+                                                    break;
+
+                                            }
+                                            break;
+                                        case "3":
+                                            itemContainer.setVisibility( View.GONE );
+                                            imgComplete.setVisibility( View.VISIBLE );
+                                            imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImg() ) ) );
+                                            break;
+                                        case "4":
+                                            itemContainer.setVisibility( View.GONE );
+                                            imgComplete.setVisibility( View.VISIBLE );
+                                            switch ( gridItem.getProducto().getTam() )
+                                            {
+                                                case "1":
+                                                case "2":
+                                                case "3":
+                                                case "4":
+                                                    //     imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getBannerImage() ) ) );
+                                                    break;
+                                            }
+                                    }
+
+                                    itemParent.setOnClickListener( new View.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick( View v )
+                                        {
+                                            Global.producto = gridItem.getProducto();
+                                            switch ( gridItem.getProducto().getProduct_type_id() )
+                                            {
+                                                case "1":
+
+                                                    startActivity( new Intent( MainActivity.this, FichaEquipo.class ) );
+                                                    break;
+                                                case "2":
+                                                    Global.accesorio = gridItem.getProducto();
+
+                                                    startActivity( new Intent( MainActivity.this, AccesoriosActivity.class ) );
+                                                    overridePendingTransition( 0, 0 );
+                                                    break;
+                                                case "3":
+                                                    blurContent.setVisibility( View.GONE );
+                                                    setCloseTypeImage( btnPlans );
+                                                    rlParent.removeView( imageCloseFilter );
+                                                    rlContentPlans.setVisibility( View.VISIBLE );
+                                                    linearSeleccionaPlan.setVisibility( View.GONE );
+                                                    listarPlanes.setVisibility( View.VISIBLE );
+                                                    horizontalScrollGrid.setVisibility( View.GONE );
+
+
+                                                    if ( gridItem.getProducto().getName().contains( "Libres" ) )
+                                                    {
+                                                        selectPlanSmartFun();
+
+                                                    } else if ( gridItem.getProducto().getName().contains( "Solo" ) )
+                                                    {
+                                                        selectPlanVoz();
+
+                                                    } else if ( gridItem.getProducto().getName().contains( "Controlados" ) )
+                                                    {
+                                                        selectPlanControlFun();
+
+                                                    }
+                                                    break;
+                                                case "4":
+                                                    rlPopup.setVisibility( View.VISIBLE );
+                                                    // imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage() ) ) );
+
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                    } );
+
+
+                                    return view;
+                                }
+                            } )
+                            .build();
+                    //</editor-fold>
+                } else
+                {
+                    //<editor-fold desc="CODIGO Horizontal">
+                    GridBuilder.newInstance( this, mGridLayout )
+                            .setScaleAnimationDuration( 0 )
+                            .setPositionCalculator( new HorizontalPositionCalculator( 2 ) )
+                            .setBaseSize( 260, 350 )
+                            .setMargin( 20 )
+                            .setOutMargin( 0, 0, 20, 20 )
+                            .setGridItemList( gridItemList )
+                            .setViewHolder( holder )
+                            .setOnCreateViewCallBack( new OnViewCreateCallBack()
+                            {
+                                @Override
+                                public View onViewCreate( LayoutInflater inflater, View convertView, final GridItem gridItem )
+                                {
+                                    View view = inflater.inflate( R.layout.masonry_item, null );
+
+                                    RelativeLayout itemParent = (RelativeLayout) view.findViewById( R.id.item_parent );
+                                    final LinearLayout itemContainer = (LinearLayout) view.findViewById( R.id.item_container );
+                                    final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById( R.id.image_product );
+                                    SimpleDraweeView imgComplete = (SimpleDraweeView) view.findViewById( R.id.image_complete_product );
+                                    TextView providerName = (TextView) view.findViewById( R.id.provider_name );
+                                    final TextView accessoryName = (TextView) view.findViewById( R.id.product_name );
+
+
+                                    switch ( gridItem.getProducto().getProduct_type_id() )
+                                    {
+                                        case "1":
+                                            switch ( gridItem.getProducto().getTam() )
+                                            {
+                                                default:
+                                                case "1":
+                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() ) ) );
+
+
+                                                    itemContainer.setVisibility( View.VISIBLE );
+                                                    imgComplete.setVisibility( View.GONE );
+
+
+                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
+
+
+                                                    if ( gridItem.getProducto().getName().length() > 30 )
+                                                    {
+                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
+                                                    } else
+                                                    {
+                                                        accessoryName.setText( gridItem.getProducto().getName() );
+                                                    }
+                                                    break;
+
+                                            }
+                                            break;
+                                        case "2":
+                                            Log.i( TAG, "Existen Accesorios en la lista" );
+                                            switch ( gridItem.getProducto().getTam() )
+                                            {
+                                                default:
+                                                case "1":
+                                                    Log.i( TAG, gridItem.getProducto().getImagenPrimaria() );
+                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() ) ) );
+
+                                                    File f = new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() );
+                                                    Log.i( TAG, f.exists() + "" );
+
+                                                    itemContainer.setVisibility( View.VISIBLE );
+                                                    imgComplete.setVisibility( View.GONE );
+
+
+                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
+
+                                                    if ( gridItem.getProducto().getName().length() > 30 )
+                                                    {
+                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
+                                                    } else
+                                                    {
+                                                        accessoryName.setText( gridItem.getProducto().getName() );
+                                                    }
+                                                    break;
+
+                                            }
+                                            break;
+                                        case "3":
+                                            itemContainer.setVisibility( View.GONE );
+                                            imgComplete.setVisibility( View.VISIBLE );
+                                            imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImg() ) ) );
+                                            break;
+                                        case "4":
+                                            itemContainer.setVisibility( View.GONE );
+                                            imgComplete.setVisibility( View.VISIBLE );
+                                            switch ( gridItem.getProducto().getTam() )
+                                            {
+                                                case "1":
+                                                case "2":
+                                                case "3":
+                                                case "4":
+                                                    //     imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getBannerImage() ) ) );
+                                                    break;
+                                            }
+                                    }
+
+                                    itemParent.setOnClickListener( new View.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick( View v )
+                                        {
+                                            Global.producto = gridItem.getProducto();
+                                            switch ( gridItem.getProducto().getProduct_type_id() )
+                                            {
+                                                case "1":
+
+                                                    startActivity( new Intent( MainActivity.this, FichaEquipo.class ) );
+                                                    break;
+                                                case "2":
+                                                    Global.accesorio = gridItem.getProducto();
+
+                                                    startActivity( new Intent( MainActivity.this, AccesoriosActivity.class ) );
+                                                    overridePendingTransition( 0, 0 );
+                                                    break;
+                                                case "3":
+                                                    blurContent.setVisibility( View.GONE );
+                                                    setCloseTypeImage( btnPlans );
+                                                    rlParent.removeView( imageCloseFilter );
+                                                    rlContentPlans.setVisibility( View.VISIBLE );
+                                                    linearSeleccionaPlan.setVisibility( View.GONE );
+                                                    listarPlanes.setVisibility( View.VISIBLE );
+                                                    horizontalScrollGrid.setVisibility( View.GONE );
+
+
+                                                    if ( gridItem.getProducto().getName().contains( "Libres" ) )
+                                                    {
+                                                        selectPlanSmartFun();
+
+                                                    } else if ( gridItem.getProducto().getName().contains( "Solo" ) )
+                                                    {
+                                                        selectPlanVoz();
+
+                                                    } else if ( gridItem.getProducto().getName().contains( "Controlados" ) )
+                                                    {
+                                                        selectPlanControlFun();
+
+                                                    }
+                                                    break;
+                                                case "4":
+                                                    rlPopup.setVisibility( View.VISIBLE );
+                                                    // imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage() ) ) );
+
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                    } );
+
+
+                                    return view;
+                                }
+                            } )
+                            .build();
+                    //</editor-fold>
+                }
+
+
+            } else
+            {
+
+                //<editor-fold desc="CODIGO VERTICAL">
                 GridBuilder.newInstance( this, mGridLayout )
                         .setScaleAnimationDuration( 0 )
-                        .setPositionCalculator( new HorizontalPositionCalculator( 2 ) )
+                        .setPositionCalculator( new HorizontalPositionCalculator( 3 ) )
                         .setBaseSize( 300, 410 )
                         .setMargin( 20 )
                         .setOutMargin( 0, 0, 20, 20 )
@@ -2488,21 +2865,24 @@ public class MainActivity extends AppCompatActivity
                                 TextView providerName = (TextView) view.findViewById( R.id.provider_name );
                                 final TextView accessoryName = (TextView) view.findViewById( R.id.product_name );
 
-                                Random rand = new Random();
-                                int numberColorRandom = rand.nextInt( 6 );
-
-                                String Colors[][] = Global.getBackgroundColorsCard();
 
                                 switch ( gridItem.getProducto().getProduct_type_id() )
                                 {
                                     case "1":
-                                        switch ( gridItem.getProducto().getSizes() )
+                                        switch ( gridItem.getProducto().getTam() )
                                         {
+                                            default:
                                             case "1":
-                                                imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
+                                                imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() ) ) );
+
+
                                                 itemContainer.setVisibility( View.VISIBLE );
                                                 imgComplete.setVisibility( View.GONE );
+
+
                                                 providerName.setText( gridItem.getProducto().getProvider_name() );
+
+
                                                 if ( gridItem.getProducto().getName().length() > 30 )
                                                 {
                                                     accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
@@ -2511,50 +2891,27 @@ public class MainActivity extends AppCompatActivity
                                                     accessoryName.setText( gridItem.getProducto().getName() );
                                                 }
                                                 break;
-                                            case "2":
-                                                if ( gridItem.getProducto().getImageHigh().equalsIgnoreCase( "1" ) || gridItem.getProducto().getImageHigh().equalsIgnoreCase( "0" ) )
-                                                {
-                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                                    itemContainer.setVisibility( View.VISIBLE );
-                                                    imgComplete.setVisibility( View.GONE );
-                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
-                                                    accessoryName.setTextColor( getResources().getColor( R.color.white ) );
-                                                    providerName.setTextColor( getResources().getColor( R.color.white ) );
-                                                    if ( gridItem.getProducto().getName().length() > 30 )
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                                    } else
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName() );
-                                                    }
-                                                    itemContainer.setBackgroundColor( Color.parseColor( Colors[ numberColorRandom ][ 0 ] ) );
-                                                } else
-                                                {
-                                                    itemContainer.setVisibility( View.GONE );
-                                                    imgComplete.setVisibility( View.VISIBLE );
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                }
-                                                break;
-                                            case "3":
-                                                itemContainer.setVisibility( View.GONE );
-                                                imgComplete.setVisibility( View.VISIBLE );
-                                                imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                break;
-                                            case "4":
-                                                itemContainer.setVisibility( View.GONE );
-                                                imgComplete.setVisibility( View.VISIBLE );
-                                                imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                break;
+
                                         }
                                         break;
                                     case "2":
-                                        switch ( gridItem.getProducto().getSizes() )
+                                        Log.i( TAG, "Existen Accesorios en la lista" );
+                                        switch ( gridItem.getProducto().getTam() )
                                         {
+                                            default:
                                             case "1":
-                                                imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
+                                                Log.i( TAG, gridItem.getProducto().getImagenPrimaria() );
+                                                imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() ) ) );
+
+                                                File f = new File( Global.dirImages + gridItem.getProducto().getImagenPrimaria() );
+                                                Log.i( TAG, f.exists() + "" );
+
                                                 itemContainer.setVisibility( View.VISIBLE );
                                                 imgComplete.setVisibility( View.GONE );
+
+
                                                 providerName.setText( gridItem.getProducto().getProvider_name() );
+
                                                 if ( gridItem.getProducto().getName().length() > 30 )
                                                 {
                                                     accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
@@ -2563,58 +2920,24 @@ public class MainActivity extends AppCompatActivity
                                                     accessoryName.setText( gridItem.getProducto().getName() );
                                                 }
                                                 break;
-                                            case "2":
-                                                if ( gridItem.getProducto().getImageHigh().equalsIgnoreCase( "1" ) || gridItem.getProducto().getImageHigh().equalsIgnoreCase( "0" ) )
-                                                {
-                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                                    itemContainer.setVisibility( View.VISIBLE );
-                                                    imgComplete.setVisibility( View.GONE );
-                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
-                                                    accessoryName.setTextColor( getResources().getColor( R.color.white ) );
-                                                    providerName.setTextColor( getResources().getColor( R.color.white ) );
-                                                    if ( gridItem.getProducto().getName().length() > 30 )
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                                    } else
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName() );
-                                                    }
-                                                    itemContainer.setBackgroundColor( Color.parseColor( Colors[ numberColorRandom ][ 0 ] ) );
-                                                } else
-                                                {
-                                                    itemContainer.setVisibility( View.GONE );
-                                                    imgComplete.setVisibility( View.VISIBLE );
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                }
-                                                break;
-                                            case "3":
-                                                itemContainer.setVisibility( View.GONE );
-                                                imgComplete.setVisibility( View.VISIBLE );
-                                                imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                break;
-                                            case "4":
-                                                itemContainer.setVisibility( View.GONE );
-                                                imgComplete.setVisibility( View.VISIBLE );
-                                                imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                break;
+
                                         }
                                         break;
                                     case "3":
                                         itemContainer.setVisibility( View.GONE );
                                         imgComplete.setVisibility( View.VISIBLE );
-                                        imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage() ) ) );
+                                        imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImg() ) ) );
                                         break;
-
                                     case "4":
                                         itemContainer.setVisibility( View.GONE );
                                         imgComplete.setVisibility( View.VISIBLE );
-                                        switch ( gridItem.getProducto().getSizes() )
+                                        switch ( gridItem.getProducto().getTam() )
                                         {
                                             case "1":
                                             case "2":
                                             case "3":
                                             case "4":
-                                                imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getBannerImage() ) ) );
+                                                //     imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getBannerImage() ) ) );
                                                 break;
                                         }
                                 }
@@ -2628,66 +2951,12 @@ public class MainActivity extends AppCompatActivity
                                         switch ( gridItem.getProducto().getProduct_type_id() )
                                         {
                                             case "1":
-                                                mTracker.send( new HitBuilders.EventBuilder()
-                                                        .setCategory( "Catálogo" )
-                                                        .setAction( "Equipo" )
-                                                        .setLabel( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                        .build() );
-                                                if ( type == 0 )
-                                                {
 
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Equipo" )
-                                                            .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                            .setLabel( "Catálogo" )
-                                                            .build() );
-                                                } else if ( type == 1 )
-                                                {
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Equipo" )
-                                                            .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                            .setLabel( "Filtro 'Equipos'" )
-                                                            .build() );
-                                                } else if ( type == 4 )
-                                                {
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Equipo" )
-                                                            .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                            .setLabel( "Filtro: " + filtro )
-                                                            .build() );
-                                                }
                                                 startActivity( new Intent( MainActivity.this, FichaEquipo.class ) );
                                                 break;
                                             case "2":
                                                 Global.accesorio = gridItem.getProducto();
-                                                mTracker.send( new HitBuilders.EventBuilder()
-                                                        .setCategory( "Catálogo" )
-                                                        .setAction( "Accesorios" )
-                                                        .setLabel( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                        .build() );
-                                                if ( type == 0 )
-                                                {
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Accesorio" )
-                                                            .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                            .setLabel( "Catálogo Principal" )
-                                                            .build() );
-                                                } else if ( type == 2 )
-                                                {
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Accesorio" )
-                                                            .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                            .setLabel( "Filtro 'Accesorios'" )
-                                                            .build() );
-                                                } else if ( type == 5 )
-                                                {
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Accesorio" )
-                                                            .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                            .setLabel( "Filtro: " + filtro )
-                                                            .build() );
 
-                                                }
                                                 startActivity( new Intent( MainActivity.this, AccesoriosActivity.class ) );
                                                 overridePendingTransition( 0, 0 );
                                                 break;
@@ -2696,61 +2965,29 @@ public class MainActivity extends AppCompatActivity
                                                 setCloseTypeImage( btnPlans );
                                                 rlParent.removeView( imageCloseFilter );
                                                 rlContentPlans.setVisibility( View.VISIBLE );
-                                                linearSeleccionaPlan.setVisibility( View.VISIBLE );
+                                                linearSeleccionaPlan.setVisibility( View.GONE );
+                                                listarPlanes.setVisibility( View.VISIBLE );
+                                                horizontalScrollGrid.setVisibility( View.GONE );
+
+
                                                 if ( gridItem.getProducto().getName().contains( "Libres" ) )
                                                 {
                                                     selectPlanSmartFun();
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Planes" )
-                                                            .setLabel( "Smart Fun" )
-                                                            .build() );
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Planes" )
-                                                            .setAction( "Catálogo Principal" )
-                                                            .setLabel( "Smart Fun" )
-                                                            .build() );
+
                                                 } else if ( gridItem.getProducto().getName().contains( "Solo" ) )
                                                 {
                                                     selectPlanVoz();
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Planes" )
-                                                            .setLabel( "Plan de Voz" )
-                                                            .build() );
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Planes" )
-                                                            .setAction( "Catálogo Principal" )
-                                                            .setLabel( "Plan de Voz" )
-                                                            .build() );
+
                                                 } else if ( gridItem.getProducto().getName().contains( "Controlados" ) )
                                                 {
                                                     selectPlanControlFun();
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Planes" )
-                                                            .setLabel( "Control Fun" )
-                                                            .build() );
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Planes" )
-                                                            .setAction( "Catálogo Principal" )
-                                                            .setLabel( "Control Fun" )
-                                                            .build() );
+
                                                 }
                                                 break;
                                             case "4":
                                                 rlPopup.setVisibility( View.VISIBLE );
-                                                imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage_h() ) ) );
-                                                mTracker.send( new HitBuilders.EventBuilder()
-                                                        .setCategory( "Catálogo" )
-                                                        .setAction( "Ofertas" )
-                                                        .setLabel( "http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage_h() )
-                                                        .build() );
-                                                mTracker.send( new HitBuilders.EventBuilder()
-                                                        .setCategory( "Ofertas" )
-                                                        .setAction( "Catálogo Principal" )
-                                                        .setLabel( "http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage_h() )
-                                                        .build() );
+                                                // imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage() ) ) );
+
                                                 break;
                                             default:
                                                 break;
@@ -2763,568 +3000,8 @@ public class MainActivity extends AppCompatActivity
                             }
                         } )
                         .build();
-            } else
-            {
-                if ( sizeState )
-                {
-                    GridViewHolder holder = new GridViewHolder( mGridLayout );
-                    GridBuilder.newInstance( this, mGridLayout )
-                            .setScaleAnimationDuration( 0 )
-                            .setPositionCalculator( new HorizontalPositionCalculator( 3 ) )
-                            .setBaseSize( 300, 410 )
-                            .setMargin( 20 )
-                            .setOutMargin( 0, 0, 20, 20 )
-                            .setGridItemList( gridItemList )
-                            .setViewHolder( holder )
-                            .setOnCreateViewCallBack( new OnViewCreateCallBack()
-                            {
-                                @Override
-                                public View onViewCreate( LayoutInflater inflater, View convertView, final GridItem gridItem )
-                                {
-                                    View view = inflater.inflate( R.layout.masonry_item, null );
-                                    RelativeLayout itemParent = (RelativeLayout) view.findViewById( R.id.item_parent );
-                                    LinearLayout itemContainer = (LinearLayout) view.findViewById( R.id.item_container );
-                                    final ImageView imageAccessory = (ImageView) view.findViewById( R.id.image_product );
-                                    ImageView imgComplete = (ImageView) view.findViewById( R.id.image_complete_product );
-                                    TextView providerName = (TextView) view.findViewById( R.id.provider_name );
-                                    final TextView accessoryName = (TextView) view.findViewById( R.id.product_name );
+                //</editor-fold>
 
-                                    Random rand = new Random();
-                                    int numberColorRandom = rand.nextInt( 6 );
-
-                                    String Colors[][] = Global.getBackgroundColorsCard();
-
-                                    switch ( gridItem.getProducto().getProduct_type_id() )
-                                    {
-                                        case "1":
-                                            imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                            itemContainer.setVisibility( View.VISIBLE );
-                                            imgComplete.setVisibility( View.GONE );
-                                            providerName.setText( gridItem.getProducto().getProvider_name() );
-                                            if ( gridItem.getProducto().getName().length() > 30 )
-                                            {
-                                                accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                            } else
-                                            {
-                                                accessoryName.setText( gridItem.getProducto().getName() );
-                                            }
-                                            break;
-                                        case "2":
-                                            switch ( gridItem.getProducto().getSizes() )
-                                            {
-                                                case "1":
-                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                                    itemContainer.setVisibility( View.VISIBLE );
-                                                    imgComplete.setVisibility( View.GONE );
-                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
-                                                    if ( gridItem.getProducto().getName().length() > 30 )
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                                    } else
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName() );
-                                                    }
-                                                    break;
-                                                case "2":
-                                                    if ( gridItem.getProducto().getImageHigh().equalsIgnoreCase( "1" ) || gridItem.getProducto().getImageHigh().equalsIgnoreCase( "0" ) )
-                                                    {
-                                                        imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                                        itemContainer.setVisibility( View.VISIBLE );
-                                                        imgComplete.setVisibility( View.GONE );
-                                                        providerName.setText( gridItem.getProducto().getProvider_name() );
-                                                        accessoryName.setTextColor( getResources().getColor( R.color.white ) );
-                                                        providerName.setTextColor( getResources().getColor( R.color.white ) );
-                                                        if ( gridItem.getProducto().getName().length() > 30 )
-                                                        {
-                                                            accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                                        } else
-                                                        {
-                                                            accessoryName.setText( gridItem.getProducto().getName() );
-                                                        }
-                                                        itemContainer.setBackgroundColor( Color.parseColor( Colors[ numberColorRandom ][ 0 ] ) );
-                                                    } else
-                                                    {
-                                                        itemContainer.setVisibility( View.GONE );
-                                                        imgComplete.setVisibility( View.VISIBLE );
-                                                        imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    }
-                                                    break;
-                                                case "3":
-                                                    itemContainer.setVisibility( View.GONE );
-                                                    imgComplete.setVisibility( View.VISIBLE );
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    break;
-                                                case "4":
-                                                    itemContainer.setVisibility( View.GONE );
-                                                    imgComplete.setVisibility( View.VISIBLE );
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    break;
-                                            }
-                                            break;
-                                        case "3":
-                                            itemContainer.setVisibility( View.GONE );
-                                            imgComplete.setVisibility( View.VISIBLE );
-                                            imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage() ) ) );
-                                            break;
-
-                                        case "4":
-                                            itemContainer.setVisibility( View.GONE );
-                                            imgComplete.setVisibility( View.VISIBLE );
-                                            switch ( gridItem.getProducto().getSizes() )
-                                            {
-                                                case "1":
-                                                case "2":
-                                                case "3":
-                                                case "4":
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getBannerImage() ) ) );
-                                                    break;
-                                            }
-                                    }
-
-                                    itemParent.setOnClickListener( new View.OnClickListener()
-                                    {
-                                        @Override
-                                        public void onClick( View v )
-                                        {
-                                            Global.producto = gridItem.getProducto();
-                                            switch ( gridItem.getProducto().getProduct_type_id() )
-                                            {
-                                                case "1":
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Equipo" )
-                                                            .setLabel( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                            .build() );
-                                                    if ( type == 0 )
-                                                    {
-
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Equipo" )
-                                                                .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                                .setLabel( "Catálogo" )
-                                                                .build() );
-                                                    } else if ( type == 1 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Equipo" )
-                                                                .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                                .setLabel( "Filtro 'Equipos'" )
-                                                                .build() );
-                                                    } else if ( type == 4 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Equipo" )
-                                                                .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                                .setLabel( "Filtro: " + filtro )
-                                                                .build() );
-                                                    }
-                                                    startActivity( new Intent( MainActivity.this, FichaEquipo.class ) );
-                                                    break;
-                                                case "2":
-                                                    Global.accesorio = gridItem.getProducto();
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Accesorios" )
-                                                            .setLabel( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                            .build() );
-                                                    if ( type == 0 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Accesorio" )
-                                                                .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                                .setLabel( "Catálogo Principal" )
-                                                                .build() );
-                                                    } else if ( type == 2 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Accesorio" )
-                                                                .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                                .setLabel( "Filtro 'Accesorios'" )
-                                                                .build() );
-                                                    } else if ( type == 5 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Accesorio" )
-                                                                .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                                .setLabel( "Filtro: " + filtro )
-                                                                .build() );
-
-                                                    }
-                                                    startActivity( new Intent( MainActivity.this, AccesoriosActivity.class ) );
-                                                    overridePendingTransition( 0, 0 );
-                                                    break;
-                                                case "3":
-                                                    blurContent.setVisibility( View.GONE );
-                                                    setCloseTypeImage( btnPlans );
-                                                    rlParent.removeView( imageCloseFilter );
-                                                    rlContentPlans.setVisibility( View.VISIBLE );
-                                                    linearSeleccionaPlan.setVisibility( View.VISIBLE );
-                                                    if ( gridItem.getProducto().getName().contains( "Libres" ) )
-                                                    {
-                                                        selectPlanSmartFun();
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Catálogo" )
-                                                                .setAction( "Planes" )
-                                                                .setLabel( "Smart Fun" )
-                                                                .build() );
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Planes" )
-                                                                .setAction( "Catálogo Principal" )
-                                                                .setLabel( "Smart Fun" )
-                                                                .build() );
-                                                    } else if ( gridItem.getProducto().getName().contains( "Solo" ) )
-                                                    {
-                                                        selectPlanVoz();
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Catálogo" )
-                                                                .setAction( "Planes" )
-                                                                .setLabel( "Plan de Voz" )
-                                                                .build() );
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Planes" )
-                                                                .setAction( "Catálogo Principal" )
-                                                                .setLabel( "Plan de Voz" )
-                                                                .build() );
-                                                    } else if ( gridItem.getProducto().getName().contains( "Controlados" ) )
-                                                    {
-                                                        selectPlanControlFun();
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Catálogo" )
-                                                                .setAction( "Planes" )
-                                                                .setLabel( "Control Fun" )
-                                                                .build() );
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Planes" )
-                                                                .setAction( "Catálogo Principal" )
-                                                                .setLabel( "Control Fun" )
-                                                                .build() );
-                                                    }
-                                                    break;
-                                                case "4":
-                                                    rlPopup.setVisibility( View.VISIBLE );
-                                                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage() ) ) );
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Ofertas" )
-                                                            .setLabel( "http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage() )
-                                                            .build() );
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Ofertas" )
-                                                            .setAction( "Catálogo Principal" )
-                                                            .setLabel( "http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage() )
-                                                            .build() );
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                    } );
-
-
-                                    return view;
-                                }
-                            } )
-                            .build();
-                } else
-                {
-                    final GridViewHolder holder = new GridViewHolder( mGridLayout );
-                    GridBuilder.newInstance( this, mGridLayout )
-                            .setScaleAnimationDuration( 0 )
-                            .setPositionCalculator( new HorizontalPositionCalculator( 3 ) )
-                            .setBaseSize( 300, 410 )
-                            .setMargin( 20 )
-                            .setOutMargin( 0, 0, 20, 20 )
-                            .setGridItemList( gridItemList )
-                            .setViewHolder( holder )
-                            .setOnCreateViewCallBack( new OnViewCreateCallBack()
-                            {
-                                @Override
-                                public View onViewCreate( LayoutInflater inflater, View convertView, final GridItem gridItem )
-                                {
-                                    View view = inflater.inflate( R.layout.masonry_item, null );
-
-                                    RelativeLayout itemParent = (RelativeLayout) view.findViewById( R.id.item_parent );
-                                    final LinearLayout itemContainer = (LinearLayout) view.findViewById( R.id.item_container );
-                                    final SimpleDraweeView imageAccessory = (SimpleDraweeView) view.findViewById( R.id.image_product );
-                                    SimpleDraweeView imgComplete = (SimpleDraweeView) view.findViewById( R.id.image_complete_product );
-                                    TextView providerName = (TextView) view.findViewById( R.id.provider_name );
-                                    final TextView accessoryName = (TextView) view.findViewById( R.id.product_name );
-
-                                    Random rand = new Random();
-                                    int numberColorRandom = rand.nextInt( 6 );
-
-                                    String Colors[][] = Global.getBackgroundColorsCard();
-
-                                    switch ( gridItem.getProducto().getProduct_type_id() )
-                                    {
-                                        case "1":
-                                            switch ( gridItem.getProducto().getSizes() )
-                                            {
-                                                case "1":
-                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                                    itemContainer.setVisibility( View.VISIBLE );
-                                                    imgComplete.setVisibility( View.GONE );
-                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
-                                                    if ( gridItem.getProducto().getName().length() > 30 )
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                                    } else
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName() );
-                                                    }
-                                                    break;
-                                                case "2":
-                                                    if ( gridItem.getProducto().getImageHigh().equalsIgnoreCase( "1" ) || gridItem.getProducto().getImageHigh().equalsIgnoreCase( "0" ) )
-                                                    {
-                                                        imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                                        itemContainer.setVisibility( View.VISIBLE );
-                                                        imgComplete.setVisibility( View.GONE );
-                                                        providerName.setText( gridItem.getProducto().getProvider_name() );
-                                                        accessoryName.setTextColor( getResources().getColor( R.color.white ) );
-                                                        providerName.setTextColor( getResources().getColor( R.color.white ) );
-                                                        if ( gridItem.getProducto().getName().length() > 30 )
-                                                        {
-                                                            accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                                        } else
-                                                        {
-                                                            accessoryName.setText( gridItem.getProducto().getName() );
-                                                        }
-                                                        itemContainer.setBackgroundColor( Color.parseColor( Colors[ numberColorRandom ][ 0 ] ) );
-                                                    } else
-                                                    {
-                                                        itemContainer.setVisibility( View.GONE );
-                                                        imgComplete.setVisibility( View.VISIBLE );
-                                                        imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    }
-                                                    break;
-                                                case "3":
-                                                    itemContainer.setVisibility( View.GONE );
-                                                    imgComplete.setVisibility( View.VISIBLE );
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    break;
-                                                case "4":
-                                                    itemContainer.setVisibility( View.GONE );
-                                                    imgComplete.setVisibility( View.VISIBLE );
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    break;
-                                            }
-                                            break;
-                                        case "2":
-                                            switch ( gridItem.getProducto().getSizes() )
-                                            {
-                                                case "1":
-                                                    imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                                    itemContainer.setVisibility( View.VISIBLE );
-                                                    imgComplete.setVisibility( View.GONE );
-                                                    providerName.setText( gridItem.getProducto().getProvider_name() );
-                                                    if ( gridItem.getProducto().getName().length() > 30 )
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                                    } else
-                                                    {
-                                                        accessoryName.setText( gridItem.getProducto().getName() );
-                                                    }
-                                                    break;
-                                                case "2":
-                                                    if ( gridItem.getProducto().getImageHigh().equalsIgnoreCase( "1" ) || gridItem.getProducto().getImageHigh().equalsIgnoreCase( "0" ) )
-                                                    {
-                                                        imageAccessory.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getDetalles().get( 0 ).getValue() ) ) );
-                                                        itemContainer.setVisibility( View.VISIBLE );
-                                                        imgComplete.setVisibility( View.GONE );
-                                                        providerName.setText( gridItem.getProducto().getProvider_name() );
-                                                        accessoryName.setTextColor( getResources().getColor( R.color.white ) );
-                                                        providerName.setTextColor( getResources().getColor( R.color.white ) );
-                                                        if ( gridItem.getProducto().getName().length() > 30 )
-                                                        {
-                                                            accessoryName.setText( gridItem.getProducto().getName().substring( 0, 27 ) + "..." );
-                                                        } else
-                                                        {
-                                                            accessoryName.setText( gridItem.getProducto().getName() );
-                                                        }
-                                                        itemContainer.setBackgroundColor( Color.parseColor( Colors[ numberColorRandom ][ 0 ] ) );
-                                                    } else
-                                                    {
-                                                        itemContainer.setVisibility( View.GONE );
-                                                        imgComplete.setVisibility( View.VISIBLE );
-                                                        imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    }
-                                                    break;
-                                                case "3":
-                                                    itemContainer.setVisibility( View.GONE );
-                                                    imgComplete.setVisibility( View.VISIBLE );
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    break;
-                                                case "4":
-                                                    itemContainer.setVisibility( View.GONE );
-                                                    imgComplete.setVisibility( View.VISIBLE );
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getImageHigh() ) ) );
-                                                    break;
-                                            }
-                                            break;
-                                        case "3":
-                                            itemContainer.setVisibility( View.GONE );
-                                            imgComplete.setVisibility( View.VISIBLE );
-                                            imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage() ) ) );
-                                            break;
-                                        case "4":
-                                            itemContainer.setVisibility( View.GONE );
-                                            imgComplete.setVisibility( View.VISIBLE );
-                                            switch ( gridItem.getProducto().getSizes() )
-                                            {
-                                                case "1":
-                                                case "2":
-                                                case "3":
-                                                case "4":
-                                                    imgComplete.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getBannerImage() ) ) );
-                                                    break;
-                                            }
-                                    }
-
-                                    itemParent.setOnClickListener( new View.OnClickListener()
-                                    {
-                                        @Override
-                                        public void onClick( View v )
-                                        {
-                                            Global.producto = gridItem.getProducto();
-                                            switch ( gridItem.getProducto().getProduct_type_id() )
-                                            {
-                                                case "1":
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Equipo" )
-                                                            .setLabel( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                            .build() );
-                                                    if ( type == 0 )
-                                                    {
-
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Equipo" )
-                                                                .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                                .setLabel( "Catálogo" )
-                                                                .build() );
-                                                    } else if ( type == 1 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Equipo" )
-                                                                .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                                .setLabel( "Filtro 'Equipos'" )
-                                                                .build() );
-                                                    } else if ( type == 4 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Equipo" )
-                                                                .setAction( Global.producto.getProvider_name() + " - " + Global.producto.getName() )
-                                                                .setLabel( "Filtro: " + filtro )
-                                                                .build() );
-                                                    }
-                                                    startActivity( new Intent( MainActivity.this, FichaEquipo.class ) );
-                                                    break;
-                                                case "2":
-                                                    Global.accesorio = gridItem.getProducto();
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Accesorios" )
-                                                            .setLabel( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                            .build() );
-                                                    if ( type == 0 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Accesorio" )
-                                                                .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                                .setLabel( "Catálogo Principal" )
-                                                                .build() );
-                                                    } else if ( type == 2 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Accesorio" )
-                                                                .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                                .setLabel( "Filtro 'Accesorios'" )
-                                                                .build() );
-                                                    } else if ( type == 5 )
-                                                    {
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Accesorio" )
-                                                                .setAction( Global.accesorio.getProvider_name() + " - " + Global.accesorio.getName() )
-                                                                .setLabel( "Filtro: " + filtro )
-                                                                .build() );
-
-                                                    }
-                                                    startActivity( new Intent( MainActivity.this, AccesoriosActivity.class ) );
-                                                    overridePendingTransition( 0, 0 );
-                                                    break;
-                                                case "3":
-                                                    blurContent.setVisibility( View.GONE );
-                                                    setCloseTypeImage( btnPlans );
-                                                    rlParent.removeView( imageCloseFilter );
-                                                    rlContentPlans.setVisibility( View.VISIBLE );
-                                                    linearSeleccionaPlan.setVisibility( View.VISIBLE );
-                                                    if ( gridItem.getProducto().getName().contains( "Libres" ) )
-                                                    {
-                                                        selectPlanSmartFun();
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Catálogo" )
-                                                                .setAction( "Planes" )
-                                                                .setLabel( "Smart Fun" )
-                                                                .build() );
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Planes" )
-                                                                .setAction( "Catálogo Principal" )
-                                                                .setLabel( "Smart Fun" )
-                                                                .build() );
-                                                    } else if ( gridItem.getProducto().getName().contains( "Solo" ) )
-                                                    {
-                                                        selectPlanVoz();
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Catálogo" )
-                                                                .setAction( "Planes" )
-                                                                .setLabel( "Plan de Voz" )
-                                                                .build() );
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Planes" )
-                                                                .setAction( "Catálogo Principal" )
-                                                                .setLabel( "Plan de Voz" )
-                                                                .build() );
-                                                    } else if ( gridItem.getProducto().getName().contains( "Controlados" ) )
-                                                    {
-                                                        selectPlanControlFun();
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Catálogo" )
-                                                                .setAction( "Planes" )
-                                                                .setLabel( "Control Fun" )
-                                                                .build() );
-                                                        mTracker.send( new HitBuilders.EventBuilder()
-                                                                .setCategory( "Planes" )
-                                                                .setAction( "Catálogo Principal" )
-                                                                .setLabel( "Control Fun" )
-                                                                .build() );
-                                                    }
-                                                    break;
-                                                case "4":
-                                                    rlPopup.setVisibility( View.VISIBLE );
-                                                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + gridItem.getProducto().getPrimaryImage() ) ) );
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Catálogo" )
-                                                            .setAction( "Ofertas" )
-                                                            .setLabel( "http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage() )
-                                                            .build() );
-                                                    mTracker.send( new HitBuilders.EventBuilder()
-                                                            .setCategory( "Ofertas" )
-                                                            .setAction( "Catálogo Principal" )
-                                                            .setLabel( "http://entel.rinno.cl/images/details/high/" + gridItem.getProducto().getPrimaryImage() )
-                                                            .build() );
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                    } );
-
-
-                                    return view;
-                                }
-                            } )
-                            .build();
-                }
             }
 
 
@@ -3367,39 +3044,43 @@ public class MainActivity extends AppCompatActivity
     public void openEDSmartFun( String gbPlan, String precioPlan, int type, Producto producto )
     {
         equiposDestacadosRandom.clear();
-        tvGbPlanSf.setText( gbPlan );
-        tvGbPlanSf.setVisibility( View.VISIBLE );
+        // tvGbPlanSf.setText( gbPlan );
+        tvGbPlanSf.setVisibility( View.GONE );
         tvPrecioEquipoDestacadoSF.setText( precioPlan );
-        textView53.setVisibility( View.VISIBLE );
-        textView49.setVisibility( View.VISIBLE );
-        for ( int i = 0; i < Session.objData.getDevices().size(); i++ )
+        textView53.setVisibility( View.GONE );
+        textView49.setVisibility( View.GONE );
+        textView51.setText( producto.getName() );
+        textView51.setText( producto.getName());
+
+        for ( int i = 0; i < Session.objData.getProductos().size(); i++ )
         {
-            if ( Session.objData.getDevices().get( i ).getId().equalsIgnoreCase( producto.getEquno() ) || Session.objData.getDevices().get( i ).getId().equalsIgnoreCase( producto.getEqdos() ) )
+            if ( Session.objData.getProductos().get( i ).getId().equalsIgnoreCase( producto.getEquno() ) || Session.objData.getProductos().get( i ).getId().equalsIgnoreCase( producto.getEqdos() ) || Session.objData.getProductos().get( i ).getId().equalsIgnoreCase( producto.getEqtres() ) )
             {
-                if ( Session.objData.getDevices().get( i ).getId().equalsIgnoreCase( "44" ) )
+                if ( Session.objData.getProductos().get( i ).getId().equalsIgnoreCase( "44" ) )
                 {
-                    Session.objData.getDevices().get( i ).setCae( Session.objData.getDevices().get( i ).getHijos().get( 3 ).getCae() );
-                    Session.objData.getDevices().get( i ).setPrecios( Session.objData.getDevices().get( i ).getHijos().get( 3 ).getPrecios() );
+                    // Session.objData.getProductos().get( i ).setCae( Session.objData.getDevices().get( i ).getHijos().get( 3 ).getCae() );
+                    //     Session.objData.getProductos().get( i ).setPrecios( Session.objData.getDevices().get( i ).getHijos().get( 3 ).getPrecios() );
                 }
-                equiposDestacadosRandom.add( Session.objData.getDevices().get( i ) );
+                equiposDestacadosRandom.add( Session.objData.getProductos().get( i ) );
             }
         }
-        EquiposDestacadosAdapter equiposDestacadosAdapter = new EquiposDestacadosAdapter( equiposDestacadosRandom, this );
+        EquiposDestacadosAdapter equiposDestacadosAdapter = new EquiposDestacadosAdapter( equiposDestacadosRandom, this, producto );
         rvEquiposDestacadosSf.setAdapter( equiposDestacadosAdapter );
         if ( type == 0 )
         {
             constraintLayout2.setBackgroundColor( getResources().getColor( R.color.blue ) );
-            textView51.setText( "Smart Fun SIMple " );
+            //  textView51.setText( "Smart Fun SIMple " );
         } else if ( type == 1 )
         {
-            textView51.setText( "Control Fun SIMple " );
+            //  textView51.setText( "Control Fun SIMple " );
             constraintLayout2.setBackgroundColor( getResources().getColor( R.color.orange ) );
         } else if ( type == 2 )
         {
             textView51.setText( "Mi Primer Plan Multimedia " );
+
             constraintLayout2.setBackgroundColor( getResources().getColor( R.color.greenMint ) );
             textView49.setVisibility( View.GONE );
-            tvGbPlanSf.setText( precioPlan );
+            tvGbPlanSf.setText( producto.getName() );
             textView53.setVisibility( View.GONE );
         }
         rlEquipoDestacadoSmartFun.setVisibility( View.VISIBLE );
@@ -3448,10 +3129,10 @@ public class MainActivity extends AppCompatActivity
                 rlPopup.setVisibility( View.VISIBLE );
                 if ( getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE )
                 {
-                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 3 ).getCondicionImage() ) ) );
+                    //     imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 3 ).getCondicionImage() ) ) );
                 } else
                 {
-                    imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 3 ).getCondicionImageHorizontal() ) ) );
+                    //   imagePopup.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getPlanes().get( 3 ).getCondicionImageHorizontal() ) ) );
                 }
                 break;
             case R.id.constraint_mi_primer_plan:
@@ -3459,49 +3140,5 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void openImageHigh( String id )
-    {
-        closeContents();
-        if ( getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE )
-        {
-            switch ( id )
-            {
-                case "1":
-                    Uri f = Uri.fromFile( new File( Global.dirImages + Session.objData.getCatalog().getScreenOneImage() ) );
-                    Log.d( "IMAGE", f.toString() );
-                    imgDestacado.setImageURI( f );
-                    break;
-                case "2":
-                    Uri uri = Uri.fromFile( new File( Global.dirImages + Session.objData.getCatalog().getScreenTwoImage() ) );
-                    imgDestacado.setImageURI( uri );
-                    break;
-                case "3":
-                    imgDestacado.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getCatalog().getScreenThreeImage() ) ) );
-                    break;
-                case "4":
-                    imgDestacado.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getCatalog().getScreenFourImage() ) ) );
-                    break;
-            }
-        } else
-        {
-            switch ( id )
-            {
-                case "1":
-                    Uri f = Uri.fromFile( new File( Global.dirImages + Session.objData.getCatalog().getScreenOneImage_h() ) );
-                    imgDestacado.setImageURI( f );
-                    break;
-                case "2":
-                    Uri uri = Uri.fromFile( new File( Global.dirImages + Session.objData.getCatalog().getScreenTwoImage_h() ) );
-                    imgDestacado.setImageURI( uri );
-                    break;
-                case "3":
-                    imgDestacado.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getCatalog().getScreenThreeImage_h() ) ) );
-                    break;
-                case "4":
-                    imgDestacado.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getCatalog().getScreenFourImage_h() ) ) );
-                    break;
-            }
-        }
-        imgDestacado.setVisibility( View.VISIBLE );
-    }
+
 }

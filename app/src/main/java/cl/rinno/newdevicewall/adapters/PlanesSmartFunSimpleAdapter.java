@@ -1,11 +1,16 @@
 package cl.rinno.newdevicewall.adapters;
 
+import android.content.Context;
+import android.graphics.Point;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -16,6 +21,7 @@ import cl.rinno.newdevicewall.MainActivity;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
+import cl.rinno.newdevicewall.models.Session;
 
 
 /**
@@ -34,13 +40,25 @@ public class PlanesSmartFunSimpleAdapter extends RecyclerView.Adapter<PlanesSmar
         this.planesList = planesList;
         this.activity = activity;
 
-        Log.i( TAG, "AAAAAAAAAAAAAAAAA!" );
     }
 
     @Override
     public PlanesSmartFunSimpleViewHolder onCreateViewHolder( ViewGroup parent, int viewType )
     {
-        View view = LayoutInflater.from( parent.getContext() ).inflate( R.layout.item_planes_libres, parent, false );
+        Point size = new Point();
+        Display display = ((WindowManager) activity.getSystemService( Context.WINDOW_SERVICE )).getDefaultDisplay();
+        display.getSize( size );
+        int width = size.x;
+        View view;
+        Log.i( TAG, "onCreate: " + width );
+        if ( width > 1300 )
+        {
+
+            view = LayoutInflater.from( parent.getContext() ).inflate( R.layout.item_planes_libres_mx, parent, false );
+        } else
+        {
+            view = LayoutInflater.from( parent.getContext() ).inflate( R.layout.item_planes_libres, parent, false );
+        }
         return new PlanesSmartFunSimpleViewHolder( view );
     }
 
@@ -50,8 +68,18 @@ public class PlanesSmartFunSimpleAdapter extends RecyclerView.Adapter<PlanesSmar
         final Producto plan = planesList.get( position );
 
         Log.i( TAG, "onBindViewHolder: " + plan.getName() );
-        holder.planLibre.setImageURI( Uri.fromFile( new File( Global.dirImages + plan.getDetalles().get( 0 ).getValue() ) ) );
 
+        Log.i( "Planes", Session.objData.getGrupos().get( 0 ).getPlanes().get( position ).getBannerPlan() );
+        holder.planLibre.setImageURI( Uri.fromFile( new File( Global.dirImages + Session.objData.getGrupos().get( 0 ).getPlanes().get( position ).getBannerPlan() ) ) );
+
+        holder.verEquipos.setOnClickListener( new View.OnClickListener()
+        {
+            @Override
+            public void onClick( View v )
+            {
+                activity.openEDSmartFun( plan.getName(), plan.getCuotaCredito(), 0, plan );
+            }
+        } );
     }
 
     @Override
@@ -63,12 +91,14 @@ public class PlanesSmartFunSimpleAdapter extends RecyclerView.Adapter<PlanesSmar
     class PlanesSmartFunSimpleViewHolder extends RecyclerView.ViewHolder
     {
 
-        SimpleDraweeView planLibre;
+        ImageView planLibre;
+        ImageView verEquipos;
 
         PlanesSmartFunSimpleViewHolder( View itemView )
         {
             super( itemView );
             planLibre = (SimpleDraweeView) itemView.findViewById( R.id.planLibre );
+            verEquipos = (ImageView) itemView.findViewById( R.id.verEquipos );
 
         }
     }

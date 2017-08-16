@@ -1,106 +1,117 @@
 package cl.rinno.newdevicewall.adapters;
 
+import android.content.Context;
+import android.graphics.Point;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.w3c.dom.Text;
+
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import cl.rinno.newdevicewall.EquipoConPlanActivity;
 import cl.rinno.newdevicewall.R;
+import cl.rinno.newdevicewall.models.Global;
 import cl.rinno.newdevicewall.models.Producto;
 
-/**
- * Created by chinodoge on 21-03-2017.
- */
 
-public class PlanesControlFunAdapter extends RecyclerView.Adapter<PlanesControlFunAdapter.PlanesControlFunViewHolder>{
+public class PlanesControlFunAdapter extends RecyclerView.Adapter<PlanesControlFunAdapter.PlanesControlFunViewHolder>
+{
 
     ArrayList<Producto> planesList;
     EquipoConPlanActivity activity;
+    Producto producto;
 
-    public PlanesControlFunAdapter(ArrayList<Producto> planesList, EquipoConPlanActivity activity) {
+    private static final String TAG = "PlanesControlFunAdapter";
+
+    public PlanesControlFunAdapter( ArrayList<Producto> planesList, EquipoConPlanActivity activity, Producto producto)
+    {
         this.planesList = planesList;
         this.activity = activity;
-        Collections.sort(this.planesList, new Comparator<Producto>() {
-            @Override
-            public int compare(Producto o1, Producto o2) {
-                int valueOne;
-                int valueTwo;
-                double doubleOne, doubleTwo;
-                doubleOne = Double.parseDouble(o1.getDetalles().get(4).getValue());
-                doubleTwo = Double.parseDouble(o2.getDetalles().get(4).getValue());
-                valueOne = (int) doubleOne;
-                valueTwo = (int) doubleTwo;
-                return valueOne - valueTwo;
-            }
-        });
+        this.producto = producto;
+
     }
 
     @Override
-    public PlanesControlFunViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_plan_controlfun,parent,false);
-        return new PlanesControlFunViewHolder(view);
-    }
+    public PlanesControlFunViewHolder onCreateViewHolder( ViewGroup parent, int viewType )
+    {
+         Point size = new Point();
+        Display display = ((WindowManager) activity.getSystemService( Context.WINDOW_SERVICE )).getDefaultDisplay();
+        display.getSize( size );
+        int width = size.x;
+        View view;
+        Log.i( TAG, "onCreate: " + width );
+        if ( width > 1300 )
+        {
 
-    @Override
-    public void onBindViewHolder(PlanesControlFunViewHolder holder, int position) {
-        final Producto plan = planesList.get(position);
-        holder.txtMinutos.setText(activity.getString(R.string.minutos_plan, plan.getDetalles().get(2).getValue()));
-        holder.txtGBNombre.setText(activity.getString(R.string.cuota_datos,plan.getDetalles().get(4).getValue()));
-        holder.txtCargoFijo.setText(activity.getString(R.string.precio_venta,plan.getDetalles().get(9).getValue()));
-        holder.txtCuotaInicial.setText(plan.getRelation().getValue());
-        holder.txtCuotaDatos.setText(activity.getString(R.string.cuota_datos,plan.getDetalles().get(4).getValue()));
-        double gbPlan = Double.parseDouble(plan.getDetalles().get(4).getValue());
-        if(gbPlan == 1){
-            holder.txtPromo.setVisibility(View.GONE);
-            holder.btnVerPromo.setVisibility(View.INVISIBLE);
+            view =  LayoutInflater.from( parent.getContext() ).inflate( R.layout.item_plan_controlfun_mx, parent, false );
+        } else
+        {
+            view =  LayoutInflater.from( parent.getContext() ).inflate( R.layout.item_plan_controlfun, parent, false );
+
         }
-        gbPlan = (gbPlan * 2);
-        int cuotaMusica = (int) gbPlan;
-        holder.txtCuotaPromo.setText(activity.getString(R.string.cuota_datos,""+cuotaMusica));
-        holder.btnVerPromo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.verPromo(plan.getDetalles().get(plan.getDetalles().size()-1).getValue());
-            }
-        });
-        holder.txtNavegaHasta.setText(plan.getDetalles().get(5).getValue());
+
+        return new PlanesControlFunViewHolder( view );
     }
 
     @Override
-    public int getItemCount() {
+    public void onBindViewHolder( PlanesControlFunViewHolder holder, int position )
+    {
+        final Producto plan = planesList.get( position );
+
+
+
+
+
+        holder.imagenBasePlan.setImageURI( Uri.fromFile( new File( Global.dirImages + plan.getImagenBase() ) ) );
+
+
+        for ( int i = 0; i < producto.getPlanes().size(); i++ )
+        {
+            Log.i( TAG, Global.producto.getPlanes().get( i ).getVC() );
+            Log.i( TAG, Global.producto.getPlanes().get( i ).getPM() );
+
+            if ( producto.getPlanes().get( i ).getId().equals( plan.getId() ) )
+            {
+
+                holder.pagoInicial.setText( "$" + producto.getPlanes().get( i ).getPM() );
+                holder.pagoCuota.setText( "$" + producto.getPlanes().get( i ).getVC() );
+                break;
+            }
+        }
+
+    }
+
+    @Override
+    public int getItemCount()
+    {
         return planesList.size();
     }
 
-    class PlanesControlFunViewHolder extends RecyclerView.ViewHolder {
-        TextView txtGBNombre;
-        TextView txtCargoFijo;
-        TextView txtCuotaDatos;
-        TextView txtCuotaPromo;
-        TextView txtCuotaInicial;
-        LinearLayout btnVerPromo;
-        TextView txtMinutos;
-        TextView txtPromo;
-        TextView txtNavegaHasta;
+    class PlanesControlFunViewHolder extends RecyclerView.ViewHolder
+    {
 
-        PlanesControlFunViewHolder(View itemView) {
-            super(itemView);
-            txtGBNombre = (TextView) itemView.findViewById(R.id.tv_gb_nombre);
-            txtCargoFijo = (TextView) itemView.findViewById(R.id.tv_cargo_fijo);
-            txtCuotaDatos = (TextView) itemView.findViewById(R.id.tv_cuota_datos);
-            txtCuotaPromo = (TextView) itemView.findViewById(R.id.tv_cuota_promo);
-            txtCuotaInicial = (TextView) itemView.findViewById(R.id.tv_valor_plan);
-            btnVerPromo = (LinearLayout) itemView.findViewById(R.id.linear_equipos_destacados);
-            txtMinutos = (TextView) itemView.findViewById(R.id.tv_minutos_mpm);
-            txtPromo = (TextView) itemView.findViewById(R.id.tv_promo);
-            txtNavegaHasta = (TextView) itemView.findViewById(R.id.tv_navega_hasta);
+        SimpleDraweeView imagenBasePlan;
+        TextView pagoInicial, pagoCuota;
+
+
+
+        PlanesControlFunViewHolder( View itemView )
+        {
+            super( itemView );
+            imagenBasePlan = (SimpleDraweeView) itemView.findViewById( R.id.imagenBasePlanControl );
+            pagoInicial = (TextView) itemView.findViewById( R.id.pagoInicial );
+            pagoCuota = (TextView) itemView.findViewById( R.id.pagoCuota );
         }
     }
 }

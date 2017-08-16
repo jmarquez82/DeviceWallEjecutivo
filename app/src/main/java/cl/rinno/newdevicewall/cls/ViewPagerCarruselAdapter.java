@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import cl.rinno.newdevicewall.fragments.CarruselFragment;
 import cl.rinno.newdevicewall.models.Producto;
 
-/**
- * Created by chinodoge on 22-03-2017.
- */
 
 public class ViewPagerCarruselAdapter extends FragmentPagerAdapter {
 

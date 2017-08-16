@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical">
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/imagenBasePlan"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        fresco:actualImageScaleType="centerInside"/>
+
+    <TextView
+        android:id="@+id/pagoInicialLibre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="389.990"
+        android:textColor="#353535"
+        android:textSize="18sp"
+        android:textStyle="bold"
+
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="143dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.731"/>
+
+
+    <TextView
+        android:id="@+id/pagoCuotaLibre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginTop="28dp"
+        android:text="20.000"
+        android:textColor="#353535"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/imagenBasePlan"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.731"/>
+</android.support.constraint.ConstraintLayout>

@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:orientation="vertical"
         android:weightSum="10">
 
@@ -1216,6 +1217,7 @@
 
     <LinearLayout
         android:id="@+id/constraint_plans"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -1223,17 +1225,19 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="1420dp"
+            android:layout_height="1400dp"
             android:background="@color/backgroundGray"
             >
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/image_banner_plan"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="330dp"
+                fresco:actualImageScaleType="centerInside"
                 />
 
             <android.support.constraint.ConstraintLayout
+
                 android:id="@+id/constraint_plan_voz"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -1367,6 +1371,13 @@
 
 
             </android.support.constraint.ConstraintLayout>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/planesVoz"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_banner_plan"
+                fresco:actualImageScaleType="centerInside"/>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraint_plan_smartfun"
@@ -1717,7 +1728,8 @@
         android:id="@+id/rl_equipo_destacado_smart_fun"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <com.github.mmin18.widget.RealtimeBlurView
             android:layout_width="match_parent"
@@ -1727,16 +1739,16 @@
 
         <RelativeLayout
             android:id="@+id/rl_parent_equipos_destacados"
-            android:layout_width="985dp"
-            android:layout_height="1085dp"
+            android:layout_width="1040dp"
+            android:layout_height="1185dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="260dp"
             android:background="@android:drawable/dialog_holo_dark_frame">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraint_equipo_destacado_sf"
-                android:layout_width="970dp"
-                android:layout_height="1070dp"
+                android:layout_width="1040dp"
+                android:layout_height="1170dp"
                 android:background="@color/backgroundGray">
 
                 <LinearLayout
@@ -1755,7 +1767,7 @@
                         fontPath="fonts/DINNextLTPro-Bold.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="{ Equipos"
+                        android:text="{ Pórtate y súmale un "
                         android:textColor="@color/blue"
                         android:textSize="47sp"/>
 
@@ -1763,8 +1775,16 @@
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" Recomendados_"
+                        android:text=" _equipo"
                         android:textColor="@color/orange"
+                        android:textSize="47sp"/>
+
+                    <TextView
+                        fontPath="fonts/DINNextLTPro-Bold.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" a tu plan"
+                        android:textColor="@color/blue"
                         android:textSize="47sp"/>
                 </LinearLayout>
 
@@ -1796,14 +1816,18 @@
                         fontPath="fonts/DINNextLTPro-BoldItalic.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="95dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:text="24.990"
                         android:textColor="@color/white"
                         android:textSize="48sp"
-                        app:layout_constraintLeft_toLeftOf="@+id/textView54"
-                        app:layout_constraintRight_toRightOf="@+id/textView54"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.402"
+                        app:layout_constraintLeft_toLeftOf="@+id/linear_text"
+                        app:layout_constraintRight_toRightOf="@+id/linear_text"
                         app:layout_constraintTop_toBottomOf="parent"
-                        tools:layout_editor_absoluteY="623dp"/>
+                        app:layout_constraintVertical_bias="0.7"/>
 
                     <TextView
                         android:id="@+id/textView54"
@@ -1818,6 +1842,8 @@
                         android:layout_marginTop="10dp"
                         android:text="VALOR DEL PLAN"
                         android:textColor="@color/white"
+                        android:visibility="gone"
+
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="@+id/linear_text"
                         app:layout_constraintRight_toRightOf="@+id/linear_text"
@@ -1832,52 +1858,66 @@
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="0dp"
                         android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.519"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.5">
+                        app:layout_constraintVertical_bias="0.44">
 
-                        <TextView
-                            android:id="@+id/textView49"
-                            fontPath="fonts/DINNextLTPro-Regular.otf"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Plan "
-                            android:textColor="@color/white"
-                            android:textSize="37sp"/>
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/textView51"
-                            fontPath="fonts/DINNextLTPro-Bold.otf"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Smart Fun SIMple "
-                            android:textColor="@color/white"
-                            android:textSize="37sp"/>
+                            <TextView
+                                android:id="@+id/textView49"
+                                fontPath="fonts/DINNextLTPro-Regular.otf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Plan "
+                                android:textColor="@color/white"
+                                android:textSize="37sp"
+                                android:visibility="gone"/>
 
-                        <TextView
-                            android:id="@+id/tv_gb_plan_sf"
-                            fontPath="fonts/DINNextLTPro-Bold.otf"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4.5"
-                            android:textColor="@color/white"
-                            android:textSize="37sp"
-                            app:layout_constraintLeft_toRightOf="@+id/textView51"
-                            app:layout_constraintTop_toTopOf="@+id/textView51"/>
+                            <TextView
+                                android:id="@+id/textView51"
+                                fontPath="fonts/DINNextLTPro-Bold.otf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Smart Fun SIMple "
+                                android:textColor="@color/white"
+                                android:textSize="37sp"
+                                />
 
-                        <TextView
-                            android:id="@+id/textView53"
-                            fontPath="fonts/DINNextLTPro-Bold.otf"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" GB"
-                            android:textColor="@color/white"
-                            android:textSize="37sp"
-                            app:layout_constraintLeft_toRightOf="@+id/tv_gb_plan_sf"
-                            app:layout_constraintTop_toTopOf="@+id/tv_gb_plan_sf"/>
+                            <TextView
+                                android:id="@+id/tv_gb_plan_sf"
+                                fontPath="fonts/DINNextLTPro-Bold.otf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="4.5"
+                                android:textColor="@color/white"
+                                android:textSize="37sp"
+                                android:visibility="gone"
+                                app:layout_constraintLeft_toRightOf="@+id/textView51"
+                                app:layout_constraintTop_toTopOf="@+id/textView51"/>
+
+                            <TextView
+                                android:id="@+id/textView53"
+                                fontPath="fonts/DINNextLTPro-Bold.otf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" GB"
+                                android:textColor="@color/white"
+                                android:textSize="37sp"
+                                android:visibility="gone"
+                                app:layout_constraintLeft_toRightOf="@+id/tv_gb_plan_sf"
+                                app:layout_constraintTop_toTopOf="@+id/tv_gb_plan_sf"/>
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
                 </android.support.constraint.ConstraintLayout>
@@ -1893,7 +1933,7 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_equipos_destacados_sf"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="45dp"
                         />
@@ -1949,4 +1989,67 @@
         android:layout_height="match_parent"
         android:background="@color/blue"
         android:visibility="gone"/>
+
+
+    <LinearLayout
+        android:id="@+id/listarPlanes"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="600dp"
+        android:background="#dcdcdc"
+        android:elevation="100dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="40dp"
+            >
+
+            <ImageView
+                android:id="@+id/primerPlan"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_weight="2"
+                android:background="@drawable/caluga_uno"
+                android:padding="20dp"
+                />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/segundoPlan"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/caluga_dos"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_marginLeft="40dp">
+
+
+            <ImageView
+                android:id="@+id/tercerPlan"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/caluga_tres"
+                />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"/>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

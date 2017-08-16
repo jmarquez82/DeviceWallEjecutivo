@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Producto;
 
-/**
- * Created by chinodoge on 23-03-2017.
- */
+
 
 public class PlanDeVozAdapter extends RecyclerView.Adapter<PlanDeVozAdapter.PlanDeVozViewHolder>{
 
@@ -42,9 +40,9 @@ public class PlanDeVozAdapter extends RecyclerView.Adapter<PlanDeVozAdapter.Plan
             holder.imgPlan.setImageURI(Uri.parse("res:/"+R.drawable.icn_vozlimitado));
         }
         holder.txtNombrePlan.setText(planesList.get(position).getName());
-        holder.txtSMS.setText(planesList.get(position).getDetalles().get(3).getValue());
-        holder.txtMin.setText(planesList.get(position).getDetalles().get(1).getValue());
-        holder.txtCargoFijo.setText(planesList.get(position).getDetalles().get(4).getValue());
+       // holder.txtSMS.setText(planesList.get(position).getDetalles().get(3).getValue());
+      //  holder.txtMin.setText(planesList.get(position).getDetalles().get(1).getValue());
+      //  holder.txtCargoFijo.setText(planesList.get(position).getDetalles().get(4).getValue());
     }
 
     @Override

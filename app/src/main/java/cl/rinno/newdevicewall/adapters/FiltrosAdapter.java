@@ -7,14 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
@@ -24,15 +20,14 @@ import cl.rinno.newdevicewall.AnalyticsApplication;
 import cl.rinno.newdevicewall.MainActivity;
 import cl.rinno.newdevicewall.R;
 import cl.rinno.newdevicewall.models.Global;
-import cl.rinno.newdevicewall.models.Producto;
 import cl.rinno.newdevicewall.models.Provider;
-import cl.rinno.newdevicewall.models.Session;
 
 /**
  * Created by chinodoge on 13-03-2017.
  */
 
-public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosViewHolder>{
+public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosViewHolder>
+{
 
     private ArrayList<String> filterList;
     private int type;
@@ -41,7 +36,8 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
 
     Tracker mTracker;
 
-    public FiltrosAdapter(ArrayList<Provider> providersArrayList, int type, MainActivity mainActivity, String xd) {
+    public FiltrosAdapter( ArrayList<Provider> providersArrayList, int type, MainActivity mainActivity, String xd )
+    {
         this.providersArrayList = providersArrayList;
         this.type = type;
         this.mainActivity = mainActivity;
@@ -49,69 +45,82 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
         mTracker = application.getDefaultTracker();
     }
 
-    public FiltrosAdapter(ArrayList<String> filterList, int type, MainActivity mainActivity) {
+    public FiltrosAdapter( ArrayList<String> filterList, int type, MainActivity mainActivity )
+    {
         this.filterList = filterList;
         this.type = type;
         this.mainActivity = mainActivity;
-        AnalyticsApplication application = (AnalyticsApplication) this.mainActivity.getApplication();
-        mTracker = application.getDefaultTracker();
+
     }
 
     @Override
-    public FiltrosViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(type == 4){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filter_accessory,parent,false);
-            return new FiltrosViewHolder(view);
-        }else{
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filter_device,parent,false);
-            return new FiltrosViewHolder(view);
+    public FiltrosViewHolder onCreateViewHolder( ViewGroup parent, int viewType )
+    {
+        if ( type == 4 )
+        {
+            View view = LayoutInflater.from( parent.getContext() ).inflate( R.layout.item_filter_accessory, parent, false );
+            return new FiltrosViewHolder( view );
+        } else
+        {
+            View view = LayoutInflater.from( parent.getContext() ).inflate( R.layout.item_filter_device, parent, false );
+            return new FiltrosViewHolder( view );
         }
 
     }
 
     @Override
-    public void onBindViewHolder(final FiltrosViewHolder holder, final int position) {
-        if(type == 0){
-            holder.imgProvider.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.providersDevices.get(position).getProvider_image())));
-            Log.i( "TAG", Global.dirImages + Global.providersDevices.get(position).getProvider_image());
-            holder.txtFilter.setVisibility(View.GONE);
-            holder.imgProvider.setVisibility(View.VISIBLE);
-            if(Global.providersDevices.get(position).getId().equalsIgnoreCase("7") || Global.providersDevices.get(position).getId().equalsIgnoreCase("15") || Global.providersDevices.get(position).getId().equalsIgnoreCase("9")){
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(30,30);
-                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                holder.rlParentImage.setLayoutParams(layoutParams);
+    public void onBindViewHolder( final FiltrosViewHolder holder, final int position )
+    {
+        if ( type == 0 )
+        {
+            holder.imgProvider.setImageURI( Uri.fromFile( new File( Global.dirImages + Global.providersDevices.get( position ).getProvider_image() ) ) );
+            Log.i( "TAG", Global.dirImages + Global.providersDevices.get( position ).getProvider_image() );
+            holder.txtFilter.setVisibility( View.GONE );
+            holder.imgProvider.setVisibility( View.VISIBLE );
+            if ( Global.providersDevices.get( position ).getId().equalsIgnoreCase( "7" ) || Global.providersDevices.get( position ).getId().equalsIgnoreCase( "15" ) || Global.providersDevices.get( position ).getId().equalsIgnoreCase( "9" ) )
+            {
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams( 30, 30 );
+                layoutParams.addRule( RelativeLayout.CENTER_IN_PARENT );
+                holder.rlParentImage.setLayoutParams( layoutParams );
             }
-        }else if(type == 1 || type == 2 || type == 3){
-            holder.imgProvider.setVisibility(View.GONE);
-            holder.txtFilter.setVisibility(View.VISIBLE);
-            holder.txtFilter.setText(filterList.get(position));
-        } else if(type == 4){
-            holder.imgProvider.setImageURI(Uri.fromFile(new File(Global.dirImages + Global.providersDevices.get(position).getProvider_image())));
-            holder.txtFilter.setVisibility(View.GONE);
-            holder.imgProvider.setVisibility(View.VISIBLE);
-            if(Global.providersDevices.get(position).getId().equalsIgnoreCase("7") || Global.providersDevices.get(position).getId().equalsIgnoreCase("15") || Global.providersDevices.get(position).getId().equalsIgnoreCase("9")){
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(105,105);
-                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                holder.rlParentImage.setLayoutParams(layoutParams);
+        } else if ( type == 1 || type == 2 || type == 3 )
+        {
+            holder.imgProvider.setVisibility( View.GONE );
+            holder.txtFilter.setVisibility( View.VISIBLE );
+            holder.txtFilter.setText( filterList.get( position ) );
+        } else if ( type == 4 )
+        {
+            holder.imgProvider.setImageURI( Uri.fromFile( new File( Global.dirImages + Global.providersDevices.get( position ).getProvider_image() ) ) );
+            holder.txtFilter.setVisibility( View.GONE );
+            holder.imgProvider.setVisibility( View.VISIBLE );
+            if ( Global.providersDevices.get( position ).getId().equalsIgnoreCase( "7" ) || Global.providersDevices.get( position ).getId().equalsIgnoreCase( "15" ) || Global.providersDevices.get( position ).getId().equalsIgnoreCase( "9" ) )
+            {
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams( 105, 105 );
+                layoutParams.addRule( RelativeLayout.CENTER_IN_PARENT );
+                holder.rlParentImage.setLayoutParams( layoutParams );
             }
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener( new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick( View v )
+            {
                 String value = holder.txtFilter.getText().toString();
                 String valueTwo = "";
                 String filter = "";
-                switch(type){
+                switch ( type )
+                {
                     case 0:
                     case 4:
                         filter = "Marca";
-                        value = Global.providersDevices.get(position).getName();
-                        valueTwo = Global.providersDevices.get(position).getId();
+                        value = Global.providersDevices.get( position ).getName();
+                        valueTwo = Global.providersDevices.get( position ).getId();
                         break;
                     case 1:
                         filter = "Pantalla";
-                        switch (value) {
+                        switch ( value )
+                        {
                             case "3\"":
                                 valueTwo = "0\"";
                                 break;
@@ -134,7 +143,8 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
                         break;
                     case 2:
                         filter = "Cámara Trasera";
-                        switch (value) {
+                        switch ( value )
+                        {
                             case "1.3MP":
                                 valueTwo = "0M";
                                 break;
@@ -157,7 +167,8 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
                         break;
                     case 3:
                         filter = "Cámara Frontal";
-                        switch (value) {
+                        switch ( value )
+                        {
                             case "1.3MP":
                                 valueTwo = "0 ";
                                 break;
@@ -182,50 +193,43 @@ public class FiltrosAdapter extends RecyclerView.Adapter<FiltrosAdapter.FiltrosV
                 final String finalValue = value;
                 final String finalValueTwo = valueTwo;
                 final String finalFilter = filter;
-                new Handler().postDelayed(new Runnable() {
+                new Handler().postDelayed( new Runnable()
+                {
                     @Override
-                    public void run() {
-                        if (type == 4){
-                            mTracker.send(new HitBuilders.EventBuilder()
-                                    .setCategory("Accesorio")
-                                    .setAction("Filtro Equipo Compatible")
-                                    .setLabel(finalValue)
-                                    .build());
-                        } else{
-                            mTracker.send(new HitBuilders.EventBuilder()
-                                    .setCategory("Equipo")
-                                    .setAction("Filtro: "+ finalFilter)
-                                    .setLabel(finalValue)
-                                    .build());
-                        }
-
-                        mainActivity.setFilter(finalValue, finalValueTwo);
+                    public void run()
+                    {
+                        mainActivity.setFilter( finalValue, finalValueTwo );
                     }
-                },0);
+                }, 0 );
             }
-        });
+        } );
     }
 
     @Override
-    public int getItemCount() {
-        if(filterList == null){
+    public int getItemCount()
+    {
+        if ( filterList == null )
+        {
             return providersArrayList.size();
-        }else{
+        } else
+        {
             return filterList.size();
         }
     }
 
-    public class FiltrosViewHolder extends RecyclerView.ViewHolder {
+    class FiltrosViewHolder extends RecyclerView.ViewHolder
+    {
 
         SimpleDraweeView imgProvider;
         TextView txtFilter;
         RelativeLayout rlParentImage;
 
-        public FiltrosViewHolder(View itemView) {
-            super(itemView);
-            rlParentImage = (RelativeLayout) itemView.findViewById(R.id.rl_parent_image);
-            imgProvider = (SimpleDraweeView) itemView.findViewById(R.id.image_provider_filter);
-            txtFilter = (TextView) itemView.findViewById(R.id.text_nombre_filtro);
+        FiltrosViewHolder( View itemView )
+        {
+            super( itemView );
+            rlParentImage = (RelativeLayout) itemView.findViewById( R.id.rl_parent_image );
+            imgProvider = (SimpleDraweeView) itemView.findViewById( R.id.image_provider_filter );
+            txtFilter = (TextView) itemView.findViewById( R.id.text_nombre_filtro );
         }
     }
 }

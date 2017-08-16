@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginBottom="24dp"
+    android:background="@color/white"
+    android:paddingLeft="10dp"
+    android:gravity="center_vertical">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/image_plan"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        fresco:actualImageScaleType="fitCenter"
+        fresco:layout_constraintBottom_toBottomOf="parent"
+        fresco:layout_constraintLeft_toLeftOf="parent"
+        fresco:layout_constraintTop_toTopOf="parent"
+        fresco:layout_constraintVertical_bias="0.126" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_plan_name"
+            fontPath="fonts/DINNextLTPro-Medium.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.500"
+            android:textColor="@color/blue"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView43"
+                fontPath="fonts/DINNextLTPro-Bold.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textColor="@color/orange"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_cargo_fijo_voz"
+                fontPath="fonts/DINNextLTPro-Bold.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="13.990"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView42"
+            fontPath="fonts/DINNextLTPro-Medium.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cargo fijo mensual"
+            android:textColor="@color/dimGray"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/icn_reloj"
+            fresco:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView48"
+            fontPath="fonts/DINNextLTPro-Medium.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Habla hasta"
+            android:textColor="@color/dimGray"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/tv_min_voz"
+            fontPath="fonts/DINNextLTPro-Medium.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="330 Min."
+            android:textColor="@color/dimGray"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout13"
+        android:layout_width="1dp"
+        android:layout_height="42dp"
+        android:layout_marginLeft="58dp"
+        android:layout_marginTop="0dp"
+        android:background="#DDD"
+        android:orientation="horizontal"
+        fresco:layout_constraintBottom_toBottomOf="parent"
+        fresco:layout_constraintLeft_toRightOf="@+id/imageView5"
+        fresco:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            fresco:srcCompat="@drawable/icn_sms" />
+
+        <TextView
+            android:id="@+id/textView50"
+            fontPath="fonts/DINNextLTPro-Medium.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SMS Todo destino"
+            android:textColor="@color/dimGray"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/tv_sms_voz"
+            fontPath="fonts/DINNextLTPro-Medium.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="500"
+            android:textColor="@color/dimGray"
+            android:textSize="16sp"
+            fresco:layout_constraintHorizontal_bias="0.51"
+            fresco:layout_constraintLeft_toLeftOf="@+id/textView50"
+            fresco:layout_constraintRight_toRightOf="@+id/textView50"
+            fresco:layout_constraintTop_toBottomOf="@+id/textView50" />
+    </LinearLayout>
+
+
+</LinearLayout>

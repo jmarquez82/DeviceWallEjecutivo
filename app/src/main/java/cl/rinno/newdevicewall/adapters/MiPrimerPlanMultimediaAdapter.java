@@ -35,11 +35,11 @@ public class MiPrimerPlanMultimediaAdapter extends RecyclerView.Adapter<MiPrimer
 
     @Override
     public void onBindViewHolder(MiPrimerPlanMultimediaViewHolder holder, final int position) {
-        holder.txtMinutos.setText(mainActivity.getString(R.string.minutos_plan, plansList.get(position).getDetalles().get(1).getValue()));
-        holder.txtValorMensual.setText(plansList.get(position).getDetalles().get(9).getValue());
-        holder.txtNavegaHasta.setText(plansList.get(position).getDetalles().get(4).getValue() + " GB");
-        holder.txtPrecioNombre.setText(plansList.get(position).getDetalles().get(9).getValue());
-        holder.txtCuotaDatos.setText(plansList.get(position).getDetalles().get(4).getValue() + " GB");
+     //   holder.txtMinutos.setText(mainActivity.getString(R.string.minutos_plan, plansList.get(position).getDetalles().get(1).getValue()));
+      //  holder.txtValorMensual.setText(plansList.get(position).getDetalles().get(9).getValue());
+     //   holder.txtNavegaHasta.setText(plansList.get(position).getDetalles().get(4).getValue() + " GB");
+     //   holder.txtPrecioNombre.setText(plansList.get(position).getDetalles().get(9).getValue());
+     //   holder.txtCuotaDatos.setText(plansList.get(position).getDetalles().get(4).getValue() + " GB");
     }
 
     @Override

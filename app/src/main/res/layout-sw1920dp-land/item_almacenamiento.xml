@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="105.0dp"
+    android:layout_height="48.0dp"
+    android:layout_marginEnd="6dp"
+    android:layout_marginStart="6dp"
+    android:background="@drawable/bg_gb_land"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/txtAlmacenamiendo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="128 GB"
+        android:textColor="@color/dimGray"
+        android:textStyle="italic"
+        android:textSize="26.0sp" />
+</LinearLayout>

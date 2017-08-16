@@ -3,12 +3,12 @@ package cl.rinno.newdevicewall.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -24,7 +24,8 @@ import cl.rinno.newdevicewall.models.Producto;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CarruselFragment extends Fragment {
+public class CarruselFragment extends Fragment
+{
 
     Producto producto;
     int type;
@@ -36,34 +37,43 @@ public class CarruselFragment extends Fragment {
     TextView txtProviderName;
     @BindView(R.id.fragment_carrusel)
     ConstraintLayout fragmentCarrusel;
+    private static final String TAG = "CarruselFragment";
 
-    public CarruselFragment(Producto producto, int type) {
+    public CarruselFragment( Producto producto, int type )
+    {
         this.producto = producto;
         this.type = type;
     }
 
-    public CarruselFragment() {
+    public CarruselFragment()
+    {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView( LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState )
+    {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_carrusel, container, false);
-        ButterKnife.bind(this, view);
+
+        View view = inflater.inflate( R.layout.fragment_carrusel, container, false );
+        ButterKnife.bind( this, view );
+
         //Si es 0 es un accesorio y se le pone un background
         //Si es 1 es un celular, se le quita el fondo y el color del nombre es naranjo.
-        if (type == 0) {
-            fragmentCarrusel.setBackgroundResource(R.drawable.bg_carrusel_fragment);
-            txtProductName.setTextColor(getResources().getColor(R.color.dimGray));
-        }else if(type == 1){
-            fragmentCarrusel.setBackgroundResource(R.drawable.bg_carrusel_fragment_white);
-            txtProductName.setTextColor(getResources().getColor(R.color.orange));
+        if ( type == 0 )
+        {
+            fragmentCarrusel.setBackgroundResource( R.drawable.bg_carrusel_fragment );
+            txtProductName.setTextColor( getResources().getColor( R.color.dimGray ) );
+        } else if ( type == 1 )
+        {
+            fragmentCarrusel.setBackgroundResource( R.drawable.bg_carrusel_fragment_white );
+            txtProductName.setTextColor( getResources().getColor( R.color.orange ) );
         }
-        imgProduct.setImageURI(Uri.fromFile(new File(Global.dirImages + producto.getDetalles().get(0).getValue())));
-        txtProductName.setText(producto.getName());
-        txtProviderName.setText(producto.getProvider_name());
+
+        imgProduct.setImageURI( Uri.fromFile( new File( Global.dirImages + producto.getImagenPrimaria() )));
+        txtProductName.setText( producto.getName() );
+        txtProviderName.setText( producto.getProvider_name() );
         return view;
     }
 }

@@ -4,12 +4,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-/**
- * Created by chinodoge on 09-02-2017.
- */
 
 public class DWApi {
-    private static final String BASE_URL = "http://entel.rinno.cl/";
+    private static final String BASE_URL = "http://entel.rinnolab.cl/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

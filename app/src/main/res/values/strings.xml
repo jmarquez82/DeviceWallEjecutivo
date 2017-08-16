@@ -34,5 +34,41 @@
         <item>Tercera</item>
         <item>Cuarta</item>
     </string-array>
+
+
+    <string-array name="sucursales">
+        <item>Seleccione…</item>
+        <item>Torre Entel</item>
+        <item>Morandé</item>
+        <item>Pedro de Valdivia</item>
+        <item>Nueva Providencia</item>
+        <item>El Golf</item>
+        <item>Plaza Egaña</item>
+        <item>San Bernardo</item>
+        <item>Manquehue</item>
+        <item>Vespucio</item>
+        <item>Antofagasta</item>
+        <item>Calama</item>
+        <item>Copiapo</item>
+        <item>La Serena</item>
+        <item>Viña del Mar</item>
+        <item>Valparaiso</item>
+        <item>Los Andes</item>
+        <item>Rancagua</item>
+        <item>Concepción</item>
+        <item>Temuco</item>
+        <item>Ahumada Express</item>
+        <item>Concepción Express</item>
+        <item>Copiapo Express</item>
+        <item>Costanera Center Express</item>
+        <item>Mac Iver Express</item>
+        <item>Parque Arauco Express</item>
+        <item>Puente Alto Express</item>
+        <item>Rancagua Express</item>
+        <item>Temuco Express</item>
+        <item>Valdivia Express</item>
+        <item>Castro Express</item>
+    </string-array>
 </resources>
+
 

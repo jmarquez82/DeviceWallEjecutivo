@@ -2,95 +2,101 @@ package cl.rinno.newdevicewall.models;
 
 import java.util.ArrayList;
 
-/**
- * Created by chinodoge on 08-02-2017.
- */
 
 public class Producto
 {
     private String id;
     private String provider_id;
-    private String product_type_id;
-    private String product_type;
-    private String name;
-    private String parent;
-    private String status;
-    private String created_at;
-    private String uploaded_at;
-    private ArrayList<Detalle> detalles;
-    private ArrayList<Precio> precios;
-    private ArrayList<Producto> accesorios;
-    private Relation relation;
-    private ArrayList<Producto> planes;
-    private ArrayList<Producto> hijos;
-    private ArrayList<Producto> plans;
-    private ArrayList<Highlight> highlight;
-    private ArrayList<Producto> devices;
     private String provider_name;
-    private String provider_image;
-    private String sizes;
-    private String imageHigh;
-    private ArrayList<Detalle> cae;
-    private String primaryImage;
-    private String bannerImage;
-    private String condicionImage;
-    private String condicionImageHorizontal;
+    private String product_type_id;
+    private String name;
+    private String precioVenta;
+    private String precioClienteEntel;
+    private String tam;
+    private String img;
+    private String imagenPrimaria;
+    private String procesador;
+    private String pantalla;
+    private String camaraFrontal;
+    private String camaraTrasera;
+    private String memoriaInterna;
+    private String red;
+    private String codigo;
+    private String colores;
+    private String PM;
+    private String VC;
+
+    private String atributoUno;
+    private String atributoDos;
+    private String atributoTres;
+
+    private String bdg;
+    private String cch;
+    private String ccv;
+
+    private String bannerPlan;
+    private String imagenBase;
     private String equno;
     private String eqdos;
     private String eqtres;
-    private String imagen_oferta;
-    private String primaryImage_h;
+    private String caid;
+
+    private String cuotaCredito;
+    private String totalCredito;
+
+    private ArrayList<Producto> hijos;
+    private ArrayList<Producto> accesorios;
+    private ArrayList<Producto> planes;
+
+    private int estado = 1;
+
 
     public Producto()
     {
     }
 
-    public Producto( String id, String provider_id, String product_type_id, String product_type, String name, String parent, String status, String created_at, String uploaded_at, ArrayList<Detalle> detalles, ArrayList<Precio> precios, ArrayList<Producto> accesorios, Relation relation, ArrayList<Producto> planes, ArrayList<Producto> hijos, ArrayList<Producto> plans, ArrayList<Highlight> highlight, ArrayList<Producto> devices, String provider_name, String provider_image, String sizes, String imageHigh, ArrayList<Detalle> cae, String primaryImage, String bannerImage, String condicionImage, String condicionImageHorizontal, String equno, String eqdos, String eqtres, String imagen_oferta, String primaryImage_h )
+    public Producto( String id, String provider_id, String provider_name, String product_type_id, String name, String precioVenta, String precioClienteEntel, String tam, String img, String imagenPrimaria, String procesador, String pantalla, String camaraFrontal, String camaraTrasera, String memoriaInterna, String red, String codigo, String colores, String PM, String VC, String atributoUno, String atributoDos, String atributoTres, String bdg, String cch, String ccv, String bannerPlan, String imagenBase, String equno, String eqdos, String eqtres, String caid, String cuotaCredito, String totalCredito, ArrayList<Producto> hijos, ArrayList<Producto> accesorios, ArrayList<Producto> planes, int estado )
     {
         this.id = id;
         this.provider_id = provider_id;
-        this.product_type_id = product_type_id;
-        this.product_type = product_type;
-        this.name = name;
-        this.parent = parent;
-        this.status = status;
-        this.created_at = created_at;
-        this.uploaded_at = uploaded_at;
-        this.detalles = detalles;
-        this.precios = precios;
-        this.accesorios = accesorios;
-        this.relation = relation;
-        this.planes = planes;
-        this.hijos = hijos;
-        this.plans = plans;
-        this.highlight = highlight;
-        this.devices = devices;
         this.provider_name = provider_name;
-        this.provider_image = provider_image;
-        this.sizes = sizes;
-        this.imageHigh = imageHigh;
-        this.cae = cae;
-        this.primaryImage = primaryImage;
-        this.bannerImage = bannerImage;
-        this.condicionImage = condicionImage;
-        this.condicionImageHorizontal = condicionImageHorizontal;
+        this.product_type_id = product_type_id;
+        this.name = name;
+        this.precioVenta = precioVenta;
+        this.precioClienteEntel = precioClienteEntel;
+        this.tam = tam;
+        this.img = img;
+        this.imagenPrimaria = imagenPrimaria;
+        this.procesador = procesador;
+        this.pantalla = pantalla;
+        this.camaraFrontal = camaraFrontal;
+        this.camaraTrasera = camaraTrasera;
+        this.memoriaInterna = memoriaInterna;
+        this.red = red;
+        this.codigo = codigo;
+        this.colores = colores;
+        this.PM = PM;
+        this.VC = VC;
+        this.atributoUno = atributoUno;
+        this.atributoDos = atributoDos;
+        this.atributoTres = atributoTres;
+        this.bdg = bdg;
+        this.cch = cch;
+        this.ccv = ccv;
+        this.bannerPlan = bannerPlan;
+        this.imagenBase = imagenBase;
         this.equno = equno;
         this.eqdos = eqdos;
         this.eqtres = eqtres;
-        this.imagen_oferta = imagen_oferta;
-        this.primaryImage_h = primaryImage_h;
+        this.caid = caid;
+        this.cuotaCredito = cuotaCredito;
+        this.totalCredito = totalCredito;
+        this.hijos = hijos;
+        this.accesorios = accesorios;
+        this.planes = planes;
+        this.estado = estado;
     }
 
-
-    public String getEqtres()
-    {
-        return eqtres;
-    }
-
-    public void setEqtres( String eqtres )
-    {
-        this.eqtres = eqtres;
-    }
 
     public String getId()
     {
@@ -112,6 +118,16 @@ public class Producto
         this.provider_id = provider_id;
     }
 
+    public String getProvider_name()
+    {
+        return provider_name;
+    }
+
+    public void setProvider_name( String provider_name )
+    {
+        this.provider_name = provider_name;
+    }
+
     public String getProduct_type_id()
     {
         return product_type_id;
@@ -120,16 +136,6 @@ public class Producto
     public void setProduct_type_id( String product_type_id )
     {
         this.product_type_id = product_type_id;
-    }
-
-    public String getProduct_type()
-    {
-        return product_type;
-    }
-
-    public void setProduct_type( String product_type )
-    {
-        this.product_type = product_type;
     }
 
     public String getName()
@@ -142,224 +148,234 @@ public class Producto
         this.name = name;
     }
 
-    public String getParent()
+    public String getPrecioVenta()
     {
-        return parent;
+        return precioVenta;
     }
 
-    public void setParent( String parent )
+    public void setPrecioVenta( String precioVenta )
     {
-        this.parent = parent;
+        this.precioVenta = precioVenta;
     }
 
-    public String getStatus()
+    public String getPrecioClienteEntel()
     {
-        return status;
+        return precioClienteEntel;
     }
 
-    public void setStatus( String status )
+    public void setPrecioClienteEntel( String precioClienteEntel )
     {
-        this.status = status;
+        this.precioClienteEntel = precioClienteEntel;
     }
 
-    public String getCreated_at()
+    public String getTam()
     {
-        return created_at;
+        return tam;
     }
 
-    public void setCreated_at( String created_at )
+    public void setTam( String tam )
     {
-        this.created_at = created_at;
+        this.tam = tam;
     }
 
-    public String getUploaded_at()
+    public String getImg()
     {
-        return uploaded_at;
+        return img;
     }
 
-    public void setUploaded_at( String uploaded_at )
+    public void setImg( String img )
     {
-        this.uploaded_at = uploaded_at;
+        this.img = img;
     }
 
-    public ArrayList<Detalle> getDetalles()
+    public String getImagenPrimaria()
     {
-        return detalles;
+        return imagenPrimaria;
     }
 
-    public void setDetalles( ArrayList<Detalle> detalles )
+    public void setImagenPrimaria( String imagenPrimaria )
     {
-        this.detalles = detalles;
+        this.imagenPrimaria = imagenPrimaria;
     }
 
-    public ArrayList<Precio> getPrecios()
+    public String getProcesador()
     {
-        return precios;
+        return procesador;
     }
 
-    public void setPrecios( ArrayList<Precio> precios )
+    public void setProcesador( String procesador )
     {
-        this.precios = precios;
+        this.procesador = procesador;
     }
 
-    public ArrayList<Producto> getAccesorios()
+    public String getPantalla()
     {
-        return accesorios;
+        return pantalla;
     }
 
-    public void setAccesorios( ArrayList<Producto> accesorios )
+    public void setPantalla( String pantalla )
     {
-        this.accesorios = accesorios;
+        this.pantalla = pantalla;
     }
 
-    public Relation getRelation()
+    public String getCamaraFrontal()
     {
-        return relation;
+        return camaraFrontal;
     }
 
-    public void setRelation( Relation relation )
+    public void setCamaraFrontal( String camaraFrontal )
     {
-        this.relation = relation;
+        this.camaraFrontal = camaraFrontal;
     }
 
-    public ArrayList<Producto> getPlanes()
+    public String getCamaraTrasera()
     {
-        return planes;
+        return camaraTrasera;
     }
 
-    public void setPlanes( ArrayList<Producto> planes )
+    public void setCamaraTrasera( String camaraTrasera )
     {
-        this.planes = planes;
+        this.camaraTrasera = camaraTrasera;
     }
 
-    public ArrayList<Producto> getHijos()
+    public String getMemoriaInterna()
     {
-        return hijos;
+        return memoriaInterna;
     }
 
-    public void setHijos( ArrayList<Producto> hijos )
+    public void setMemoriaInterna( String memoriaInterna )
     {
-        this.hijos = hijos;
+        this.memoriaInterna = memoriaInterna;
     }
 
-    public ArrayList<Producto> getPlans()
+    public String getRed()
     {
-        return plans;
+        return red;
     }
 
-    public void setPlans( ArrayList<Producto> plans )
+    public void setRed( String red )
     {
-        this.plans = plans;
+        this.red = red;
     }
 
-    public ArrayList<Highlight> getHighlight()
+    public String getCodigo()
     {
-        return highlight;
+        return codigo;
     }
 
-    public void setHighlight( ArrayList<Highlight> highlight )
+    public void setCodigo( String codigo )
     {
-        this.highlight = highlight;
+        this.codigo = codigo;
     }
 
-    public ArrayList<Producto> getDevices()
+    public String getColores()
     {
-        return devices;
+        return colores;
     }
 
-    public void setDevices( ArrayList<Producto> devices )
+    public void setColores( String colores )
     {
-        this.devices = devices;
+        this.colores = colores;
     }
 
-    public String getProvider_name()
+    public String getPM()
     {
-        return provider_name;
+        return PM;
     }
 
-    public void setProvider_name( String provider_name )
+    public void setPM( String PM )
     {
-        this.provider_name = provider_name;
+        this.PM = PM;
     }
 
-    public String getProvider_image()
+    public String getVC()
     {
-        return provider_image;
+        return VC;
     }
 
-    public void setProvider_image( String provider_image )
+    public void setVC( String VC )
     {
-        this.provider_image = provider_image;
+        this.VC = VC;
     }
 
-    public String getSizes()
+    public String getAtributoUno()
     {
-        return sizes;
+        return atributoUno;
     }
 
-    public void setSizes( String sizes )
+    public void setAtributoUno( String atributoUno )
     {
-        this.sizes = sizes;
+        this.atributoUno = atributoUno;
     }
 
-    public String getImageHigh()
+    public String getAtributoDos()
     {
-        return imageHigh;
+        return atributoDos;
     }
 
-    public void setImageHigh( String imageHigh )
+    public void setAtributoDos( String atributoDos )
     {
-        this.imageHigh = imageHigh;
+        this.atributoDos = atributoDos;
     }
 
-    public ArrayList<Detalle> getCae()
+    public String getAtributoTres()
     {
-        return cae;
+        return atributoTres;
     }
 
-    public void setCae( ArrayList<Detalle> cae )
+    public void setAtributoTres( String atributoTres )
     {
-        this.cae = cae;
+        this.atributoTres = atributoTres;
     }
 
-    public String getPrimaryImage()
+    public String getBdg()
     {
-        return primaryImage;
+        return bdg;
     }
 
-    public void setPrimaryImage( String primaryImage )
+    public void setBdg( String bdg )
     {
-        this.primaryImage = primaryImage;
+        this.bdg = bdg;
     }
 
-    public String getBannerImage()
+    public String getCch()
     {
-        return bannerImage;
+        return cch;
     }
 
-    public void setBannerImage( String bannerImage )
+    public void setCch( String cch )
     {
-        this.bannerImage = bannerImage;
+        this.cch = cch;
     }
 
-    public String getCondicionImage()
+    public String getCcv()
     {
-        return condicionImage;
+        return ccv;
     }
 
-    public void setCondicionImage( String condicionImage )
+    public void setCcv( String ccv )
     {
-        this.condicionImage = condicionImage;
+        this.ccv = ccv;
     }
 
-    public String getCondicionImageHorizontal()
+    public String getBannerPlan()
     {
-        return condicionImageHorizontal;
+        return bannerPlan;
     }
 
-    public void setCondicionImageHorizontal( String condicionImageHorizontal )
+    public void setBannerPlan( String bannerPlan )
     {
-        this.condicionImageHorizontal = condicionImageHorizontal;
+        this.bannerPlan = bannerPlan;
+    }
+
+    public String getImagenBase()
+    {
+        return imagenBase;
+    }
+
+    public void setImagenBase( String imagenBase )
+    {
+        this.imagenBase = imagenBase;
     }
 
     public String getEquno()
@@ -382,61 +398,83 @@ public class Producto
         this.eqdos = eqdos;
     }
 
-    public String getImagen_oferta()
+    public String getEqtres()
     {
-        return imagen_oferta;
+        return eqtres;
     }
 
-    public void setImagen_oferta( String imagen_oferta )
+    public void setEqtres( String eqtres )
     {
-        this.imagen_oferta = imagen_oferta;
+        this.eqtres = eqtres;
     }
 
-    public String getPrimaryImage_h()
+    public String getCaid()
     {
-        return primaryImage_h;
+        return caid;
     }
 
-    public void setPrimaryImage_h( String primaryImage_h )
+    public void setCaid( String caid )
     {
-        this.primaryImage_h = primaryImage_h;
+        this.caid = caid;
     }
 
-    @Override
-    public String toString()
+    public String getCuotaCredito()
     {
-        return "Producto{" +
-                "id='" + id + '\'' +
-                ", provider_id='" + provider_id + '\'' +
-                ", product_type_id='" + product_type_id + '\'' +
-                ", product_type='" + product_type + '\'' +
-                ", name='" + name + '\'' +
-                ", parent='" + parent + '\'' +
-                ", status='" + status + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", uploaded_at='" + uploaded_at + '\'' +
-                ", detalles=" + detalles +
-                ", precios=" + precios +
-                ", accesorios=" + accesorios +
-                ", relation=" + relation +
-                ", planes=" + planes +
-                ", hijos=" + hijos +
-                ", plans=" + plans +
-                ", highlight=" + highlight +
-                ", devices=" + devices +
-                ", provider_name='" + provider_name + '\'' +
-                ", provider_image='" + provider_image + '\'' +
-                ", sizes='" + sizes + '\'' +
-                ", imageHigh='" + imageHigh + '\'' +
-                ", cae=" + cae +
-                ", primaryImage='" + primaryImage + '\'' +
-                ", bannerImage='" + bannerImage + '\'' +
-                ", condicionImage='" + condicionImage + '\'' +
-                ", condicionImageHorizontal='" + condicionImageHorizontal + '\'' +
-                ", equno='" + equno + '\'' +
-                ", eqdos='" + eqdos + '\'' +
-                ", imagen_oferta='" + imagen_oferta + '\'' +
-                ", primaryImage_h='" + primaryImage_h + '\'' +
-                '}';
+        return cuotaCredito;
+    }
+
+    public void setCuotaCredito( String cuotaCredito )
+    {
+        this.cuotaCredito = cuotaCredito;
+    }
+
+    public String getTotalCredito()
+    {
+        return totalCredito;
+    }
+
+    public void setTotalCredito( String totalCredito )
+    {
+        this.totalCredito = totalCredito;
+    }
+
+    public ArrayList<Producto> getHijos()
+    {
+        return hijos;
+    }
+
+    public void setHijos( ArrayList<Producto> hijos )
+    {
+        this.hijos = hijos;
+    }
+
+    public ArrayList<Producto> getAccesorios()
+    {
+        return accesorios;
+    }
+
+    public void setAccesorios( ArrayList<Producto> accesorios )
+    {
+        this.accesorios = accesorios;
+    }
+
+    public ArrayList<Producto> getPlanes()
+    {
+        return planes;
+    }
+
+    public void setPlanes( ArrayList<Producto> planes )
+    {
+        this.planes = planes;
+    }
+
+    public int getEstado()
+    {
+        return estado;
+    }
+
+    public void setEstado( int estado )
+    {
+        this.estado = estado;
     }
 }

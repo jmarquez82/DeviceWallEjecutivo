@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,28 +19,36 @@ import cl.rinno.newdevicewall.R;
 public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHolder>
 {
 
+    private static final String TAG = "ColorAdapter";
     private ArrayList<String> Colores = new ArrayList<>();
     Context context;
 
-    public ColorAdapter(ArrayList<String> listaColores, Context context)
+    public ColorAdapter( ArrayList<String> listaColores, Context context )
     {
-        this.Colores =  listaColores;
+        this.Colores = listaColores;
         this.context = context;
     }
 
     @Override
-    public ColorViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public ColorViewHolder onCreateViewHolder( ViewGroup parent, int viewType )
     {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_color, parent, false);
-        return new ColorViewHolder(v);
+        View v = LayoutInflater.from( parent.getContext() ).inflate( R.layout.item_color, parent, false );
+        return new ColorViewHolder( v );
     }
 
     @Override
-    public void onBindViewHolder(ColorViewHolder holder, final int position)
+    public void onBindViewHolder( ColorViewHolder holder, final int position )
     {
         Drawable background = (holder.detailsColor.getBackground());
         GradientDrawable shapeDrawable = (GradientDrawable) background;
-        shapeDrawable.setColor(Color.parseColor(Colores.get(position)));
+        try
+        {
+            shapeDrawable.setColor( Color.parseColor( Colores.get( position ) ) );
+        }catch (Exception e  )
+        {
+            Log.e( TAG, e.toString());
+        }
+
     }
 
     @Override
@@ -53,11 +62,11 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
 
         ImageView detailsColor;
 
-        ColorViewHolder(View itemView)
+        ColorViewHolder( View itemView )
         {
-            super(itemView);
+            super( itemView );
 
-            detailsColor = (ImageView) itemView.findViewById(R.id.detailsColor);
+            detailsColor = (ImageView) itemView.findViewById( R.id.detailsColor );
         }
     }
 }
